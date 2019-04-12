@@ -1,67 +1,83 @@
 ﻿using apiDespesasPessoais.Model;
+using apiDespesasPessoais.Model.Context;
 using apiDespesasPessoais.Services;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace apiDespesasPessoais.Services.Implementations
 {
     public class UsuarioServiceImpl : IUsuarioService
     {
+        private SqlServerContext _context;
+
+        public UsuarioServiceImpl(SqlServerContext context)
+        {
+            _context = context;
+        }
         public Usuario Create(Usuario usuario)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _context.Add(usuario);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return usuario;
         }
 
         public List<Usuario> FindAll()
         {
-            List<Usuario> lstUsuario = new List<Usuario>();
-
-            lstUsuario.Add(
-                new Usuario
-                {
-                    idUsuario = 1,
-                    email = "alexfariakof@gmail.com",
-                    nome = "Alex Ribeiro",
-                    senha = "1234"
-                });
-            lstUsuario.Add(
-                new Usuario
-                {
-                    idUsuario = 2,
-                    email = "rosethalita@gmail.com",
-                    nome = "Rosilene Thalita ",
-                    senha = "4321"
-                });
-            return lstUsuario;
+            return _context.Usuario.ToList();
         }  
     
 
         public Usuario FindById(long idUsuario)
         {
-        Usuario obj = new Usuario
-            {
-                idUsuario = 1,
-                email = "alexfariakof@gmail.com",
-                nome = "Alex Ribeiro",
-                senha = "1234"
-            };
-
-            return obj;
+            return _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
         }
 
         public Usuario Update(Usuario usuario)
         {
-            Usuario obj = new Usuario
+            if (!Exist(usuario.Id))
+                return new Usuario();
+
+            var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(usuario.Id));            
+            try
             {
-                idUsuario = 2,
-                email = "rosethalita@gmail.com",
-                nome = "Rosilene Thalita ",
-                senha = "4321"
-            };
-        return obj;
+                _context.Entry(result).CurrentValues.SetValues(usuario);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return usuario;
         }
+
         public void Delete(long id)
         {
-            throw new System.NotImplementedException();
+            var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(id));
+            try
+            {
+                if (result != null)
+                    _context.Usuario.Remove(result);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
+        private bool Exist(long idUsuario)
+        {
+            return _context.Usuario.Any(prop => prop.Id.Equals(idUsuario));
+        }
+
     }
 }
