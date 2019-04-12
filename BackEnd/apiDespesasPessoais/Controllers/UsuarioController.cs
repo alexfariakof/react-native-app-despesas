@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using apiDespesasPessoais.Model;
+using apiDespesasPessoais.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiDespesasPessoais.Controllers
@@ -10,36 +10,60 @@ namespace apiDespesasPessoais.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
+        private IUsuarioService _usuarioService;
+
+        public UsuarioController(IUsuarioService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_usuarioService.FindAll());
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            id = 1;
+            var _usuario = _usuarioService.FindById(id);
+
+            if (_usuario == null)
+                return NotFound();
+
+            return Ok(_usuario);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Usuario usuario)
         {
+            if (usuario == null)
+                return BadRequest();
+            return new ObjectResult(_usuarioService.Create(usuario));
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public IActionResult Put([FromBody] Usuario usuario)
         {
+            if (usuario == null)
+                return BadRequest();
+            return new ObjectResult(_usuarioService.Update(usuario));
+
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            id = 1;
+
+            _usuarioService.Delete(id);
+            return NoContent(); // Erro HTTP 204
         }
     }
 }
