@@ -9,21 +9,21 @@ namespace apiDespesasPessoais.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private ILoginBusiness _loginBusiness;
+        private IControleAcessoBusiness _loginBusiness;
 
-        public LoginController(ILoginBusiness loginBusiness)
+        public LoginController(IControleAcessoBusiness loginBusiness)
         {
             _loginBusiness = loginBusiness;
         }
         
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Post([FromBody] Login login)
+        public IActionResult Post([FromBody] ControleAcesso controleAcesso)
         {
-            if (login == null)
+            if (controleAcesso == null)
                 return BadRequest();
 
-            return new ObjectResult(_loginBusiness.FindByLogin(login));
+            return new ObjectResult(_loginBusiness.FindByLogin(controleAcesso));
         }
 
     }

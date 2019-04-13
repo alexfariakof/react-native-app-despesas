@@ -56,11 +56,11 @@ namespace apiDespesasPessoais
             // Injeção de Dependencia 
             services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
             services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
-            services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
+            services.AddScoped<IControleAcessoBusiness, ControleAcessoBusinessImpl>();
             
             
             //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
-            services.AddScoped<ILoginRepositorio, LoginRepositorioImpl>();
+            services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
 
             services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
         }

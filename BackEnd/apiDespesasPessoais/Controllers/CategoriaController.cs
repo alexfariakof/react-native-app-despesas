@@ -1,5 +1,6 @@
 ﻿using apiDespesasPessoais.Business;
 using apiDespesasPessoais.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiDespesasPessoais.Controllers
@@ -33,6 +34,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] Categoria categoria)
         {
             if (categoria == null)
@@ -41,6 +43,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPut]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] Categoria categoria)
         {
             if (categoria == null)
@@ -54,6 +57,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _categoriaBusiness.Delete(id);

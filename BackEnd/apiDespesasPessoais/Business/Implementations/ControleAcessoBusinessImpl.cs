@@ -8,36 +8,36 @@ using apiDespesasPessoais.Security.Configuration;
 
 namespace apiDespesasPessoais.Business.Implementations
 {
-    public class LoginBusinessImpl : ILoginBusiness
+    public class ControleAcessoBusinessImpl : IControleAcessoBusiness
     {
-        private ILoginRepositorio _repositorio;
+        private IControleAcessoRepositorio _repositorio;
 
         private Security.Configuration.SigningConfigurations _singingConfiguration;
         private TokenConfiguration _tokenConfiguration; 
 
-        public LoginBusinessImpl(ILoginRepositorio repositorio, Security.Configuration.SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
+        public ControleAcessoBusinessImpl(IControleAcessoRepositorio repositorio, Security.Configuration.SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
         {
             _repositorio = repositorio;
             _singingConfiguration = singingConfiguration;
             _tokenConfiguration = tokenConfiguration;
         }
         
-        public object FindByLogin(Login login)
+        public object FindByLogin(ControleAcesso controleAcesso)
         {
             bool credentialsValid = false;
-            if (login != null && !string.IsNullOrWhiteSpace(login.Email))
+            if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
-                var baseLogin = _repositorio.FindByLogin(login.Email);
-                credentialsValid = (baseLogin != null && login.Email == baseLogin.Email && login.Senha == baseLogin.Senha);
+                var baseLogin = _repositorio.FindByEmail(controleAcesso);
+                credentialsValid = (baseLogin != null && controleAcesso.Login == baseLogin.Login && controleAcesso.Senha == baseLogin.Senha);
             }
             if(credentialsValid)
             {
                 ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(login.Email, "Login"),
+                    new GenericIdentity(controleAcesso.Login, "Login"),
                     new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, login.Email)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, controleAcesso.Login)
                     });
 
                 DateTime createDate = DateTime.Now;

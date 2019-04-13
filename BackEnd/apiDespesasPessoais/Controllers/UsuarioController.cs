@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Swagger;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace apiDespesasPessoais.Controllers
 {
@@ -17,6 +17,7 @@ namespace apiDespesasPessoais.Controllers
         public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
+            
         }
 
         [HttpGet]
@@ -37,6 +38,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] Usuario usuario)
         {
             if (usuario == null)
@@ -45,6 +47,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPut]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] Usuario usuario)
         {
             if (usuario == null)
@@ -58,6 +61,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _usuarioBusiness.Delete(id);

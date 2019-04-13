@@ -3,12 +3,10 @@ using System;
 
 namespace apiDespesasPessoais.Model
 {
-    public class Login 
+    public class ControleAcesso
     {        
         public int Id { get; set; }
-        public String Email { get; set; }
+        public String Login { get; set; }
         public String Senha { get; set; }
-        public String AccessKey { get; set; }
-
     }
 }
