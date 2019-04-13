@@ -1,12 +1,10 @@
 ﻿using apiDespesasPessoais.Model.Base;
-using System;
 
 namespace apiDespesasPessoais.Model
 {
     public class Usuario : BaseEntity
     {
-        public String Nome { get; set; }
-        public String Email { get; set; }
-        public String Senha { get; set; }
+        public string Nome { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -4,6 +4,9 @@ using apiDespesasPessoais.Model.Context;
 using apiDespesasPessoais.Repositorio;
 using apiDespesasPessoais.Repositorio.Generic;
 using apiDespesasPessoais.Repositorio.Implementations;
+using apiDespesasPessoais.Security.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +14,9 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace apiDespesasPessoais
 {
@@ -31,6 +36,9 @@ namespace apiDespesasPessoais
             var connection = Configuration["SqlServerConnection:SqlServerConnectionString"];
             services.AddDbContext<SqlServerContext>(options => options.UseSqlServer(connection));
             // Fim de configuração com banco de dados
+            
+            // Configura Autorização para uso do Rest
+            this.ConfigureAutorization(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -48,7 +56,11 @@ namespace apiDespesasPessoais
             // Injeção de Dependencia 
             services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
             services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
+            services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
+            
+            
             //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
+            services.AddScoped<ILoginRepositorio, LoginRepositorioImpl>();
 
             services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
         }
@@ -78,6 +90,57 @@ namespace apiDespesasPessoais
 
             app.UseMvc();
         }
+
+
+        private void ConfigureAutorization(IServiceCollection services)
+        {
+            var signingConfigurations = new Security.Configuration.SigningConfigurations();
+            services.AddSingleton(signingConfigurations);
+
+            var tokenConfigurations = new TokenConfiguration();
+
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                Configuration.GetSection("TokenConfigurations")
+            )
+            .Configure(tokenConfigurations);
+
+            services.AddSingleton(tokenConfigurations);
+
+
+            services.AddAuthentication(authOptions =>
+            {
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+                paramsValidation.IssuerSigningKey = signingConfigurations.Key;
+                paramsValidation.ValidAudience = tokenConfigurations.Audience;
+                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+
+                // Validates the signing of a received token
+                paramsValidation.ValidateIssuerSigningKey = true;
+
+                // Checks if a received token is still valid
+                paramsValidation.ValidateLifetime = true;
+
+                // Tolerance time for the expiration of a token (used in case
+                // of time synchronization problems between different
+                // computers involved in the communication process)
+                paramsValidation.ClockSkew = TimeSpan.Zero;
+            });
+
+            // Enables the use of the token as a means of
+            // authorizing access to this project's resources
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
+
+        }
+
     }
 }
 

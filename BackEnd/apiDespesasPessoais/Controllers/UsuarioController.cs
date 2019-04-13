@@ -1,6 +1,10 @@
 ﻿using apiDespesasPessoais.Business;
 using apiDespesasPessoais.Model;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace apiDespesasPessoais.Controllers
 {
