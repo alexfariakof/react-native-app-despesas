@@ -7,9 +7,11 @@ using apiDespesasPessoais.Repositorio.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace apiDespesasPessoais
 {
@@ -32,7 +34,18 @@ namespace apiDespesasPessoais
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // Injeçaõ de Dependencia 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new Info
+                    {
+                        Title = "API RESTfull Despesas Pessoais",
+                        Version = "v1"
+                    });
+
+            });
+
+            // Injeção de Dependencia 
             services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
             services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
             //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
@@ -47,6 +60,21 @@ namespace apiDespesasPessoais
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            //Starting our API in Swagger page
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
+            var options = new RewriteOptions();
+            options.AddRedirect("^$", "swagger");
+            app.UseRewriter(options);
 
             app.UseMvc();
         }
