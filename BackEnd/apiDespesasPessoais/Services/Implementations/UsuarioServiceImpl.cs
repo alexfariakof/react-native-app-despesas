@@ -1,6 +1,5 @@
 ﻿using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Model.Context;
-using apiDespesasPessoais.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +30,18 @@ namespace apiDespesasPessoais.Services.Implementations
 
         public List<Usuario> FindAll()
         {
-            return _context.Usuario.ToList();
+            try
+            {
+                return _context.Usuario.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }  
     
 
-        public Usuario FindById(long idUsuario)
+        public Usuario FindById(int idUsuario)
         {
             return _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
         }
@@ -59,7 +65,7 @@ namespace apiDespesasPessoais.Services.Implementations
             return usuario;
         }
 
-        public void Delete(long id)
+        public void Delete(int id)
         {
             var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(id));
             try
@@ -74,7 +80,7 @@ namespace apiDespesasPessoais.Services.Implementations
             }
         }
 
-        private bool Exist(long idUsuario)
+        private bool Exist(int idUsuario)
         {
             return _context.Usuario.Any(prop => prop.Id.Equals(idUsuario));
         }

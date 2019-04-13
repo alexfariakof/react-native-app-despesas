@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using apiDespesasPessoais.Model.Context;
+﻿using apiDespesasPessoais.Model.Context;
 using apiDespesasPessoais.Services;
 using apiDespesasPessoais.Services.Implementations;
 using Microsoft.AspNetCore.Builder;
@@ -11,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace apiDespesasPessoais
 {
@@ -30,7 +24,7 @@ namespace apiDespesasPessoais
         {
             // Configuração de Conexão com Bando de Dados
             var connection = Configuration["SqlServerConnection:SqlServerConnectionString"];
-            services.AddDbContext<SqlServerContext>(options => options.UseMySql(connection));
+            services.AddDbContext<SqlServerContext>(options => options.UseSqlServer(connection));
             // Fim de configuração com banco de dados
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

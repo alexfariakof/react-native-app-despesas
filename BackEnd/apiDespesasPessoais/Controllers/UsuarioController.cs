@@ -28,7 +28,6 @@ namespace apiDespesasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            id = 1;
             var _usuario = _usuarioService.FindById(id);
 
             if (_usuario == null)
@@ -60,8 +59,6 @@ namespace apiDespesasPessoais.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            id = 1;
-
             _usuarioService.Delete(id);
             return NoContent(); // Erro HTTP 204
         }
