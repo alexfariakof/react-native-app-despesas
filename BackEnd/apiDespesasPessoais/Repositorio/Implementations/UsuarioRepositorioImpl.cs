@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apiDespesasPessoais.Services.Implementations
+namespace apiDespesasPessoais.Repositorio.Implementations
 {
-    public class UsuarioServiceImpl : IUsuarioService
+    public class UsuarioRepositorioImpl : IUsuarioRepositorio
     {
+        /*
         private SqlServerContext _context;
 
-        public UsuarioServiceImpl(SqlServerContext context)
+        public UsuarioRepositorioImpl(SqlServerContext context)
         {
             _context = context;
         }
@@ -49,7 +50,7 @@ namespace apiDespesasPessoais.Services.Implementations
         public Usuario Update(Usuario usuario)
         {
             if (!Exist(usuario.Id))
-                return new Usuario();
+                return null;
 
             var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(usuario.Id));            
             try
@@ -85,5 +86,31 @@ namespace apiDespesasPessoais.Services.Implementations
             return _context.Usuario.Any(prop => prop.Id.Equals(idUsuario));
         }
 
+    }
+    */
+        public Usuario Create(Usuario usuario)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Usuario> FindAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Usuario FindById(int idUsuario)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Usuario Update(Usuario usuario)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

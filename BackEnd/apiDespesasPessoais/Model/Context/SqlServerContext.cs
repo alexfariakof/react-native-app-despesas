@@ -15,5 +15,6 @@ namespace apiDespesasPessoais.Model.Context
         }
 
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Categoria> Categoria { get; set; }
     }
 }

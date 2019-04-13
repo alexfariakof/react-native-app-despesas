@@ -1,6 +1,9 @@
-﻿using apiDespesasPessoais.Model.Context;
-using apiDespesasPessoais.Services;
-using apiDespesasPessoais.Services.Implementations;
+﻿using apiDespesasPessoais.Business;
+using apiDespesasPessoais.Business.Implementations;
+using apiDespesasPessoais.Model.Context;
+using apiDespesasPessoais.Repositorio;
+using apiDespesasPessoais.Repositorio.Generic;
+using apiDespesasPessoais.Repositorio.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +33,11 @@ namespace apiDespesasPessoais
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Injeçaõ de Dependencia 
-            services.AddScoped<IUsuarioService, UsuarioServiceImpl>();
+            services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
+            services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
+            //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
+
+            services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,3 +52,4 @@ namespace apiDespesasPessoais
         }
     }
 }
+

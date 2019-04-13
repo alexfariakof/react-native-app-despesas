@@ -1,10 +1,10 @@
-﻿using System;
+﻿using apiDespesasPessoais.Model.Base;
+using System;
 
 namespace apiDespesasPessoais.Model
 {
-    public class Usuario
+    public class Usuario : BaseEntity
     {
-        public int Id { get; set; }
         public String Nome { get; set; }
         public String Email { get; set; }
         public String Senha { get; set; }

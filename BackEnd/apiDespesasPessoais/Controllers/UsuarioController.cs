@@ -1,34 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using apiDespesasPessoais.Business;
 using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiDespesasPessoais.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class UsuarioController : Controller
     {
-        private IUsuarioService _usuarioService;
+        private IUsuarioBusiness _usuarioBusiness;
 
-        public UsuarioController(IUsuarioService usuarioService)
+        public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
-            _usuarioService = usuarioService;
+            _usuarioBusiness = usuarioBusiness;
         }
 
-        // GET api/values
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_usuarioService.FindAll());
+           return Ok(_usuarioBusiness.FindAll());
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var _usuario = _usuarioService.FindById(id);
+            var _usuario = _usuarioBusiness.FindById(id);
 
             if (_usuario == null)
                 return NotFound();
@@ -36,31 +32,32 @@ namespace apiDespesasPessoais.Controllers
             return Ok(_usuario);
         }
 
-        // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario)
         {
             if (usuario == null)
                 return BadRequest();
-            return new ObjectResult(_usuarioService.Create(usuario));
+            return new ObjectResult(_usuarioBusiness.Create(usuario));
         }
 
-        // PUT api/values/5
         [HttpPut]
         public IActionResult Put([FromBody] Usuario usuario)
         {
             if (usuario == null)
                 return BadRequest();
-            return new ObjectResult(_usuarioService.Update(usuario));
 
+            var updateUsuario = _usuarioBusiness.Update(usuario);
+            if (updateUsuario == null)
+                return NoContent();
+
+            return new ObjectResult(updateUsuario);
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _usuarioService.Delete(id);
-            return NoContent(); // Erro HTTP 204
+            _usuarioBusiness.Delete(id);
+            return NoContent();
         }
     }
 }

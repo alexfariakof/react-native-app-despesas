@@ -1,9 +1,9 @@
 ﻿using apiDespesasPessoais.Model;
 using System.Collections.Generic;
 
-namespace apiDespesasPessoais.Services
+namespace apiDespesasPessoais.Repositorio
 {
-    public interface IUsuarioService
+    public interface IUsuarioRepositorio
     {
         Usuario Create(Usuario usuario);
         Usuario FindById(int idUsuario);
