@@ -1,11 +1,11 @@
-﻿using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Repositorio;
+﻿using apiDespesasPessoais.Business.Generic;
+using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Repositorio.Generic;
 using System.Collections.Generic;
 
 namespace apiDespesasPessoais.Business.Implementations
 {
-    public class CategoriaBusinessImpl : ICategoriaBusiness
+    public class CategoriaBusinessImpl : IBusiness<Categoria>
     {
         private readonly IRepositorio<Categoria> _repositorio;
 

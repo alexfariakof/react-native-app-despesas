@@ -1,10 +1,7 @@
-﻿using apiDespesasPessoais.Business;
+﻿using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace apiDespesasPessoais.Controllers
 {
@@ -12,12 +9,11 @@ namespace apiDespesasPessoais.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
-        private IUsuarioBusiness _usuarioBusiness;
+        private IBusiness<Usuario> _usuarioBusiness;
 
-        public UsuarioController(IUsuarioBusiness usuarioBusiness)
+        public UsuarioController(IBusiness<Usuario> usuarioBusiness)
         {
-            _usuarioBusiness = usuarioBusiness;
-            
+            _usuarioBusiness = usuarioBusiness;            
         }
 
         [HttpGet]
@@ -38,7 +34,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPost]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Post([FromBody] Usuario usuario)
         {
             if (usuario == null)
@@ -47,7 +43,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpPut]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Put([FromBody] Usuario usuario)
         {
             if (usuario == null)
@@ -61,7 +57,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _usuarioBusiness.Delete(id);

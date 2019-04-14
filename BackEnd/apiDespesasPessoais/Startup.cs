@@ -1,4 +1,5 @@
 ﻿using apiDespesasPessoais.Business;
+using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Business.Implementations;
 using apiDespesasPessoais.Model.Context;
 using apiDespesasPessoais.Repositorio;
@@ -54,11 +55,12 @@ namespace apiDespesasPessoais
             });
 
             // Injeção de Dependencia 
-            services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
-            services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
+            //services.AddScoped<ICategoriaBusiness, CategoriaBusinessImpl>();
+            //services.AddScoped<IUsuarioBusiness, UsuarioBusinessImpl>();
+            services.AddScoped(typeof(IBusiness<>), typeof(GenericBusiness<>));
             services.AddScoped<IControleAcessoBusiness, ControleAcessoBusinessImpl>();
-            
-            
+            services.AddScoped<IFileBusiness, FileBusinessImpl>();
+
             //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
             services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
 
@@ -143,4 +145,5 @@ namespace apiDespesasPessoais
 
     }
 }
+
 

@@ -1,42 +1,42 @@
-﻿using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Repositorio;
+﻿using apiDespesasPessoais.Business.Generic;
+using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Repositorio.Generic;
 using System.Collections.Generic;
 
 namespace apiDespesasPessoais.Business.Implementations
 {
-    public class UsuarioBusinessImpl : IUsuarioBusiness
+    public class UsuarioBusinessImpl : IBusiness<Usuario>
     {
-        private IRepositorio<Usuario> _repositorio;
+        private IBusiness<Usuario> _business;
 
-        public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
+        public UsuarioBusinessImpl(IBusiness<Usuario> business)
         {
-            _repositorio = repositorio;
+            _business = business;
         }
         public Usuario Create(Usuario usuario)
         {
-            return _repositorio.Create(usuario);
+            return _business.Create(usuario);
         }
 
         public List<Usuario> FindAll()
         {
-            return _repositorio.FindAll();
+            return _business.FindAll();
         }      
 
         public Usuario FindById(int idUsuario)
         {
-            return _repositorio.FindById(idUsuario);
+            return _business.FindById(idUsuario);
         }
 
         public Usuario Update(Usuario usuario)
         {           
 
-            return _repositorio.Update(usuario);
+            return _business.Update(usuario);
         }
 
         public void Delete(int idUsuario)
         {
-            _repositorio.Delete(idUsuario);
+            _business.Delete(idUsuario);
         }
 
     }

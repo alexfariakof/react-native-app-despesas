@@ -55,7 +55,7 @@ namespace apiDespesasPessoais.Repositorio.Generic
             if (!Exists(obj.Id))
                 return null;
 
-            var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try
             {
                 _context.Entry(result).CurrentValues.SetValues(obj);
