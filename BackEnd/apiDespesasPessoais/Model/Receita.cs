@@ -1,10 +1,10 @@
-﻿using System;
+﻿using apiDespesasPessoais.Model.Base;
+using System;
 
 namespace apiDespesasPessoais.Model
 {
-    public class Receita
+    public class Receita : BaseEntity
     {
-        public int Id { get; set; }
         public int IdUsuario { get; set; }
         public int IdCategoria { get; set; }
         public DateTime data { get; set; }

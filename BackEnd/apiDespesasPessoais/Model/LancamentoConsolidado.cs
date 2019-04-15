@@ -1,10 +1,10 @@
-﻿using System;
+﻿using apiDespesasPessoais.Model.Base;
+using System;
 
 namespace apiDespesasPessoais.Model
 {
-    public class Lancamento
+    public class LancamentoConsolidado : BaseEntity
     {
-        public int Id { get; set; }
         public int IdUsuario { get; set; }
         public int IdDespesa { get; set; }
         public int IdReceita { get; set; }
