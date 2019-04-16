@@ -18,8 +18,9 @@ class HomeScreen extends Component {
                 style={styles.background}
             >
                 <View style={styles.body}>
-                    <Text style={styles.textBenVindo} >Seja Bem Vindo</Text>
                     <View style={styles.ViewCentralizar} >
+                        <Text style={styles.textBenVindo} >Seja Bem Vindo</Text>                       
+
                         <TouchableOpacity>
                             <Text style={styles.btnCadastrar}>Cadastre-se</Text>
                         </TouchableOpacity>
