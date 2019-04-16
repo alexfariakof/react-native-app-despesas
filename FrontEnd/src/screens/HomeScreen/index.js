@@ -19,18 +19,27 @@ class HomeScreen extends Component {
             >
                 <View style={styles.body}>
                     <Text style={styles.textBenVindo} >Seja Bem Vindo</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.btnCadastrar}>Cadastre-se</Text>
-                    </TouchableOpacity>
-                    <TextInput style={styles.textLogin} placeholder='Digite seu email' keyboardType='email-address' ></TextInput>
+                    <View style={styles.ViewCentralizar} >
+                        <TouchableOpacity>
+                            <Text style={styles.btnCadastrar}>Cadastre-se</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                    <TextInput style={styles.textSenha} placeholder='Digite sua senha' secureTextEntry  ></TextInput>
-                    <TouchableOpacity>
-                        <Text style={styles.btnEsqueciSenha}>Esqueci minha senha</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity  >
-                        <Image source={assets.btnIniciar} style={styles.btnIniciar} />
-                    </TouchableOpacity>
+                    <TextInput style={styles.text} placeholder='Digite seu email' keyboardType='email-address' ></TextInput>
+
+                    <TextInput style={styles.text} placeholder='Digite sua senha' secureTextEntry  ></TextInput>
+
+                    <View style={styles.ViewCentralizar} >
+                        <TouchableOpacity>
+                            <Text style={styles.btnEsqueciSenha}>Esqueci minha senha</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.ViewCentralizar} >
+                        <TouchableOpacity  >
+                            <Image source={assets.btnIniciar} style={styles.btnIniciar} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ImageBackground>
         );

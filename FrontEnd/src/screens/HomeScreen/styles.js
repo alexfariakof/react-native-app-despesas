@@ -14,29 +14,23 @@ export default styles = StyleSheet.create({
         fontSize:48,
         color:'white',        
         marginTop:16, 
-        marginBottom:16,
+        marginBottom:0,
         alignItems: 'center',
         justifyContent:'center'    
     },
+    ViewCentralizar: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },    
     btnCadastrar:{
         fontSize:24,
         color:'white',        
-        marginTop:16, 
+        marginTop:4, 
         marginBottom:16,
         alignItems: 'center',
         justifyContent:'center'    
     },
-    textLogin:{
-        height:60,
-        fontSize:24,
-        color:'white',        
-        marginTop:16, 
-        marginBottom:0,
-        padding:8, 
-        backgroundColor:'#C4C4C4'
-
-    },
-    textSenha:{
+    text:{
         height:60,
         fontSize:24,
         color:'white',        
@@ -52,9 +46,11 @@ export default styles = StyleSheet.create({
         marginBottom:16,
         alignItems: 'center',
         justifyContent:'center'    
-    },    
-    btnIniciar:{
-        alignItems: 'center',
-        justifyContent:'center'    
+    }, 
+    btnIniciar: {
+        width: 100,
+        height: 100,
+        marginTop: 16,
+        marginBottom: 32
     }
 })
