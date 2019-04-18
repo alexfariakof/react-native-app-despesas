@@ -18,10 +18,6 @@ class RecuperarSenhaScreen extends Component {
                 style={styles.background}
             >
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack() } ><Text>Voltar</Text></TouchableWithoutFeedback></View>
-                <View style={styles.Header}>
-                    <Text style={styles.textHeader} >Reset Senha</Text>
-                </View>
-                <TecladoNumericoComponent />
                 <View style={styles.body}>
                     <TextInput style={styles.text} placeholder='Digite o email cadastrado.' keyboardType='email-address' ></TextInput>
                 </View>

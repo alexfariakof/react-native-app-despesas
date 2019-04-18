@@ -19,8 +19,7 @@ export default styles = StyleSheet.create({
         fontSize: 32,        
         color: 'white'
     },
-    text: {
-        height: 60,
+    text: {        
         fontSize: 24,
         color: 'white',
         margin: 8,

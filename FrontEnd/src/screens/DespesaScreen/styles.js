@@ -22,14 +22,15 @@ export default styles = StyleSheet.create({
         color: 'white'
     },
     text: {
-        height: 52,
-        fontSize: 28,
+        fontSize: 24,
         color: 'white',
+        margin: 8,
         marginTop: 16,
         marginBottom: 0,
         borderBottomWidth:2,
         borderColor:'#C4C4C4',
-        padding: 4
+        padding: 4,
+        paddingBottom:0
     },
     ViewCentralizar:{
         justifyContent: 'center',
@@ -41,8 +42,7 @@ export default styles = StyleSheet.create({
         marginTop: 16,
         marginBottom: 32
     },
-    Footer: {
-        marginTop: 16,
+    viewTextValor: {
         height:100,
         backgroundColor: '#D45959'        
     },    
@@ -50,7 +50,6 @@ export default styles = StyleSheet.create({
         fontSize:48,
         color:'white',
         textAlign:'right',
-        marginTop:16,
         padding:8
     }
 })
