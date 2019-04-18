@@ -43,13 +43,12 @@ export default styles = StyleSheet.create({
         marginBottom: 32
     },
     viewTextValor: {
-        height:100,
+        
         backgroundColor: '#D45959'        
     },    
     textValor:{
         fontSize:48,
         color:'white',
-        textAlign:'right',
-        padding:8
+        textAlign:'right'
     }
 })

@@ -22,14 +22,15 @@ export default styles = StyleSheet.create({
         color: 'white'
     },
     text: {
-        height: 52,
-        fontSize: 28,
+        fontSize: 24,
         color: 'white',
+        margin: 8,
         marginTop: 16,
         marginBottom: 0,
-        borderBottomWidth: 2,
-        borderColor: '#C4C4C4',
+        borderBottomWidth:2,
+        borderColor:'#C4C4C4',
         padding: 4,
+        paddingBottom:0
     },
     ViewCentralizar: {
         justifyContent: 'center',

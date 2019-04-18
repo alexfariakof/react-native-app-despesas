@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 
 class DatePickerComponent extends Component {
@@ -8,8 +9,9 @@ class DatePickerComponent extends Component {
   }
 
   render() {
+    const dim = Dimensions.get('window');
     return (
-      <DatePicker
+      <DatePicker 
         date={this.state.date}
         mode="date"
         placeholder="Selecione uma data"
@@ -19,17 +21,23 @@ class DatePickerComponent extends Component {
         confirmBtnText="Confirma"
         cancelBtnText="Cancelar"
         customStyles={{
-          dateInput: {
+          dateIcon: {
+            position: 'absolute',
+            left: dim.width - 60,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {            
             height: 48,
             fontSize: 24,
             color: 'white',
             marginTop: 16,
             marginBottom: 16,
             borderWidth: 0,
-            border:0,
+            border: 0,
             
+
           }
-          // ... You can check the source to find the other keys.
         }}
         onDateChange={(date) => { this.setState({ date: date }) }}
       />

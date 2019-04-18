@@ -20,31 +20,44 @@ class DespesaScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-                <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
-                <View style={styles.viewTextValor} >
-                    <Text style={styles.textValor} >R$ 18,00</Text>
-                </View>
-                <View style={styles.body}>
-                    <View style={styles.text}>
-                        <Picker style={{ paddingTop: 0 }}
-                            selectedValue={this.state.categoria}
+                <View><TouchableOpacity onPress={() => this.props.navigation.goBack()}  ><Text>Voltar</Text></TouchableOpacity></View>
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                }}
+                >
+                    <View style={{ backgroundColor: '#D45959' }} >
+                        <Text style={{
+                            fontSize: 48,
+                            color: 'white',
+                            textAlign: 'right',
+                            padding: 8
 
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({ categoria: itemValue })
-                            }>
-                            <Picker.Item label="Alimentação" value="1" />
-                            <Picker.Item label="Casa" value="2" />
-                            <Picker.Item label="Bar e Restaurante" value="3" />
-                            <Picker.Item label="Mercado" value="4" />
-                            <Picker.Item label="Transporte" value="5" />
-                            <Picker.Item label="Viagem" value="6" />
-                        </Picker>
+                        }} > R$ 1200,00</Text>
                     </View>
-                    <View style={styles.text}>
-                        <DatePickerComponent />
+                    <View  >
+                        <View style={styles.text}>
+                            <Picker style={{ paddingTop: 0 }}
+                                selectedValue={this.state.categoria}
+                                style={styles.text}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ categoria: itemValue })
+                                }>
+                                <Picker.Item label="Alimentação" value="1" />
+                                <Picker.Item label="Casa" value="2" />
+                                <Picker.Item label="Bar e Restaurante" value="3" />
+                                <Picker.Item label="Mercado" value="4" />
+                                <Picker.Item label="Transporte" value="5" />
+                                <Picker.Item label="Viagem" value="6" />
+                            </Picker>
+                        </View>
+                        <View style={styles.text}>
+                            <DatePickerComponent />
+                        </View>
+                        <TextInput style={styles.text} placeholder='Digite a descrição'   ></TextInput>
+                        <TextInput style={styles.text} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
                     </View>
-                    <TextInput style={styles.text} placeholder='Digite a descrição'   ></TextInput>
-                    <TextInput style={styles.text} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
                     <View style={styles.ViewCentralizar} >
                         <TouchableOpacity style={styles.btnOkDespesa}>
                             <Image source={assets.btnOkDespesa} />
