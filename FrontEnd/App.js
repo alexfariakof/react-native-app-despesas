@@ -6,6 +6,7 @@ import DespesaScreen from './src/screens/DespesaScreen'
 import ReceitaScreen from  './src/screens/ReceitaScreen'
 import RecuperarSenhaScreen from  './src/screens/RecuperarSenhaScreen'
 import LancamentoScreen from './src/screens/LancamentoScreen'
+import RelatorioScreen from './src/screens/RelatorioScreen'
 
 const AppNavigator = createStackNavigator({
   Home: HomeScreen,
@@ -13,7 +14,8 @@ const AppNavigator = createStackNavigator({
   Despesa: DespesaScreen,
   Receita: ReceitaScreen,
   RecuperarSenha: RecuperarSenhaScreen,
-  Lancamento: LancamentoScreen
+  Lancamento: LancamentoScreen,
+  Relatorio: RelatorioScreen
 }, { initialRouteName:'Home' })
 
 export default createAppContainer(AppNavigator)

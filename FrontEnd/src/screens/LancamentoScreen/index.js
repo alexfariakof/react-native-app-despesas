@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 import assets from './assets'
-
+import LacamentoComponent from '../../components/LacamentoComponent.js'
 class LancamentoScreen extends Component {
     static navigationOptions = {
         header: null 
@@ -47,7 +47,10 @@ class LancamentoScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ flex: 3 }}></View>
+                    <View style={{ flex: 3 }}>
+                        <LacamentoComponent  />
+
+                    </View>
                     <View style={{ height: 60, flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
                             <TouchableWithoutFeedback onPress = {() => this.props.navigation.navigate('Despesa') } >
