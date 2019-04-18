@@ -19,25 +19,7 @@ export default styles = StyleSheet.create({
     },
     textHeader: {
         fontSize: 48,        
-        color: 'white'
-    },
-    text: {
-        height: 60,
-        fontSize: 24,
         color: 'white',
-        marginTop: 16,
-        marginBottom: 0,
-        padding: 4,
         backgroundColor: '#C4C4C4'
     },
-    Footer: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    btnCadastro: {
-        width: 100,
-        height: 100,
-        marginTop: 16,
-        marginBottom: 32
-    }
 })

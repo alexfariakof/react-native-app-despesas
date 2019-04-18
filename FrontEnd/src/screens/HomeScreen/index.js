@@ -21,24 +21,23 @@ class HomeScreen extends Component {
                     <View style={styles.ViewCentralizar} >
                         <Text style={styles.textBenVindo} >Seja Bem Vindo</Text>                       
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('Cadastro')} >
                             <Text style={styles.btnCadastrar}>Cadastre-se</Text>
                         </TouchableOpacity>
                     </View>
-
                     <TextInput style={styles.text} placeholder='Digite seu email' keyboardType='email-address' ></TextInput>
 
                     <TextInput style={styles.text} placeholder='Digite sua senha' secureTextEntry  ></TextInput>
 
                     <View style={styles.ViewCentralizar} >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress = {() => this.props.navigation.navigate('RecuperarSenha') } >
                             <Text style={styles.btnEsqueciSenha}>Esqueci minha senha</Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.ViewCentralizar} >
-                        <TouchableOpacity  >
-                            <Image source={assets.btnIniciar} style={styles.btnIniciar} />
+                        <TouchableOpacity style={styles.btnIniciar} onPress = {() => this.props.navigation.navigate('Lancamento') } >
+                            <Image source={assets.btnIniciar}  />
                         </TouchableOpacity>
                     </View>
                 </View>

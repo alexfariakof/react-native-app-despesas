@@ -19,7 +19,8 @@ export default styles = StyleSheet.create({
     },
     textHeader: {
         fontSize: 48,        
-        color: 'white'
+        color: 'white',
+        backgroundColor: '#C4C4C4'
     },
     text: {
         height: 60,
@@ -27,7 +28,7 @@ export default styles = StyleSheet.create({
         color: 'white',
         marginTop: 16,
         marginBottom: 0,
-        padding: 4,
+        padding: 8,
         backgroundColor: '#C4C4C4'
     },
     Footer: {

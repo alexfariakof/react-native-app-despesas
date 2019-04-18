@@ -11,33 +11,34 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     Header: {
-        height: 60,
         backgroundColor: '#C4C4C4',
-        marginBottom: 16,
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     textHeader: {
-        fontSize: 48,        
+        fontSize: 32,        
         color: 'white'
     },
     text: {
         height: 60,
         fontSize: 24,
         color: 'white',
+        margin: 8,
         marginTop: 16,
         marginBottom: 0,
+        borderBottomWidth:2,
+        borderColor:'#C4C4C4',
         padding: 4,
-        backgroundColor: '#C4C4C4'
-    },
-    Footer: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        paddingBottom:0
     },
     btnCadastro: {
         width: 100,
         height: 100,
         marginTop: 16,
         marginBottom: 32
+    },
+    ViewCentralizar:{
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

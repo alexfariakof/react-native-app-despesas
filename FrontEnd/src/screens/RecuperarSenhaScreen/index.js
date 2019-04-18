@@ -3,9 +3,9 @@ import { View, Text, ImageBackground, TextInput, Image, TouchableOpacity, Toucha
 
 import assets from './assets'
 import styles from './styles'
+import TecladoNumericoComponent from './TecladoNumericoComponent.js'
 
-
-class CadastroScreen extends Component {
+class RecuperarSenhaScreen extends Component {
     static navigationOptions = {
         header: null
     }
@@ -19,17 +19,14 @@ class CadastroScreen extends Component {
             >
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack() } ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                 <View style={styles.Header}>
-                    <Text style={styles.textHeader} >Cadastro</Text>
+                    <Text style={styles.textHeader} >Reset Senha</Text>
                 </View>
+                <TecladoNumericoComponent />
                 <View style={styles.body}>
-                    <TextInput style={styles.text} placeholder='Digite aqui seu nome' keyboardType='email-address' ></TextInput>
-
-                    <TextInput style={styles.text} placeholder='Digite aqui seu email' keyboardType='email-address' ></TextInput>
-
-                    <TextInput style={styles.text} placeholder='Digite aqui sua senha' secureTextEntry  ></TextInput>
+                    <TextInput style={styles.text} placeholder='Digite o email cadastrado.' keyboardType='email-address' ></TextInput>
                 </View>
-                <View style={styles.Footer} >
-                    <TouchableOpacity style={styles.btnCadastro} onPress = {() => this.props.navigation.navigate('Lancamento') } >
+                <View style={styles.ViewCentralizar} >
+                    <TouchableOpacity style={styles.btnCadastro}>
                         <Image source={assets.btnCadastro} />
                     </TouchableOpacity>
                 </View>
@@ -38,4 +35,4 @@ class CadastroScreen extends Component {
     }
 }
 
-export default CadastroScreen;
+export default RecuperarSenhaScreen;

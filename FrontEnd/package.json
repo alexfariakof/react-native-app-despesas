@@ -9,7 +9,9 @@
   "dependencies": {
     "react": "16.8.3",
     "react-native": "0.59.4",
+    "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-material-menu": "^0.4.2",
     "react-navigation": "^3.8.1"
   },
   "devDependencies": {

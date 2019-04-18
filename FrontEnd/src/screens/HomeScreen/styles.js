@@ -36,7 +36,7 @@ export default styles = StyleSheet.create({
         color:'white',        
         marginTop:16, 
         marginBottom:0,
-        padding:8, 
+        padding:4, 
         backgroundColor:'#C4C4C4'
     },
     btnEsqueciSenha:{
