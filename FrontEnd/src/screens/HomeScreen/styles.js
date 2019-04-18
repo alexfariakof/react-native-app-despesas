@@ -31,13 +31,15 @@ export default styles = StyleSheet.create({
         justifyContent:'center'    
     },
     text:{
-        height:60,
-        fontSize:24,
-        color:'white',        
-        marginTop:16, 
-        marginBottom:0,
-        padding:4, 
-        backgroundColor:'#C4C4C4'
+        fontSize: 24,
+        color: 'white',
+        margin: 8,
+        marginTop: 16,
+        marginBottom: 0,
+        borderBottomWidth:2,
+        borderColor:'#C4C4C4',
+        padding: 4,
+        paddingBottom:0
     },
     btnEsqueciSenha:{
         fontSize:24,

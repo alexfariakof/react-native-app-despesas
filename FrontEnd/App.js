@@ -14,6 +14,6 @@ const AppNavigator = createStackNavigator({
   Receita: ReceitaScreen,
   RecuperarSenha: RecuperarSenhaScreen,
   Lancamento: LancamentoScreen
-}, { initialRouteName:'Despesa' })
+}, { initialRouteName:'Home' })
 
 export default createAppContainer(AppNavigator)
