@@ -5,7 +5,7 @@ import assets from './assets'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
 class LancamentoScreen extends Component {
     static navigationOptions = {
-        header: null 
+        header:null    
     }
 
     render() {
@@ -24,7 +24,7 @@ class LancamentoScreen extends Component {
                 >
                     <View style={{ height: 52, flexDirection: 'row', backgroundColor: '#C4C4C4', padding:8 }} >
                         <View style={{ flex: 1 }}>
-                            <TouchableOpacity  >
+                            <TouchableOpacity  onPress={() => this.props.navigation.openDrawer() } >
                                 <Image source={assets.menu} />
                             </TouchableOpacity>
                         </View>

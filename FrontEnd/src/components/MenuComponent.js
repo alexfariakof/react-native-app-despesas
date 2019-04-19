@@ -1,49 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import { View, Text, Image } from 'react-native';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-import { NavigationActions } from 'react-navigation';
+import { DrawerNavigator } from 'react-navigation'
 
-class MenuComponent extends React.PureComponent {
-    _menu = null;
+import HomeScreen from '../screens/HomeScreen/index.js'
+import LancamentoScreen from '../screens/LancamentoScreen/index.js'
 
-    setMenuRef = ref => {
-        this._menu = ref;
-    };
 
-    hideMenu = () => {
-        this._menu.hide();
-    };
+const navigation = DrawerNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  Notifications: {
+    screen: LancamentoScreen,
+  }
+});
 
-    showMenu = () => {
-        this._menu.show();
-    };
 
-    navigateToScreen = (route) => () => {
-        const navigateAction = NavigationActions.navigate({
-            routeName: route
-        });
-        this.props.navigation.dispatch(navigateAction);
-    }
-
-    render() {
-        return (
-            <View >
-                <Menu
-                    ref={this.setMenuRef}
-                    button={<Text onPress={this.showMenu} style={{ height: 60 }} ><Image source={require('../../assets/Menu.png')} /></Text>}
-                >
-                    <MenuItem onPress={this.navigateToScreen('CadastroScreen')}>Cadastro</MenuItem>
-                    <MenuItem onPress={this.navigateToScreen('DespesaScreen')}>Despesa</MenuItem>
-                    <MenuItem onPress={this.navigateToScreen('RelatorioScreen')}>Relatorio</MenuItem >
-                    <MenuItem onPress={this.navigateToScreen('HomeScreen')}>Home</MenuItem >
-                    <MenuItem onPress={this.navigateToScreen('ReceitaScreen')}>Receita</MenuItem >
-                    <MenuDivider />
-                    <MenuItem onPress={this.hideMenu}>Sair</MenuItem>
-                </Menu >
-            </View >
-        );
-    }
-}
-
-export default MenuComponent;
+export default navigation;

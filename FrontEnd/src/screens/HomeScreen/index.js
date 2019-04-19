@@ -4,10 +4,10 @@ import { View, Text, ImageBackground, TextInput, Image, TouchableOpacity } from 
 import assets from './assets'
 import styles from './styles'
 
-
 class HomeScreen extends Component {
     static navigationOptions = {
-        header: null
+        header: null,
+        DrawerLable: 'MainScreen'
     }
 
     render() {

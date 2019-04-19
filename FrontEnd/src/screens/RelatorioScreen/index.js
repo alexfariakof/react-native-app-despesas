@@ -10,7 +10,7 @@ class RelatorioScreen extends Component {
     }
 
     render() {
-        return (  <View><Text></Text></View> );
+        return (  <View><Text>Relatorio</Text></View> );
     };
 }
 export default RelatorioScreen;
