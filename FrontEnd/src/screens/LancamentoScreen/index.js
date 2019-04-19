@@ -15,7 +15,6 @@ class LancamentoScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-            <View><TouchableOpacity onPress={() => this.props.navigation.goBack() }  ><Text>Voltar</Text></TouchableOpacity></View>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',

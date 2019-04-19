@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { createStackNavigator, createAppContainer, createDrawerNavigator, NavigationActions } from 'react-navigation'
+import { createStackNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation'
+
 import HomeScreen from './src/screens/HomeScreen'
 import CadastroScreen from './src/screens/CadastroScreen'
 import DespesaScreen from './src/screens/DespesaScreen'
@@ -8,42 +9,39 @@ import RecuperarSenhaScreen from './src/screens/RecuperarSenhaScreen'
 import LancamentoScreen from './src/screens/LancamentoScreen'
 import RelatorioScreen from './src/screens/RelatorioScreen'
 
-const AppNavigator = createDrawerNavigator({
+const AppDrawer = createDrawerNavigator({
+  Despesa: { screen: DespesaScreen },
+  Receita: { screen: ReceitaScreen },
+  Lancamento: { screen: LancamentoScreen },
+  Relatorio: { screen: RelatorioScreen },
+  Sair: logout = () => { }
+}, { initialRouteName: 'Lancamento' });
+
+const AppStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
-    navigationOptions: {
-      drawerLabel: () => null
-    }
+    navigationOptions: { drawerLabel: () => null }
   },
   Cadastro: {
     screen: CadastroScreen,
-    navigationOptions: {
-      drawerLabel: () => null
-    }
+    navigationOptions: { drawerLabel: () => null }
   },
-  Despesa: {
-    screen: DespesaScreen,
-    initialRouteName: 'LancamentoScreen'
-  },
-  Receita: { screen: ReceitaScreen },
   RecuperarSenha: {
     screen: RecuperarSenhaScreen,
-    navigationOptions: {
-      drawerLabel: () => null
-    }
-  },
-  Lancamento: { screen: LancamentoScreen },
-  Relatorio:{ screen : RelatorioScreen },
-  Sair: logout = () => {
-    // This will reset back to loginStack
-    // https://github.com/react-community/react-navigation/issues/1127
-    const actionToDispatch = NavigationActions.reset({
-      index: 0,
-      key: null,  // black magic
-      actions: [NavigationActions.navigate({ routeName: 'Home' })]
-    })
-    this.props.navigation.dispatch(actionToDispatch)
+    navigationOptions: { drawerLabel: () => null }
   }
-}, { initialRouteName: 'Home' })
+}, { initialRouteName: 'Home' });
+
+
+const AppNavigator = createStackNavigator({
+  appStack: {
+    screen: AppStack,
+    navigationOptions: { header: null }
+  },
+  appDrawer: {
+    screen: AppDrawer,
+    navigationOptions: { header: null }
+  }
+}, { initialRouteName: 'appStack' });
 
 export default createAppContainer(AppNavigator)
