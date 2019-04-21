@@ -67,9 +67,8 @@ class HomeScreen extends Component {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <TextInput style={styles.text} placeholder='Digite seu email' keyboardType='email-address' onChangeText={txt => this.setState({ login: txt})}  ></TextInput>
-
-                        <TextInput style={styles.text} placeholder='Digite sua senha' secureTextEntry onChangeText={txt => this.setState({ senha: txt})} ></TextInput>
+                        <TextInput style={styles.text} placeholder='Digite seu email' maxLength="20" keyboardType='email-address'  onChangeText={txt => this.setState({ login: txt})}  />
+                        <TextInput style={styles.text} placeholder='Digite sua senha' maxLength="8" secureTextEntry onChangeText={txt => this.setState({ senha: txt})} />
                     </View>
                     <View style={styles.ViewCentralizar} >
                         <Text style={{ color: 'red' }}> {this.state.erroMessage} </Text>

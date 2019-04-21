@@ -31,12 +31,24 @@ class LancamentoScreen extends Component {
         }
     };
 
+    getLancamentoById = async () => {
+        try {            
+           api = new apiServices();
+           const data  = api.get('/api/LancamentoConsolidado', '/' + this.state.user.id);           
+           this.setState({ dataSource: data });
+        } 
+        catch (err) {
+            console.error(err);
+        }
+    };
+
     async componentDidMount() {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });    
             this.getListLancamento();
+            this.getLancamentoById();
         }
     }
 

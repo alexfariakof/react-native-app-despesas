@@ -9,11 +9,11 @@ class ApiServices {
         }
     }
 
-    get = async (url) => {
+    get = async (url, id) => {
         const access = await AsyncStorage.getItem('@dpApiAccess');
         const accessToken = JSON.parse(access).accessToken;
 
-        fetch(this.state.baseUrl + url, {
+        fetch(this.state.baseUrl + url +  id, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -32,8 +32,6 @@ class ApiServices {
 
                 if (response.status === 404)
                 alert('Not Found')
-
-
         })
             .then(responseJson => {
                 //alert(response)
@@ -45,7 +43,6 @@ class ApiServices {
             .catch(error => {
                 console.error(error);
             });
-
     }
 
 };

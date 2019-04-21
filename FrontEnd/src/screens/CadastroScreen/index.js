@@ -19,11 +19,11 @@ class CadastroScreen extends Component {
             >
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack() } ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                 <View style={styles.body}>
-                    <TextInput style={styles.text} placeholder='Digite um nome' keyboardType='email-address' ></TextInput>
+                    <TextInput style={styles.text} placeholder='Digite um nome' maxLength="20" keyboardType='email-address' ></TextInput>
 
-                    <TextInput style={styles.text} placeholder='Digite um email' keyboardType='email-address' ></TextInput>
+                    <TextInput style={styles.text} placeholder='Digite um email' maxLength="30" keyboardType='email-address' ></TextInput>
 
-                    <TextInput style={styles.text} placeholder='Digite uma senha' secureTextEntry  ></TextInput>
+                    <TextInput style={styles.text} placeholder='Digite uma senha' maxLength="8" secureTextEntry  ></TextInput>
                 </View>
                 <View style={styles.Footer} >
                     <TouchableOpacity style={styles.btnCadastro} onPress = {() => this.props.navigation.navigate('Lancamento') } >
