@@ -1,5 +1,6 @@
 ﻿using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiLancamentoConsolidadosPessoais.Controllers
@@ -16,9 +17,15 @@ namespace apiLancamentoConsolidadosPessoais.Controllers
         }
 
         [HttpGet]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
-            return Ok(_lancamentoConsolidadoBusiness.FindAll());
+            var _lancamentoConsolidado = _lancamentoConsolidadoBusiness.FindAll();
+
+            if (_lancamentoConsolidado == null || _lancamentoConsolidado.Count == 0)
+                return NotFound();
+
+            return Ok(_lancamentoConsolidado);
         }
 
         [HttpGet("{id}")]

@@ -3,23 +3,40 @@ import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutF
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
+import apiServices from '../../services/ApiServices.js'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
+
 class LancamentoScreen extends Component {
+    constructor(props){
+        super(props);
+        this.state = { 
+            isLoading: true,
+            errorMessage: null,
+            dataSource: [],
+            user: null
+        }
+      }
     static navigationOptions = {
         header: null
     }
-    state = {
-        token: null,
-        user: null
-    }
+    
+    getListLancamento = async () => {
+        try {            
+           api = new apiServices();
+           const data  = api.get('/api/LancamentoConsolidado');           
+           this.setState({ dataSource: data });
+        } 
+        catch (err) {
+            console.error(err);
+        }
+    };
 
     async componentDidMount() {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         if (access) {
-            
-            this.setState({token: JSON.parse(access).accessToken});
-            this.setState({user: JSON.parse(access).usuario});
+            this.setState({ user: JSON.parse(access).usuario });    
+            this.getListLancamento();
         }
     }
 
@@ -61,10 +78,12 @@ class LancamentoScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ flex: 3 }}>
-                        <LacamentoComponent />
-
-                    </View>
+                    {this.state.isLoading
+                        ? <LacamentoComponent DataSource={this.state.dataSource} />
+                        : <View style={{ flex: 1, alignItems: 'center' }}>
+                            <Image source={assets.loading} />
+                        </View>
+                    }                    
                     <View style={{ height: 60, flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Despesa')} >

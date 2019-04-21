@@ -4,6 +4,6 @@ export default assets = {
     btnReceita: require('../../../assets/btnReceita.png'),
     arrowLeft: require('../../../assets/ArrowLeft.png'),
     arrowRight: require('../../../assets/ArrowRight.png'),
-    menu: require('../../../assets/Menu.png')
-    
+    menu: require('../../../assets/Menu.png'),
+    loading: require('../../../assets/Loading.gif')  
 }

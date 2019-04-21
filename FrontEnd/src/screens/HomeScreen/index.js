@@ -15,6 +15,9 @@ class HomeScreen extends Component {
         login: null,
         senha:null
     }
+    async componentDidMount() {
+        //await AsyncStorage.clear();
+    }
 
     render() {
         signIn = async (login, senha) => {
@@ -25,10 +28,10 @@ class HomeScreen extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    //'login': 'admin@admin',
-                    //'senha': 'admin',
-                    'login': login,
-                    'senha': senha,
+                    'login': 'admin@admin',
+                    'senha': 'admin',
+                    //'login': login,
+                    //'senha': senha,
 
                 }),
             }).then(response => response.json())
