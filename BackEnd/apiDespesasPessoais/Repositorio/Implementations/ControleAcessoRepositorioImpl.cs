@@ -16,5 +16,10 @@ namespace apiDespesasPessoais.Repositorio.Implementations
         {
             return _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
         }
+
+        public Usuario GetUsuarioByEmail(string login)
+        {
+            return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(login));
+        }
     }
 }

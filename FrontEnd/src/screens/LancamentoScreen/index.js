@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
 class LancamentoScreen extends Component {
     static navigationOptions = {
-        header:null    
+        header: null
+    }
+    state = {
+        token: null,
+        user: null
+    }
+
+    async componentDidMount() {
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+
+        if (access) {
+            
+            this.setState({token: JSON.parse(access).accessToken});
+            this.setState({user: JSON.parse(access).usuario});
+        }
     }
 
     render() {
@@ -21,14 +36,14 @@ class LancamentoScreen extends Component {
                     justifyContent: 'space-between'
                 }}
                 >
-                    <View style={{ height: 52, flexDirection: 'row', backgroundColor: '#C4C4C4', padding:8 }} >
+                    <View style={{ height: 52, flexDirection: 'row', backgroundColor: '#C4C4C4', padding: 8 }} >
                         <View style={{ flex: 1 }}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.openDrawer() } >
+                            <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} >
                                 <Image source={assets.menu} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 5 }}>
-                            <Text style={{ textAlign:'right', fontSize:32, fontWeight:'bold', color:'white' }} >R$ 2000,00</Text>
+                            <Text style={{ textAlign: 'right', fontSize: 32, fontWeight: 'bold', color: 'white' }} >R$ 2000,00</Text>
                         </View>
                     </View>
                     <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
@@ -47,17 +62,17 @@ class LancamentoScreen extends Component {
                         </View>
                     </View>
                     <View style={{ flex: 3 }}>
-                        <LacamentoComponent  />
+                        <LacamentoComponent />
 
                     </View>
                     <View style={{ height: 60, flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
-                            <TouchableWithoutFeedback onPress = {() => this.props.navigation.navigate('Despesa') } >
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Despesa')} >
                                 <Image source={assets.btnDespesa} />
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={{ flex: 3, alignItems: 'center', }} >
-                            <TouchableWithoutFeedback onPress = {() => this.props.navigation.navigate('Receita') } >
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Receita')} >
                                 <Image source={assets.btnReceita} />
                             </TouchableWithoutFeedback>
                         </View>

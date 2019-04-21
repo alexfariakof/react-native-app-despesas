@@ -7,13 +7,13 @@ namespace apiDespesasPessoais.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : Controller
+    public class SignInController : Controller
     {
-        private IControleAcessoBusiness _loginBusiness;
+        private IControleAcessoBusiness _signInBusiness;
 
-        public LoginController(IControleAcessoBusiness loginBusiness)
+        public SignInController(IControleAcessoBusiness signInBusiness)
         {
-            _loginBusiness = loginBusiness;
+            _signInBusiness = signInBusiness;
         }
         
         [AllowAnonymous]
@@ -23,8 +23,7 @@ namespace apiDespesasPessoais.Controllers
             if (controleAcesso == null)
                 return BadRequest();
 
-            return new ObjectResult(_loginBusiness.FindByLogin(controleAcesso));
+            return new ObjectResult(_signInBusiness.FindByLogin(controleAcesso));
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Repositorio;
 using apiDespesasPessoais.Security.Configuration;
@@ -46,7 +47,7 @@ namespace apiDespesasPessoais.Business.Implementations
                 var handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler);
 
-                return SuccessObject(createDate, expirationDate, token);
+                return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
             }
             else
             {
@@ -75,21 +76,22 @@ namespace apiDespesasPessoais.Business.Implementations
         {
             return new
             {
-                autenticated = false,
-                message = "Falha durante Autenticação"
+                authenticated = false,
+                message = "Falha durante a autenticação"
             };
         }
 
-        private object SuccessObject(DateTime createDate, DateTime expirationDate, string token)
+        private object SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
         {
+            Usuario usuario = _repositorio.GetUsuarioByEmail(login);
             return new
             {
                 autenticated = true,
                 created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,
-                message = "OK"
-
+                message = "OK",
+                usuario
             };
         }
     }
