@@ -34,7 +34,7 @@ namespace apiDespesasPessoais
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuração de Conexão com Bando de Dados
-            var connection = Configuration["SqlServerConnection:SqlServerConnectionString"];
+            string connection = Configuration["SqlServerConnection:SqlServerConnectionString"];
             services.AddDbContext<SqlServerContext>(options => options.UseSqlServer(connection));
             // Fim de configuração com banco de dados
             
@@ -82,11 +82,11 @@ namespace apiDespesasPessoais
             });
 
             //Starting our API in Swagger page
-            var option = new RewriteOptions();
+            RewriteOptions option = new RewriteOptions();
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
-            var options = new RewriteOptions();
+            RewriteOptions options = new RewriteOptions();
             options.AddRedirect("^$", "swagger");
             app.UseRewriter(options);
 
@@ -96,10 +96,10 @@ namespace apiDespesasPessoais
 
         private void ConfigureAutorization(IServiceCollection services)
         {
-            var signingConfigurations = new Security.Configuration.SigningConfigurations();
+            Security.Configuration.SigningConfigurations signingConfigurations = new Security.Configuration.SigningConfigurations();
             services.AddSingleton(signingConfigurations);
 
-            var tokenConfigurations = new TokenConfiguration();
+            TokenConfiguration tokenConfigurations = new TokenConfiguration();
 
             new ConfigureFromConfigurationOptions<TokenConfiguration>(
                 Configuration.GetSection("TokenConfigurations")
@@ -115,7 +115,7 @@ namespace apiDespesasPessoais
                 authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>
             {
-                var paramsValidation = bearerOptions.TokenValidationParameters;
+                Microsoft.IdentityModel.Tokens.TokenValidationParameters paramsValidation = bearerOptions.TokenValidationParameters;
                 paramsValidation.IssuerSigningKey = signingConfigurations.Key;
                 paramsValidation.ValidAudience = tokenConfigurations.Audience;
                 paramsValidation.ValidIssuer = tokenConfigurations.Issuer;

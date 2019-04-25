@@ -28,7 +28,7 @@ namespace apiDespesasPessoais.Business.Implementations
             bool credentialsValid = false;
             if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
-                var baseLogin = _repositorio.FindByEmail(controleAcesso);
+                ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
                 credentialsValid = (baseLogin != null && controleAcesso.Login == baseLogin.Login && controleAcesso.Senha == baseLogin.Senha);
             }
             if(credentialsValid)
@@ -44,7 +44,7 @@ namespace apiDespesasPessoais.Business.Implementations
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
 
-                var handler = new JwtSecurityTokenHandler();
+                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler);
 
                 return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
@@ -57,7 +57,7 @@ namespace apiDespesasPessoais.Business.Implementations
 
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
         {
-            var securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+            Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
                 Issuer = _tokenConfiguration.Issuer,
                 Audience = _tokenConfiguration.Audience,
@@ -67,7 +67,7 @@ namespace apiDespesasPessoais.Business.Implementations
                 Expires = expirationDate
             });
 
-            var token = handler.WriteToken(securityToken);
+            string token = handler.WriteToken(securityToken);
 
             return token;
         }

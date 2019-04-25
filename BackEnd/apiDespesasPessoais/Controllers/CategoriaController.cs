@@ -25,7 +25,7 @@ namespace apiDespesasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var _categoria = _categoriaBusiness.FindById(id);
+            Categoria _categoria = _categoriaBusiness.FindById(id);
 
             if (_categoria == null)
                 return NotFound();
@@ -49,7 +49,7 @@ namespace apiDespesasPessoais.Controllers
             if (categoria == null)
                 return BadRequest();
 
-            var updateCategoria = _categoriaBusiness.Update(categoria);
+            Categoria updateCategoria = _categoriaBusiness.Update(categoria);
             if (updateCategoria == null)
                 return NoContent();
 

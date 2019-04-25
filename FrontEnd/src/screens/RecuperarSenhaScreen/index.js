@@ -18,7 +18,7 @@ class RecuperarSenhaScreen extends Component {
             >
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack() } ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                 <View style={styles.body}>
-                    <TextInput style={styles.text} maxLength="30" placeholder='Digite o email cadastrado.' keyboardType='email-address' ></TextInput>
+                    <TextInput style={styles.text} maxLength={30} placeholder='Digite o email cadastrado.' keyboardType='email-address' ></TextInput>
                 </View>
                 <View style={styles.ViewCentralizar} >
                     <TouchableOpacity style={styles.btnCadastro}>

@@ -15,7 +15,7 @@ namespace apiDespesasPessoais.Business.Implementations
         {
             string path = Directory.GetCurrentDirectory();
 
-            var fullPath = path + "\\FilesDownload\\apsnet.pdf";
+            string fullPath = path + "\\FilesDownload\\apsnet.pdf";
             return File.ReadAllBytes(fullPath);
         }
     }

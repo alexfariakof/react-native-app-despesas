@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import HomeScreen from './src/screens/HomeScreen'
 import CadastroScreen from './src/screens/CadastroScreen'
@@ -14,7 +15,9 @@ const AppDrawer = createDrawerNavigator({
   Receita: { screen: ReceitaScreen },
   Lancamento: { screen: LancamentoScreen },
   Relatorio: { screen: RelatorioScreen },
-  Sair: logout = () => { }
+  Sair: logout = async () => {
+    await AsyncStorage.clear();
+   }
 }, { initialRouteName: 'Lancamento' });
 
 const AppStack = createStackNavigator({

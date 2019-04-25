@@ -24,7 +24,7 @@ namespace apiReceitasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var _receita = _receitaBusiness.FindById(id);
+            Receita _receita = _receitaBusiness.FindById(id);
 
             if (_receita == null)
                 return NotFound();
@@ -48,7 +48,7 @@ namespace apiReceitasPessoais.Controllers
             if (receita == null)
                 return BadRequest();
 
-            var updateReceita = _receitaBusiness.Update(receita);
+            Receita updateReceita = _receitaBusiness.Update(receita);
             if (updateReceita == null)
                 return NoContent();
 

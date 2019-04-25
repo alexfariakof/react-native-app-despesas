@@ -55,8 +55,8 @@ class DespesaScreen extends Component {
                         <View style={styles.text}>
                             <DatePickerComponent />
                         </View>
-                        <TextInput style={styles.text} style={{height:40}} multiline placeholder='Digite a descrição'   ></TextInput>
-                        <TextInput style={styles.text} style={{height:40}} multiline placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
+                        <TextInput style={styles.text} multiline maxLength={100} placeholder='Digite a descrição'   ></TextInput>
+                        <TextInput style={styles.text} maxLength={10} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
                     </View>
                     <View style={styles.ViewCentralizar} >
                         <TouchableOpacity style={styles.btnOkDespesa}>

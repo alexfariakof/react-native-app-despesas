@@ -2,6 +2,8 @@
 using apiDespesasPessoais.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+
 
 namespace apiLancamentoConsolidadosPessoais.Controllers
 {
@@ -20,7 +22,7 @@ namespace apiLancamentoConsolidadosPessoais.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            var _lancamentoConsolidado = _lancamentoConsolidadoBusiness.FindAll();
+            List<LancamentoConsolidado> _lancamentoConsolidado = _lancamentoConsolidadoBusiness.FindAll();
 
             if (_lancamentoConsolidado == null || _lancamentoConsolidado.Count == 0)
                 return NotFound();
@@ -31,7 +33,7 @@ namespace apiLancamentoConsolidadosPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var _lancamentoConsolidado = _lancamentoConsolidadoBusiness.FindById(id);
+            LancamentoConsolidado _lancamentoConsolidado = _lancamentoConsolidadoBusiness.FindById(id);
 
             if (_lancamentoConsolidado == null)
                 return NotFound();
@@ -55,7 +57,7 @@ namespace apiLancamentoConsolidadosPessoais.Controllers
             if (lancamentoConsolidado == null)
                 return BadRequest();
 
-            var updateLancamentoConsolidado = _lancamentoConsolidadoBusiness.Update(lancamentoConsolidado);
+            LancamentoConsolidado updateLancamentoConsolidado = _lancamentoConsolidadoBusiness.Update(lancamentoConsolidado);
             if (updateLancamentoConsolidado == null)
                 return NoContent();
 

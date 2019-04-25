@@ -10,7 +10,7 @@ namespace apiDespesasPessoais.Security.Configuration
 
         public SigningConfigurations()
         {
-            using (var provider = new RSACryptoServiceProvider(2048))
+            using (RSACryptoServiceProvider provider = new RSACryptoServiceProvider(2048))
             {
                 Key = new RsaSecurityKey(provider.ExportParameters(true));
             }

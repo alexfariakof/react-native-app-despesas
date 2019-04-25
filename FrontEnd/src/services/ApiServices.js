@@ -9,41 +9,90 @@ class ApiServices {
         }
     }
 
-    get = async (url, id) => {
+    get = async (url) => {
         const access = await AsyncStorage.getItem('@dpApiAccess');
         const accessToken = JSON.parse(access).accessToken;
 
-        fetch(this.state.baseUrl + url +  id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        }).then((response) => {
-            if (response.status === 200)
-                alert(JSON.stringify(response));
-                //return JSON.stringify(response.json());
+        try {
+            let response = await fetch(this.state.baseUrl + url, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            if (response.status === 200) {
+                let data = await response.json();
+                return data;
+            }
             if (response.status === 401)
-                alert('Unauthorized ')
+                return JSON.stringify({ 'message': 'Unauthorized' });
 
             if (response.status === 400)
-                alert('Bad Request')
+                return JSON.stringify({ 'message': 'Bad Request' });
+
+            if (response.status === 404)
+                return JSON.stringify({ 'message': 'Not Found' });
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    post = async (url, body) => {
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+        const accessToken = JSON.parse(access).accessToken;
+
+        try {
+            const access = await AsyncStorage.getItem('@dpApiAccess');
+            const accessToken = JSON.parse(access).accessToken;
+
+            try {
+                if (access) {
+                    let response = await fetch(this.state.baseUrl + url, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`,
+                        }, body: JSON.stringify({ body }),
+                    });
+                }
+                else {
+                    let response = await fetch(this.state.baseUrl + url, {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                }
+
+                if (response.status === 200) {
+                    let data = await response.json();
+                    return data;
+                }
+                if (response.status === 401)
+                    return JSON.stringify({ 'message': 'Unauthorized' });
+
+                if (response.status === 400)
+                    return JSON.stringify({ 'message': 'Bad Request' });
 
                 if (response.status === 404)
-                alert('Not Found')
-        })
-            .then(responseJson => {
-                //alert(response)
-                return JSON.stringify(responseJson);
-            })
-            .then(response => {
-                console.debug(response);
-            })
-            .catch(error => {
+                    return JSON.stringify({ 'message': 'Not Found' });
+            }
+            catch (error) {
                 console.error(error);
-            });
+            }
+
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
+
 
 };
 

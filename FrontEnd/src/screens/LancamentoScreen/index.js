@@ -7,36 +7,36 @@ import apiServices from '../../services/ApiServices.js'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
 
 class LancamentoScreen extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             isLoading: true,
             errorMessage: null,
-            dataSource: [],
+            dataSource: null,
             user: null
         }
-      }
+    }
     static navigationOptions = {
         header: null
     }
-    
+
     getListLancamento = async () => {
-        try {            
-           api = new apiServices();
-           const data  = api.get('/api/LancamentoConsolidado');           
-           this.setState({ dataSource: data });
-        } 
+        try {
+            api = new apiServices();
+            const data = await api.get('/api/LancamentoConsolidado');
+            this.setState({ dataSource: data, isLoading: false });
+        }
         catch (err) {
             console.error(err);
         }
     };
 
     getLancamentoById = async () => {
-        try {            
-           api = new apiServices();
-           const data  = api.get('/api/LancamentoConsolidado', '/' + this.state.user.id);           
-           this.setState({ dataSource: data });
-        } 
+        try {
+            api = new apiServices();
+            const data = api.get('/api/LancamentoConsolidado', '/' + this.state.user.id);
+            this.setState({ dataSource: data });
+        }
         catch (err) {
             console.error(err);
         }
@@ -46,9 +46,8 @@ class LancamentoScreen extends Component {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         if (access) {
-            this.setState({ user: JSON.parse(access).usuario });    
+            this.setState({ user: JSON.parse(access).usuario });
             this.getListLancamento();
-            this.getLancamentoById();
         }
     }
 
@@ -90,13 +89,16 @@ class LancamentoScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    {this.state.isLoading
-                        ? <LacamentoComponent DataSource={this.state.dataSource} />
-                        : <View style={{ flex: 1, alignItems: 'center' }}>
-                            <Image source={assets.loading} />
-                        </View>
-                    }                    
-                    <View style={{ height: 60, flexDirection: 'row' }}>
+                    <View  style={{ flex: 3 }}>
+
+                        {this.state.isLoading ?
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                <Image source={assets.loading} />
+                            </View>
+                            : <LacamentoComponent DataSource={this.state.dataSource} />
+                        }
+                    </View>
+                    <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Despesa')} >
                                 <Image source={assets.btnDespesa} />

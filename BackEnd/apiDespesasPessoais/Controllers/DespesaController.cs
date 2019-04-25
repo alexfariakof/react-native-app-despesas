@@ -25,7 +25,7 @@ namespace apiDespesasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var _despesa = _despesaBusiness.FindById(id);
+            Despesa _despesa = _despesaBusiness.FindById(id);
 
             if (_despesa == null)
                 return NotFound();
@@ -49,7 +49,7 @@ namespace apiDespesasPessoais.Controllers
             if (despesa == null)
                 return BadRequest();
 
-            var updateDespesa = _despesaBusiness.Update(despesa);
+            Despesa updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
                 return NoContent();
 

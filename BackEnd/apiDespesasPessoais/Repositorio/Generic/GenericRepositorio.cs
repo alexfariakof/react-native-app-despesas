@@ -55,7 +55,7 @@ namespace apiDespesasPessoais.Repositorio.Generic
             if (!Exists(obj.Id))
                 return null;
 
-            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try
             {
                 _context.Entry(result).CurrentValues.SetValues(obj);
@@ -72,7 +72,7 @@ namespace apiDespesasPessoais.Repositorio.Generic
 
         public void Delete(int id)
         {
-            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
+            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
             try 
             {
                 if (result != null)
