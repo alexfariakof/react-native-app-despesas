@@ -1,19 +1,101 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity,  ActivityIndicator, Button } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
+import { Dimensions } from 'react-native';
+import DatePicker from 'react-native-datepicker'
+
 
 import assets from './assets'
 import styles from './styles'
-import DatePickerComponent from '../../components/DatePickerComponent.js'
-
+import apiServices from '../../services/ApiServices.js'
 
 class DespesaScreen extends Component {
     static navigationOptions = {
         header: null
     }
 
-    state = { categoria: '' }
+    state = {
+        isLoading: true,
+        errorMessage: null,
+        dataSource: null,
+        user: null,
+        dataSourceCategoria: [],
+        categoria: null,
+        data: null,
+        textDescricao: null,
+        textValor: '0,00',
+    }
+
+    async componentDidMount() {
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+
+        if (access) {
+            this.setState({ user: JSON.parse(access).usuario });
+            this.getListCategoria();
+        }
+    }
+
+    getListCategoria = async () => {
+        try {
+            api = new apiServices();
+            const data = await api.get('/api/Categoria');
+            this.setState({ dataSourceCategoria: data, isLoading: false });
+        }
+        catch (err) {
+            console.error(err);
+        }
+    };
+
+    saveCategoria = async () => {
+        const body = {
+            'id': this.state.user.id,
+            'idTipoCategoria': '1',
+            'descricao': this.state.categoria,
+        }
+        try {
+            this.setState({ isLoading: true });
+            api = new apiServices();
+            const data = await api.post('/api/Categoria', body);
+            this.setState({ isLoading: false });
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    saveDespesa = async () => {
+        const body = {
+            'idUsuario': this.state.user.id,
+            'idCategoria': this.state.categoria,
+            'data': this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
+            'descricao': this.state.textDescricao,
+            'valor': this.state.textValor,
+            'dataVencimento': '2019-04-27'
+        }
+
+        try {
+            this.setState({ isLoading: true });
+            api = new apiServices();
+            const data = await api.post('/api/Despesa', body);
+            this.setState({ 
+                isLoading: false,
+                'idCategoria': this.state.categoria,
+                'data': null,
+                'descricao': null,
+                'valor': null,
+                'dataVencimento': '2019-04-27'
+            });
+            
+            this.props.navigation.goBack();
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
 
     render() {
+        const dim = Dimensions.get('window');
+        const { isLoading, textValor } = this.state;
         return (
             <ImageBackground
                 source={assets.background}
@@ -34,7 +116,7 @@ class DespesaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} > R$ 1200,00</Text>
+                        }} > {"R$ " + this.state.textValor}</Text>
                     </View>
                     <View  >
                         <View style={styles.text}>
@@ -44,24 +126,59 @@ class DespesaScreen extends Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ categoria: itemValue })
                                 }>
-                                <Picker.Item label="Alimentação" value="1" />
-                                <Picker.Item label="Casa" value="2" />
-                                <Picker.Item label="Bar e Restaurante" value="3" />
-                                <Picker.Item label="Mercado" value="4" />
-                                <Picker.Item label="Transporte" value="5" />
-                                <Picker.Item label="Viagem" value="6" />
+                                {this.state.dataSourceCategoria.map((item, key) => (
+                                    <Picker.Item label={item.descricao} value={item.id} key={key} />)
+                                )}
                             </Picker>
+                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova" />
                         </View>
                         <View style={styles.text}>
-                            <DatePickerComponent />
+                            <DatePicker
+                                date={this.state.data}
+                                mode="date"
+                                placeholder="Selecione uma data"
+                                format="DD-MM-YYYY"
+                                minDate="2016-05-01"
+                                maxDate="2080-12-30"
+                                confirmBtnText="Confirma"
+                                cancelBtnText="Cancelar"
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: dim.width - 60,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        height: 48,
+                                        fontSize: 24,
+                                        color: 'white',
+                                        marginTop: 16,
+                                        marginBottom: 16,
+                                        borderWidth: 0,
+                                        border: 0,
+                                    }
+                                }}
+                                onDateChange={(date) => { this.setState({ data: date }) }}
+                            />
                         </View>
-                        <TextInput style={styles.text} multiline maxLength={100} placeholder='Digite a descrição'   ></TextInput>
-                        <TextInput style={styles.text} maxLength={10} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
+                        <TextInput style={styles.text}  maxLength={100} placeholder='Digite a descrição' onChangeText={(textDescricao) => this.setState({ textDescricao })}  ></TextInput>
+                        <TextInput style={styles.text} maxLength={10} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })}  ></TextInput>
                     </View>
                     <View style={styles.ViewCentralizar} >
-                        <TouchableOpacity style={styles.btnOkDespesa}>
-                            <Image source={assets.btnOkDespesa} />
-                        </TouchableOpacity>
+                        {isLoading ? (
+                            <ActivityIndicator
+                                style={styles.btnIniciar}
+                                color="green"
+                                size="large"
+                            />
+                        ) :
+                            (
+                                <TouchableOpacity style={styles.btnOkDespesa} onPress={() => { this.saveDespesa() }}>
+                                    <Image source={assets.btnOkDespesa} />
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 </View>
             </ImageBackground>

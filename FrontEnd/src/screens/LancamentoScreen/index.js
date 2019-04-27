@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutF
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
+
 import apiServices from '../../services/ApiServices.js'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
 

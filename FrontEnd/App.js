@@ -16,11 +16,11 @@ const AppDrawer = createDrawerNavigator({
   Lancamento: { screen: LancamentoScreen },
   Relatorio: { screen: RelatorioScreen },
   Sair: {
-    screen: (props) => (      
+    screen: () => (      
        async () => {
         await AsyncStorage.removeItem('@dpApiAccess');
-        alert(props)
-        return props.navigation.navigate('Home')
+
+        return this.props.navigation.navigate('Home')
       }
     )
   }
