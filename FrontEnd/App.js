@@ -15,10 +15,17 @@ const AppDrawer = createDrawerNavigator({
   Receita: { screen: ReceitaScreen },
   Lancamento: { screen: LancamentoScreen },
   Relatorio: { screen: RelatorioScreen },
-  Sair: logout = async () => {
-    await AsyncStorage.clear();
-   }
-}, { initialRouteName: 'Lancamento' });
+  Sair: {
+    screen: (props) => (      
+       async () => {
+        await AsyncStorage.removeItem('@dpApiAccess');
+        alert(props)
+        return props.navigation.navigate('Home')
+      }
+    )
+  }
+}
+, { initialRouteName: 'Lancamento' });
 
 const AppStack = createStackNavigator({
   Home: {

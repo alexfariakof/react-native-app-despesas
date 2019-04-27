@@ -4,6 +4,7 @@ import { View, Text, ImageBackground, TextInput, Image, TouchableOpacity, Toucha
 import assets from './assets'
 import styles from './styles'
 
+import apiServices from '../../services/ApiServices.js'
 
 class CadastroScreen extends Component {
     static navigationOptions = {

@@ -844,6 +844,11 @@
     xcode "^2.0.0"
     xmldoc "^0.4.0"
 
+"@react-native-community/netinfo@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-2.0.5.tgz#bedcb239ad11a8098504141d292bd7b7770f5848"
+  integrity sha512-Yc8DHeoORMe/z2+W/buQz7RkGWXmoLlc2pn0DgDamSFRYLWGCmaGWC4XYvBvISqGwL0yFpEPEOJOao8VgAO5pg==
+
 "@react-navigation/core@~3.3.0":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.3.1.tgz#14021eff792a6e27ee407c867d454b25507efdf2"
