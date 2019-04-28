@@ -15,21 +15,31 @@ class CadastroScreen extends Component {
         isLoading: false,
         errorMessage: null,
         nome: null,
+        sobreNome: null,         
+        telefone: null,         
         email: null,
         senha: null,
+    }
+    
+    componentDidMount() {
+        this.clearCadastro();
     }
 
     saveCadastro = async () => {
         const body = {
             'nome': this.state.nome,
+            'sobreNome': this.state.sobreNome,         
+            'telefone': this.state.telefone,         
             'email': this.state.email,         
             'senha': this.state.senha,         
         }
         try {
             this.setState({ isLoading: true });
             api = new apiServices();
-            const data = await api.post('/api/ControleAcesso', body);
-            this.clearCadastro();
+            const data = await api.post('/api/controleacesso', body); 
+            alert('Cadastro realizado com sucesso. Um email de confirmação para a sua conta cadastrada.');
+            this.setState({ isLoading: false });
+            this.props.navigation.goBack();           
         }
         catch (err) {
             console.error(err);
@@ -39,6 +49,8 @@ class CadastroScreen extends Component {
     clearCadastro = () => {
         this.setState({
             nome: null,
+            sobreNome: null,
+            telefone: null,
             email: null,
             senha: null,
             isLoading: false,
@@ -55,9 +67,17 @@ class CadastroScreen extends Component {
             >
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                 <View style={styles.body}>
-                    <TextInput style={styles.text} placeholder='Digite um nome' maxLength={20} keyboardType='email-address'
+                    <TextInput style={styles.text} placeholder='Digite um nome' maxLength={20} 
                         onChangeText={(nome) => this.setState({ nome })} value={this.state.nome} >
                     </TextInput>
+
+                    <TextInput style={styles.text} placeholder='Digite um sobre nome' maxLength={20} 
+                    onChangeText={(sobreNome) => this.setState({ sobreNome })} value={this.state.sobreNome}>
+                </TextInput>
+    
+                    <TextInput style={styles.text} placeholder='Digite um telefone' maxLength={30} keyboardType='number-pad'
+                    onChangeText={(telefone) => this.setState({ telefone })} value={this.state.telefone}>
+                </TextInput>
 
                     <TextInput style={styles.text} placeholder='Digite um email' maxLength={30} keyboardType='email-address'
                         onChangeText={(email) => this.setState({ email })} value={this.state.email}>

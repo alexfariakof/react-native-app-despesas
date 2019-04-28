@@ -17,7 +17,7 @@ class HomeScreen extends Component {
         isLoading: true
     }
     async componentDidMount() {
-        await AsyncStorage.clear();
+        //await AsyncStorage.clear();
         this.setState({ isLoading: false })
     }
 

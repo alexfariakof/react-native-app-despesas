@@ -33,6 +33,7 @@ class DespesaScreen extends Component {
             this.setState({ user: JSON.parse(access).usuario });
             this.getListCategoria();
         }
+        this.clearDespesa();
     }
 
     getListCategoria = async () => {
@@ -77,7 +78,7 @@ class DespesaScreen extends Component {
             this.setState({ isLoading: true });
             api = new apiServices();
             const data = await api.post('/api/Despesa', body);
-            clearDespesa();
+          
             this.props.navigation.goBack();
         }
         catch (err) {

@@ -3,27 +3,26 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 class ApiServices {
-    constructor() {
-        this.state = {
-            baseUrl: 'http://10.0.2.2:21379',
-            access: null,
-            accessToken: null
-        }
+
+    state = {
+        baseUrl: 'http://10.0.2.2:21379'
     }
 
     get = async (url) => {
         let response = null;
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+        const token = await JSON.parse(access).accessToken;
 
         try {
-            this.state = { access: await AsyncStorage.getItem('@dpApiAccess')};
-            if (this.state.access) {
-                this.state = { accessToken: JSON.parse(access).accessToken };
+
+            if (access) {
+                //alert(this.state.accessToken); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
+                        'Authorization': `Bearer ${token}`,
                     },
                 });
 
@@ -47,24 +46,24 @@ class ApiServices {
     }
 
     post = async (url, body) => {
-        let response = null;       
-        try {
-            this.state = { access: await AsyncStorage.getItem('@dpApiAccess')};
-            if (this.state.access) {
-                this.state = { accessToken: JSON.parse(access).accessToken };
-                //alert(JSON.stringify(body))
+        let response = null;
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+        const token = await JSON.parse(access).accessToken;
 
+        try {
+            if (access) {
+                //alert(JSON.stringify(body)); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
+                        'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 });
             }
             else {
-                alert(JSON.stringify(body)); return;
+                //alert(JSON.stringify(body)); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
@@ -96,17 +95,17 @@ class ApiServices {
 
     put = async (url, body) => {
         let response = null;
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+        const token = await JSON.parse(access).accessToken;
 
         try {
-            this.state = { access: await AsyncStorage.getItem('@dpApiAccess')};
-            if (this.state.access) {
-                this.state = { accessToken: JSON.parse(access).accessToken };
+            if (access) {
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'PUT',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
+                        'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 });
             }
@@ -135,17 +134,17 @@ class ApiServices {
 
     delete = async (url, body) => {
         let response = null;
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+        const token = await JSON.parse(access).accessToken;
 
         try {
-            this.state = { access: await AsyncStorage.getItem('@dpApiAccess')};
-            if (this.state.access) {
-                this.state = { accessToken: JSON.parse(access).accessToken };
+            if (access) {
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'DELETE',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`,
+                        'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 });
             }

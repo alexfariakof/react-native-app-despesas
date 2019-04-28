@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
@@ -90,11 +90,13 @@ class LancamentoScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View  style={{ flex: 3 }}>
-
+                    <View style={{ flex: 3 }}>
                         {this.state.isLoading ?
                             <View style={{ flex: 1, alignItems: 'center' }}>
-                                <Image source={assets.loading} />
+                                <ActivityIndicator
+                                    color="green"
+                                    size="large"
+                                />
                             </View>
                             : <LacamentoComponent DataSource={this.state.dataSource} />
                         }
