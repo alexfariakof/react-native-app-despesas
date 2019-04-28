@@ -97,7 +97,7 @@ class DespesaScreen extends Component {
 
     render() {
         const dim = Dimensions.get('window');
-        const { isLoading, textValor } = this.state;
+        const { isLoading } = this.state;
         return (
             <ImageBackground
                 source={assets.background}
