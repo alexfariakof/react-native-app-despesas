@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
+using apiDespesasPessoais.Model.VO;
 using apiDespesasPessoais.Repositorio;
 using apiDespesasPessoais.Security.Configuration;
 
@@ -22,7 +23,12 @@ namespace apiDespesasPessoais.Business.Implementations
             _singingConfiguration = singingConfiguration;
             _tokenConfiguration = tokenConfiguration;
         }
-        
+
+        public bool Create(ControleAcessoVO controleAcessoVO)
+        {
+            return _repositorio.Create(controleAcessoVO);
+        }
+
         public object FindByLogin(ControleAcesso controleAcesso)
         {
             bool credentialsValid = false;

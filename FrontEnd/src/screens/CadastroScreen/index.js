@@ -28,7 +28,7 @@ class CadastroScreen extends Component {
         try {
             this.setState({ isLoading: true });
             api = new apiServices();
-            const data = await api.post('/api/Usuario', body);
+            const data = await api.post('/api/ControleAcesso', body);
             this.clearCadastro();
         }
         catch (err) {
