@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity,  ActivityIndicator, Button } from 'react-native';
+import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
@@ -77,20 +77,22 @@ class DespesaScreen extends Component {
             this.setState({ isLoading: true });
             api = new apiServices();
             const data = await api.post('/api/Despesa', body);
-            this.setState({ 
-                isLoading: false,
-                'idCategoria': this.state.categoria,
-                'data': null,
-                'descricao': null,
-                'valor': null,
-                'dataVencimento': '2019-04-27'
-            });
-            
+            clearDespesa();
             this.props.navigation.goBack();
         }
         catch (err) {
             console.error(err);
         }
+    }
+
+    clearDespesa = () => {
+        this.setState({
+            categoria: null,
+            data: null,
+            textDescricao: null,
+            textValor: '0,00',
+            isLoading: false,
+        });    
     }
 
     render() {
@@ -162,8 +164,12 @@ class DespesaScreen extends Component {
                                 onDateChange={(date) => { this.setState({ data: date }) }}
                             />
                         </View>
-                        <TextInput style={styles.text}  maxLength={100} placeholder='Digite a descrição' onChangeText={(textDescricao) => this.setState({ textDescricao })}  ></TextInput>
-                        <TextInput style={styles.text} maxLength={10} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })}  ></TextInput>
+                        <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
+                            onChangeText={(textDescricao) => this.setState({ textDescricao })} value={this.state.textDescricao} >
+                        </TextInput>
+                        <TextInput style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
+                            keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })} value={this.state.textValor}  >
+                        </TextInput>
                     </View>
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (

@@ -49,7 +49,7 @@ class ApiServices {
             const accessToken = JSON.parse(access).accessToken;
                 let response = null;
                 if (access) {
-                    alert(body)
+                    alert(JSON.stringify(body))
                      response = await fetch(this.state.baseUrl + url, {
                         method: 'POST',
                         headers: {
