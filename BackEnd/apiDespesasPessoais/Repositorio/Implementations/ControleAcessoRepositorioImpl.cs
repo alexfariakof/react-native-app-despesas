@@ -85,7 +85,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
 
                         _context.Database.ExecuteSqlCommand(sql, new SqlParameter("@senha", senhaNova), new SqlParameter("@login", usuario.Email));
 
-                        EnviarEmail(usuario, "Recuperação de Senha", "Entre com a senha . <b>" + senhaNova + "</b>");
+                        EnviarEmail(usuario, "Entre com a senha . <b>" + senhaNova + "</b>");
                         
                         dbContextTransaction.Commit();
                         return true;
@@ -99,7 +99,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
             return false;
         }
 
-        private void EnviarEmail(Usuario usuario, String textoEmail, String message)
+        private void EnviarEmail(Usuario usuario, String message)
         {
             System.Net.Mail.SmtpClient client = new SmtpClient();
             client.Host = "smtp.gmail.com";
@@ -110,7 +110,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
             mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
             mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.sobreNome));
             mail.Subject = "Contato";
-            mail.Body = " Mensagem do site:<br/> Nome:  " + usuario.Nome + " " + usuario.sobreNome + "<br/> Email : " + textoEmail + " <br/> Mensagem : " + message;
+            mail.Body = " Mensagem do site:<br/> Prezado(a)   " + usuario.Nome + " " + usuario.sobreNome + "<br/> Email cadastrado: " + usuario.Email + " <br/> " + message;
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;
             try
