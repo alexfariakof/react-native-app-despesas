@@ -61,6 +61,11 @@ namespace apiDespesasPessoais.Business.Implementations
             }            
         }
 
+        public bool RecoveryPassword(string email)
+        {
+            return _repositorio.RecoveryPassword(email);
+        }
+
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
         {
             Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor

@@ -27,8 +27,17 @@ namespace apiDespesasPessoais.Controllers
             if (_controleAcessoBusiness.Create(controleAcessoVO))
                 return new ObjectResult(_controleAcessoBusiness.Create(controleAcessoVO));
             else
-                return BadRequest();
+                return Ok("{ 'message' : 'Não foi possível realizar o cadastro'}");
 
+        }
+
+        [AllowAnonymous]
+        [HttpPost("RecoveryPassword")]
+        public IActionResult RecoveryPassword([FromBody] string  email )
+        {
+            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrEmpty(email))
+                return Ok(_controleAcessoBusiness.RecoveryPassword(email));
+            return BadRequest();
         }
 
 

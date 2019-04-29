@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
 
 namespace apiDespesasPessoais.Repositorio.Implementations
 {
@@ -19,8 +20,8 @@ namespace apiDespesasPessoais.Repositorio.Implementations
 
         public bool Create(ControleAcessoVO controleAcessoVO)
         {
-           DbSet<Usuario> dsUsuario = null;
-          
+            DbSet<Usuario> dsUsuario = null;
+
             using (_context)
             {
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -36,7 +37,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
                             telefone = controleAcessoVO.Telefone
                         };
                         dsUsuario.Add(usuario);
-                       
+
                         _context.SaveChanges();
 
                         string sql = "INSERT INTO[dbo].[ControleAcesso] ([login], [senha], [idUsuario]) VALUES (@login, @senha, @idUsuario)";
@@ -63,6 +64,67 @@ namespace apiDespesasPessoais.Repositorio.Implementations
         public Usuario GetUsuarioByEmail(string login)
         {
             return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(login));
+        }
+
+        public bool RecoveryPassword(string email)
+        {
+            Usuario usuario = GetUsuarioByEmail(email);
+            if (usuario == null)
+                return false;
+
+            using (_context)
+            {
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+
+                        string sql = "UPDATE ControleAcesso SET senha = @senha WHERE login = @login";
+
+                        var senhaNova = Guid.NewGuid().ToString().Substring(0,8);
+
+                        _context.Database.ExecuteSqlCommand(sql, new SqlParameter("@senha", senhaNova), new SqlParameter("@login", usuario.Email));
+
+                        EnviarEmail(usuario, "Recuperação de Senha", "Entre com a senha . <b>" + senhaNova + "</b>");
+                        
+                        dbContextTransaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void EnviarEmail(Usuario usuario, String textoEmail, String message)
+        {
+            System.Net.Mail.SmtpClient client = new SmtpClient();
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            client.Credentials = new System.Net.NetworkCredential("appdespesaspessoais@gmail.com", "roottoor");
+            MailMessage mail = new MailMessage();
+            mail.Sender = new System.Net.Mail.MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
+            mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
+            mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.sobreNome));
+            mail.Subject = "Contato";
+            mail.Body = " Mensagem do site:<br/> Nome:  " + usuario.Nome + " " + usuario.sobreNome + "<br/> Email : " + textoEmail + " <br/> Mensagem : " + message;
+            mail.IsBodyHtml = true;
+            mail.Priority = MailPriority.High;
+            try
+            {
+                client.Send(mail);
+            }
+            catch (Exception erro)
+            {
+                throw erro;
+            }
+            finally
+            {
+                mail = null;
+            }
         }
     }
 }
