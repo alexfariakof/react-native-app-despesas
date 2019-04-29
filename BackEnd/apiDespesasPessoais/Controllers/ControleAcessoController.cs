@@ -22,7 +22,7 @@ namespace apiDespesasPessoais.Controllers
         {
             if (controleAcessoVO == null)
                 return BadRequest();
-                       
+
 
             if (_controleAcessoBusiness.Create(controleAcessoVO))
                 return new ObjectResult(_controleAcessoBusiness.Create(controleAcessoVO));
@@ -33,13 +33,15 @@ namespace apiDespesasPessoais.Controllers
 
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
-        public IActionResult RecoveryPassword([FromBody] string  email )
-        {
-            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrEmpty(email))
-                return Ok(_controleAcessoBusiness.RecoveryPassword(email));
+        public IActionResult RecoveryPassword([FromBody] TempObject tempObject)
+        {            
+            if (!string.IsNullOrWhiteSpace(tempObject.email) && !string.IsNullOrEmpty(tempObject.email))
+                return Ok(_controleAcessoBusiness.RecoveryPassword(tempObject.email));
             return BadRequest();
         }
-
-
+        public class TempObject
+        {
+            public string email { get; set; }
+        }
     }
 }

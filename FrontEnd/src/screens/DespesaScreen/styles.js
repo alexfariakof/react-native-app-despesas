@@ -32,6 +32,16 @@ export default styles = StyleSheet.create({
         padding: 4,
         paddingBottom:0
     },
+    textCategoria: {
+        fontSize: 48,
+        margin: 8,
+        marginTop: 16,
+        marginBottom: 0,
+        borderBottomWidth:2,
+        borderColor:'#C4C4C4',
+        padding: 4,
+        paddingBottom:0
+    },
     ViewCentralizar:{
         justifyContent: 'center',
         alignItems: 'center'

@@ -11,11 +11,10 @@ class ApiServices {
     get = async (url) => {
         let response = null;
         const access = await AsyncStorage.getItem('@dpApiAccess');
-        const token = await JSON.parse(access).accessToken;
 
         try {
-
             if (access) {
+                const token = await JSON.parse(access).accessToken;
                 //alert(this.state.accessToken); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'GET',
@@ -47,11 +46,11 @@ class ApiServices {
 
     post = async (url, body) => {
         let response = null;
-        const access = await AsyncStorage.getItem('@dpApiAccess');
-        const token = await JSON.parse(access).accessToken;
+        const access = await AsyncStorage.getItem('@dpApiAccess');       
 
         try {
             if (access) {
+                const token = await JSON.parse(access).accessToken;
                 //alert(JSON.stringify(body)); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'POST',
@@ -63,7 +62,7 @@ class ApiServices {
                 });
             }
             else {
-                //alert(JSON.stringify(body)); return;
+                //alert(JSON.stringify(this.state.baseUrl + url + '-' + body)); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
@@ -96,10 +95,10 @@ class ApiServices {
     put = async (url, body) => {
         let response = null;
         const access = await AsyncStorage.getItem('@dpApiAccess');
-        const token = await JSON.parse(access).accessToken;
 
         try {
             if (access) {
+                const token = await JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'PUT',
                     headers: {
@@ -135,10 +134,10 @@ class ApiServices {
     delete = async (url, body) => {
         let response = null;
         const access = await AsyncStorage.getItem('@dpApiAccess');
-        const token = await JSON.parse(access).accessToken;
 
         try {
             if (access) {
+                const token = await JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'DELETE',
                     headers: {

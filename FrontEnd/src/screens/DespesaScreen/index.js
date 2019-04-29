@@ -159,9 +159,9 @@ class DespesaScreen extends Component {
                                         marginTop: 16,
                                         marginBottom: 16,
                                         borderWidth: 0,
-                                        border: 0,
-                                    }
-                                }}
+                                        border: 0
+                                    }}
+                                }
                                 onDateChange={(date) => { this.setState({ data: date }) }}
                             />
                         </View>
