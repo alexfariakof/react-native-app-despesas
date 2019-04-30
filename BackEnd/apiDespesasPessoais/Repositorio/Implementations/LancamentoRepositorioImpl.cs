@@ -20,16 +20,30 @@ namespace apiDespesasPessoais.Repositorio.Implementations
 
         public List<Lancamento> FindByMesAno(DateTime data, int idUsuario)
         {
-            string sql = "SELECT   Checksum(NewId()) % 100 as id,  d.idUsuario, data, idCategoria, valor*-1 as valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria FROM Despesa d Inner JOin Categoria c on d.idCategoria = c.id where d.idUsuario = @idUsuario" +
+            int mes = data.Month;
+            int ano = data.Year;
+
+            string sql = "SELECT Checksum(NewId()) % 100 as id,  d.idUsuario, data, idCategoria, valor*-1 as valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria" +
+                         "  FROM Despesa d " +
+                         " Inner Join Categoria c on d.idCategoria = c.id" +
+                         " where d.idUsuario = @idUsuario " +
+                         "   and Month(data) = @mes " +
+                         "   and  Year(data) = @ano" +
                          " union " +
-                         "SELECT  Checksum(NewId()) % 100  as id, r.idUsuario, data, idCategoria, valor,0 as idDespesa, r.id as idReceita, r.descricao, c.descricao as categoria FROM Receita r Inner JOin Categoria c on r.idCategoria = c.id where r.idUsuario = @idUsuario";
+                         "SELECT Checksum(NewId()) % 100  as id, r.idUsuario, data, idCategoria, valor,0 as idDespesa, r.id as idReceita, r.descricao, c.descricao as categoria " +
+                         "  FROM Receita r " +
+                         " Inner Join Categoria c on r.idCategoria = c.id " +
+                         " where r.idUsuario = @idUsuario " +
+                         "   and Month(data) = @mes " +
+                         "   and  Year(data) = @ano";
 
             using (_context)
             {
                 try
                 {
-                    var list = _context.Lancamento.FromSql(sql, new SqlParameter("@idUsuario", idUsuario)).ToList();
-                    return list;
+                    var list = _context.Lancamento.FromSql(sql, new SqlParameter("@idUsuario", idUsuario), new SqlParameter("@mes", data.Month), new SqlParameter("@ano", data.Year)).ToList();
+                    return list.OrderBy(item => item.Data).ThenBy(item => item.Categoria).ToList();
+
                 }
                 catch (Exception ex)
                 {
