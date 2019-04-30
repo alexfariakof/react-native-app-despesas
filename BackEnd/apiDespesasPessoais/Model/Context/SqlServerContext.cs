@@ -2,7 +2,7 @@
 
 namespace apiDespesasPessoais.Model.Context
 {
-    public class SqlServerContext : DbContext
+    public class SqlServerContext :  DbContext
     {
         public SqlServerContext()
         {
@@ -19,6 +19,6 @@ namespace apiDespesasPessoais.Model.Context
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Despesa> Despesa { get; set; }
         public DbSet<Receita> Receita { get; set; }
-        public DbSet<LancamentoConsolidado> LancamentoConsolidado { get; set; }
+        public DbSet<Lancamento> Lancamento { get; set; }
     }
 }
