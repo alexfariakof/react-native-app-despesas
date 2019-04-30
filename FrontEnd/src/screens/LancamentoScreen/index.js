@@ -103,14 +103,14 @@ class LancamentoScreen extends Component {
                     </View>
                     <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Despesa')} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Despesa')} >
                                 <Image source={assets.btnDespesa} />
-                            </TouchableWithoutFeedback>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ flex: 3, alignItems: 'center', }} >
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Receita')} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Receita')} >
                                 <Image source={assets.btnReceita} />
-                            </TouchableWithoutFeedback>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

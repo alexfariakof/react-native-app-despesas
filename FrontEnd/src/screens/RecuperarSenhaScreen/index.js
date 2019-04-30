@@ -21,7 +21,6 @@ class RecuperarSenhaScreen extends Component {
         //this.clearRecuperarSenha();
     }
 
-
     clearRecuperarSenha = () => {
         this.setState({
             email: null,
@@ -29,7 +28,6 @@ class RecuperarSenhaScreen extends Component {
             isLoading: false,
         });
     }
-
 
     recuperarSenha = async () => {
         const body = {
@@ -46,7 +44,6 @@ class RecuperarSenhaScreen extends Component {
             console.error(err);
         }
     }
-
 
     render() {
         const { isLoading } = this.state;

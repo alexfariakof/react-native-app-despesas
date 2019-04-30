@@ -14,7 +14,7 @@ class ApiServices {
 
         try {
             if (access) {
-                const token = await JSON.parse(access).accessToken;
+                const token =  JSON.parse(access).accessToken;
                 //alert(this.state.accessToken); return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'GET',
@@ -50,9 +50,9 @@ class ApiServices {
 
         try {
             if (access) {
-                const token = await JSON.parse(access).accessToken;
-                //alert(JSON.stringify(body)); return;
-                response = await fetch(this.state.baseUrl + url, {
+                const token = JSON.parse(access).accessToken;
+                //alert(JSON.stringify(this.state.baseUrl + url + '-' + JSON.stringify(body))); //return;
+                response = fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -98,7 +98,7 @@ class ApiServices {
 
         try {
             if (access) {
-                const token = await JSON.parse(access).accessToken;
+                const token =  JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'PUT',
                     headers: {
@@ -137,7 +137,7 @@ class ApiServices {
 
         try {
             if (access) {
-                const token = await JSON.parse(access).accessToken;
+                const token =  JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'DELETE',
                     headers: {

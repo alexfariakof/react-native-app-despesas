@@ -1,21 +1,83 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, TextInput, Picker, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
+import { Dimensions } from 'react-native';
+import DatePicker from 'react-native-datepicker'
 
 import assets from './assets'
 import styles from './styles'
-import DatePickerComponent from '../../components/DatePickerComponent.js'
-
+import apiServices from '../../services/ApiServices.js'
 
 class ReceitaScreen extends Component {
     static navigationOptions = {
         header: null
     }
 
-    state = { categoria: '' }
-    updateUser = (categoria) => {
-        this.setState({ categoria: categoria })
+    state = {
+        isLoading: true,
+        errorMessage: null,
+        dataSource: [],
+        user: null,
+        categoria: null,
+        data: null,
+        textDescricao: null,
+        textValor: 'R$ 0,00',
     }
+
+    async componentDidMount() {
+        const access = await AsyncStorage.getItem('@dpApiAccess');
+
+        if (access) {
+            this.setState({ user: JSON.parse(access).usuario });
+            this.getListCategoria();
+        }
+        this.clearReceita();
+    }
+
+    clearReceita = () => {
+        this.setState({
+            data: null,
+            textDescricao: null,
+            textValor: '0,00',
+            isLoading: false,
+        });
+    }
+
+    getListCategoria = async () => {
+        try {
+            api = new apiServices();
+            const data = await api.get('/api/Categoria/byTipoCategoria/2');
+            this.setState({ dataSource: data, isLoading: false });
+        }
+        catch (err) {
+            console.error(err);
+        }
+    };
+
+    saveReceita = async () => {
+        const body = {
+            idUsuario: this.state.user.id,
+            idCategoria: this.state.categoria,
+            data: this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
+            descricao: this.state.textDescricao,
+            valor: this.state.textValor
+        }
+
+        try {
+            this.setState({ isLoading: true });
+            api = new apiServices();
+            const data = await api.post('/api/receita', body);
+            this.setState({ isLoading: false });
+            //this.props.navigation.goBack();
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
     render() {
+        const dim = Dimensions.get('window');
+        const { isLoading } = this.state;
         return (
             <ImageBackground
                 source={assets.background}
@@ -36,30 +98,73 @@ class ReceitaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} > R$ 1200,00</Text>
+                        }} >{"R$ " + this.state.textValor}</Text>
                     </View>
                     <View  >
                         <View style={styles.text}>
-                            <Picker  style={{ paddingTop: 0 }}
+                            <Picker style={{ paddingTop: 0 }}
                                 selectedValue={this.state.categoria}
                                 style={styles.text}
                                 onValueChange={(itemValue, itemIndex) =>
-                                    this.setState({ language: itemValue })
+                                    this.setState({ categoria: itemValue })
                                 }>
-                                <Picker.Item label="Salário" value="1" />
-                                <Picker.Item label="Empréstimo" value="2" />
+                                {this.state.dataSource.map((item, key) => (
+                                    <Picker.Item label={item.descricao} value={item.id} key={key} />)
+                                )}
                             </Picker>
                         </View>
                         <View style={styles.text}>
-                            <DatePickerComponent />
+                            <DatePicker
+                                date={this.state.data}
+                                mode="date"
+                                placeholder="Selecione uma data"
+                                format="DD-MM-YYYY"
+                                minDate="2016-05-01"
+                                maxDate="2080-12-30"
+                                confirmBtnText="Confirma"
+                                cancelBtnText="Cancelar"
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        left: dim.width - 60,
+                                        top: 4,
+                                        marginLeft: 0
+                                    },
+                                    dateInput: {
+                                        height: 48,
+                                        fontSize: 24,
+                                        color: 'white',
+                                        marginTop: 16,
+                                        marginBottom: 16,
+                                        borderWidth: 0,
+                                        border: 0
+                                    }
+                                }
+                                }
+                                onDateChange={(date) => { this.setState({ data: date }) }}
+                            />
                         </View>
-                        <TextInput style={styles.text} multiline maxLength={100} placeholder='Digite a descrição'   ></TextInput>
-                        <TextInput style={styles.text} maxLength={10} placeholder='Entre com o valor da Despesa' keyboardType='decimal-pad'  ></TextInput>
+                        <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
+                            onChangeText={(textDescricao) => this.setState({ textDescricao })} value={this.state.textDescricao} >
+                        </TextInput>
+                        <TextInput style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
+                            keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })} value={this.state.textValor}  >
+                        </TextInput>
                     </View>
                     <View style={styles.ViewCentralizar} >
-                        <TouchableOpacity style={styles.btnOkReceita}>
-                            <Image source={assets.btnOkReceita} />
-                        </TouchableOpacity>
+                        {isLoading ? (
+                            <ActivityIndicator
+                                style={styles.btnIniciar}
+                                color="green"
+                                size="large"
+                            />
+                        ) :
+                            (
+                                <TouchableOpacity style={styles.btnOkReceita} onPress={() => { this.saveReceita() }}>
+                                    <Image source={assets.btnOkReceita} />
+                                </TouchableOpacity>
+                            )
+                        }
                     </View>
                 </View>
             </ImageBackground>

@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 
-
 import assets from './assets'
 import styles from './styles'
 import apiServices from '../../services/ApiServices.js'
@@ -17,7 +16,6 @@ class DespesaScreen extends Component {
     state = {
         isLoading: true,
         errorMessage: null,
-        dataSource: null,
         user: null,
         dataSourceCategoria: [],
         categoria: null,
@@ -39,7 +37,7 @@ class DespesaScreen extends Component {
     getListCategoria = async () => {
         try {
             api = new apiServices();
-            const data = await api.get('/api/Categoria');
+            const data = await api.get('/api/Categoria/byTipoCategoria/1');
             this.setState({ dataSourceCategoria: data, isLoading: false });
         }
         catch (err) {
@@ -119,7 +117,7 @@ class DespesaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} > {"R$ " + this.state.textValor}</Text>
+                        }} >{"R$ " + this.state.textValor}</Text>
                     </View>
                     <View  >
                         <View style={styles.text}>

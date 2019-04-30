@@ -5,63 +5,51 @@ import AsyncStorage from '@react-native-community/async-storage'
 import assets from './assets'
 import styles from './styles'
 
-class HomeScreen extends Component {
-    static navigationOptions = {
-        header: null,
+import apiServices from '../../services/ApiServices.js'
 
-    }
+class HomeScreen extends Component {
+    static navigationOptions = { header: null }
+
     state = {
         erroMessage: null,
         login: null,
         senha: null,
         isLoading: true
     }
+    
     async componentDidMount() {
         await AsyncStorage.clear();
         this.setState({ isLoading: false })
     }
 
+    signIn = async () => {
+        api = new apiServices();
+        const body = {
+            login: 'admin@admin',
+            senha: 'admin'
+            //login: this.state.login,
+            //senha: this.state.senha
+        };
+        try {
+            const data = await api.post('/api/controleacesso/signin', body);
+            this.setState({ isLoading: true })
+            if (data.autenticated === true) {
+                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(data));
+                this.props.navigation.navigate('Lancamento')
+            }
+            else {
+                this.setState({ erroMessage: data.message });
+            }
+        }
+        catch (error) {
+            this.setState({ isLoading: false });
+            this.setState({ erroMessage: 'Erro de conexão, tente novamente mais tarde.' });
+            //console.error(error);
+        }
+    };
+
     render() {
         const { isLoading } = this.state;
-
-        signIn = async (login, senha) => {
-            this.setState({ isLoading: true })
-            fetch('http://10.0.2.2:21379/api/signin', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    'login': 'admin@admin',
-                    'senha': 'admin',
-                    //'login': login,
-                    //'senha': senha,
-
-                }),
-            }).then(response => response.json())
-                .then(async responseJson => {
-                    if (responseJson.autenticated === true) {
-                        await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(responseJson));
-                        this.props.navigation.navigate('Lancamento')
-                    }
-                    else {
-                        this.setState({ erroMessage: responseJson.message });
-                    }
-                })
-                .then( () =>{
-                    this.setState({ isLoading: false });
-                })
-                .then(response => {
-                    this.setState({ isLoading: false });                    
-                    //console.debug(response);
-                })
-                .catch(error => {
-                    this.setState({ isLoading: false });
-                    this.setState({ erroMessage: 'Erro de conexão, tente novamente mais tarde.' });
-                    //console.error(error);
-                });
-        };
 
         return (
             <ImageBackground
@@ -100,7 +88,7 @@ class HomeScreen extends Component {
                             />
                         ) :
                             (
-                                <TouchableOpacity style={styles.btnIniciar} onPress={() => { signIn(this.state.login, this.state.senha) }}>
+                                <TouchableOpacity style={styles.btnIniciar} onPress={() => { this.signIn() }}>
                                     <Image source={assets.btnIniciar} />
                                 </TouchableOpacity>
                             )
