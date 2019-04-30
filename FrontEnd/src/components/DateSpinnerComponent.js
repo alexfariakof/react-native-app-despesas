@@ -2,42 +2,39 @@ import React, { Component } from 'react'
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 
 class DateSpinnerComponent extends Component {
-  state = {
-    mes: null,
-    ano:null,
-    mesAnoExtenso: null,
-    currentDate: null
-  }
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
     const meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
     hoje = new Date();
     mes = hoje.getMonth();
     ano = hoje.getFullYear();
 
-    this.setState({
-       mes:hoje.getMonth(),
-       ano: hoje.getFullYear(), 
-       mesAnoExtenso: meses[mes] + " de " + ano,
-       currentDate: ano + '-' + mes + '-01'
-    });
+    this.state = {
+      mes: hoje.getMonth(),
+      ano: hoje.getFullYear(),
+      mesAnoExtenso: meses[mes] + " de " + ano
+    };
   }
 
+
   render() {
+    var handleGetCurrentDate = this.props.handleGetCurrentDate;
     const meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
-    setNext = () => {      
+
+    setNext = () => {
       mes = this.state.mes + 1;
       ano = this.state.ano;
-      
-      if (mes >11){
+
+      if (mes > 11) {
         mes = 0
         ano = ano + 1
-      }      
-      
-      this.setState({ 
+      }
+
+      this.setState({
         mes: mes,
         ano: ano,
-        mesAnoExtenso: meses[mes] + " de " + ano,        
+        mesAnoExtenso: meses[mes] + " de " + ano,
         currentDate: ano + '-' + mes + '-01'
       });
     }
@@ -45,26 +42,25 @@ class DateSpinnerComponent extends Component {
     setPrevious = () => {
       mes = this.state.mes - 1;
       ano = this.state.ano;
-      
-      if (mes <0){
+
+      if (mes < 0) {
         mes = 11
         ano = ano - 1
       }
 
-      this.setState({ 
+      this.setState({
         mes: mes,
         ano: ano,
         mesAnoExtenso: meses[mes] + " de " + ano,
         currentDate: ano + '-' + mes + '-01'
       });
-
     }
 
     return (
 
       <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
         <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
-          <TouchableOpacity onPress={() => { setPrevious() }} >
+          <TouchableOpacity onPress={() => { setPrevious(); handleGetCurrentDate(this.state.currentDate); }} >
             <Image source={assets.arrowLeft} />
           </TouchableOpacity>
         </View>
@@ -72,12 +68,13 @@ class DateSpinnerComponent extends Component {
           <Text style={{ fontSize: 24, padding: 4 }} >{this.state.mesAnoExtenso}</Text>
         </View>
         <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
-          <TouchableOpacity onPress={() => { setNext() }} >
+          <TouchableOpacity onPress={() => { setNext(); handleGetCurrentDate(this.state.currentDate); }} >
             <Image source={assets.arrowRight} />
           </TouchableOpacity>
         </View>
       </View>
     );
+
   }
 }
 

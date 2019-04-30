@@ -77,8 +77,6 @@ class HomeScreen extends Component {
                             <Text style={styles.btnEsqueciSenha}>Esqueci minha senha</Text>
                         </TouchableOpacity>
                     </View>
-
-
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (
                             <ActivityIndicator
@@ -93,7 +91,6 @@ class HomeScreen extends Component {
                                 </TouchableOpacity>
                             )
                         }
-
                     </View>
                 </View>
             </ImageBackground>

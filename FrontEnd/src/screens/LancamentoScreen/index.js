@@ -11,19 +11,30 @@ import DateSpinnerComponent from '../../components/DateSpinnerComponent.js'
 class LancamentoScreen extends Component {
     static navigationOptions = { header: null }
 
+    constructor(props) {
+        super(props)
+    }
+
     state = {
         isLoading: true,
         errorMessage: null,
         dataSource: null,
         user: null,
-        saldo: null
+        saldo: '0,00',
+        selectedDate: null,
+        isLoaded: false
+    }
+
+    handlerGetSpinnerSelectedDate = async (value) => {
+        await this.setState({ selectedDate: value });
+        this.getLancamentoById();
     }
 
     getSaldoById = async () => {
         try {
             api = new apiServices();
             let data = await api.get('/api/Lancamento/saldo/' + this.state.user.id);
-            this.setState({saldo: data});
+            this.setState({ saldo: data });
         }
         catch (err) {
             console.error(err);
@@ -31,9 +42,18 @@ class LancamentoScreen extends Component {
     };
 
     getLancamentoById = async () => {
+        if (this.state.isLoaded !== true){
+            alert(this.state.isLoaded);
+            hoje = new Date();
+            ano = hoje.getFullYear();
+            mes = hoje.getMonth() + 1;
+
+            this.setState({selectedDate: ano + '-' + mes + '-01', isLoaded: true });            
+        }
+
         try {
             api = new apiServices();
-            const data = await api.get('/api/Lancamento/2019-01-01/' + this.state.user.id);
+            const data = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
             this.setState({ dataSource: data });
 
         }
@@ -48,9 +68,9 @@ class LancamentoScreen extends Component {
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
             this.getSaldoById();
-            this.getLancamentoById();            
-            this.setState({  isLoading: false });
-        }
+            this.getLancamentoById();
+            this.setState({ isLoading: false });
+        }           
     }
 
     render() {
@@ -60,6 +80,9 @@ class LancamentoScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
+                <TouchableOpacity onPress={() => { alert(this.state.selectedDate)}} >
+                    <View><Text>Here Touch here !!!!!!! </Text></View>
+                </TouchableOpacity>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
@@ -76,7 +99,7 @@ class LancamentoScreen extends Component {
                             <Text style={{ textAlign: 'right', fontSize: 32, fontWeight: 'bold', color: 'white' }} >{"R$ " + this.state.saldo}</Text>
                         </View>
                     </View>
-                    <DateSpinnerComponent />
+                    <DateSpinnerComponent handleGetCurrentDate = { this.handlerGetSpinnerSelectedDate } />
                     <View style={{ flex: 3 }}>
                         {this.state.isLoading ?
                             <View style={{ flex: 1, alignItems: 'center' }}>
