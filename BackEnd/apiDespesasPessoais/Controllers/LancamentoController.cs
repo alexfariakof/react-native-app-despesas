@@ -28,12 +28,12 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpGet("Saldo/{idUsuario}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Get(int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
-
-            return Ok(saldo);
+                        
+            return Ok(saldo.ToString("N2")); 
         }
     }
 }

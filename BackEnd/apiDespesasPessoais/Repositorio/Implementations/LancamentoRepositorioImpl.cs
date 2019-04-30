@@ -20,7 +20,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
 
         public List<Lancamento> FindByMesAno(DateTime data, int idUsuario)
         {
-            string sql = "SELECT   Checksum(NewId()) % 100 as id,  d.idUsuario, data, idCategoria, valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria FROM Despesa d Inner JOin Categoria c on d.idCategoria = c.id where d.idUsuario = @idUsuario" +
+            string sql = "SELECT   Checksum(NewId()) % 100 as id,  d.idUsuario, data, idCategoria, valor*-1 as valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria FROM Despesa d Inner JOin Categoria c on d.idCategoria = c.id where d.idUsuario = @idUsuario" +
                          " union " +
                          "SELECT  Checksum(NewId()) % 100  as id, r.idUsuario, data, idCategoria, valor,0 as idDespesa, r.id as idReceita, r.descricao, c.descricao as categoria FROM Receita r Inner JOin Categoria c on r.idCategoria = c.id where r.idUsuario = @idUsuario";
 
