@@ -33,6 +33,17 @@ namespace apiDespesasPessoais.Controllers
             return Ok(_categoria);
         }
 
+        [HttpGet("byTipoCategoria/{idTipoCategoria}")]
+        public IActionResult Get(byte idTipoCategoria)
+        {
+            var _categoria = _categoriaBusiness.FindAll().FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria));
+
+            if (_categoria == null)
+                return NotFound();
+
+            return Ok(_categoria);
+        }
+
         [HttpPost]
         //[Authorize("Bearer")]
         public IActionResult Post([FromBody] Categoria categoria)

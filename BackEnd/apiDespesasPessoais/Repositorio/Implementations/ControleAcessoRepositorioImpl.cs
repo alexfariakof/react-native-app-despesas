@@ -116,7 +116,7 @@ namespace apiDespesasPessoais.Repositorio.Implementations
             mail.Priority = MailPriority.High;
             try
             {
-                client.Send(mail);
+                //client.Send(mail);
             }
             catch (Exception erro)
             {

@@ -1,4 +1,5 @@
 ﻿using apiDespesasPessoais.Business;
+using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Model.VO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,16 @@ namespace apiDespesasPessoais.Controllers
                 return Ok("{ 'message' : 'Não foi possível realizar o cadastro'}");
 
         }
+        
+        [AllowAnonymous]
+        [HttpPost("SignIn")]
+        public IActionResult Post([FromBody] ControleAcesso controleAcesso)
+        {
+            if (controleAcesso == null)
+                return BadRequest();
+
+            return new ObjectResult(_controleAcessoBusiness.FindByLogin(controleAcesso));
+        }
 
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
@@ -45,3 +56,4 @@ namespace apiDespesasPessoais.Controllers
         }
     }
 }
+

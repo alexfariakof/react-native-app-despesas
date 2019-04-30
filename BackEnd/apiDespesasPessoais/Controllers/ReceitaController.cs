@@ -1,5 +1,6 @@
 ﻿using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiReceitasPessoais.Controllers
@@ -33,7 +34,7 @@ namespace apiReceitasPessoais.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] Receita receita)
         {
             if (receita == null)
