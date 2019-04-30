@@ -1,6 +1,6 @@
 ﻿using apiDespesasPessoais.Model;
 using apiDespesasPessoais.Model.Context;
-using apiDespesasPessoais.Model.VO;
+using apiDespesasPessoais.Data.VO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.SqlClient;

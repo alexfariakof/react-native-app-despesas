@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using apiDespesasPessoais.Business.Generic;
 using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Model.VO;
+using apiDespesasPessoais.Data.VO;
 using apiDespesasPessoais.Repositorio;
 using apiDespesasPessoais.Security.Configuration;
 

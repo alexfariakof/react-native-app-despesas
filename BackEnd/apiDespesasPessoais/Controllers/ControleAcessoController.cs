@@ -1,6 +1,6 @@
 ﻿using apiDespesasPessoais.Business;
 using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Model.VO;
+using apiDespesasPessoais.Data.VO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

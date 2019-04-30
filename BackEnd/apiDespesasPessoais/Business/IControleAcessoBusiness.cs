@@ -1,5 +1,5 @@
 ﻿using apiDespesasPessoais.Model;
-using apiDespesasPessoais.Model.VO;
+using apiDespesasPessoais.Data.VO;
 
 namespace apiDespesasPessoais.Business
 {
