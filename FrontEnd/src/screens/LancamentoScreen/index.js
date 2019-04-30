@@ -21,22 +21,12 @@ class LancamentoScreen extends Component {
         header: null
     }
 
-    getListLancamento = async () => {
-        try {
-            api = new apiServices();
-            const data = await api.get('/api/LancamentoConsolidado');
-            this.setState({ dataSource: data, isLoading: false });
-        }
-        catch (err) {
-            console.error(err);
-        }
-    };
-
     getLancamentoById = async () => {
         try {
             api = new apiServices();
-            const data = api.get('/api/LancamentoConsolidado', '/' + this.state.user.id);
+            const data = await api.get('/api/Lancamento/2019-01-01/' + this.state.user.id);
             this.setState({ dataSource: data });
+            this.setState({  isLoading: false });
         }
         catch (err) {
             console.error(err);
@@ -48,7 +38,7 @@ class LancamentoScreen extends Component {
 
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
-            this.getListLancamento();
+            this.getLancamentoById();
         }
     }
 

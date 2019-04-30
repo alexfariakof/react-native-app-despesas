@@ -12,7 +12,7 @@ export default LacamentoComponent = props => {
                 borderColor: '#C4C4C4'
             }}>
                 <View  >
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', paddingLeft: 4 }} >{itemLancamento.item.dataLancamento}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', paddingLeft: 4 }} >{itemLancamento.item.data}</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -20,10 +20,10 @@ export default LacamentoComponent = props => {
                 }}
                 >
                     <View>
-                        <Text style={{ fontSize: 14, marginLeft: 18 }} >{itemLancamento.item.valor}</Text>
-                        <Text style={{ fontSize: 10, marginLeft: 20, color: '#C4C4C4' }}  >{itemLancamento.item.idUsuario}</Text>
+                        <Text style={{ fontSize: 14, marginLeft: 18 }} >{itemLancamento.item.categoria}</Text>
+                        <Text style={{ fontSize: 10, marginLeft: 20, color: 'white' }}  >{itemLancamento.item.descricao}</Text>
                     </View>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 8 }} >{itemLancamento.item.valor}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 8 }} >R$ {itemLancamento.item.valor}</Text>
                 </View>
             </View>
         );

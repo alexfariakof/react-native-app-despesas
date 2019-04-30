@@ -10,6 +10,8 @@ namespace apiDespesasPessoais.Model
         public int IdReceita { get; set; }
         public Decimal Valor { get; set; }
         public DateTime Data { get; set; }
+        public String Descricao { get; set; }
+        public String Categoria { get; set; }
 
     }
 }

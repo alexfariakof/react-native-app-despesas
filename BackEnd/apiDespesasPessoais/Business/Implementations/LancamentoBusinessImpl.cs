@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using apiDespesasPessoais.Model;
+using apiDespesasPessoais.Data.Implementations;
+using apiDespesasPessoais.Data.VO;
 using apiDespesasPessoais.Repositorio;
 
 namespace apiDespesasPessoais.Business.Implementations
@@ -9,14 +10,17 @@ namespace apiDespesasPessoais.Business.Implementations
     {
         private readonly ILancamentoRepositorio _repositorio;
 
+        private readonly LancamentoConverter _converter;
+
         public LancamentoBusinessImpl(ILancamentoRepositorio repositorio)
         {
             _repositorio = repositorio;
+            _converter = new LancamentoConverter();
         }
 
-        public List<Lancamento> FindByMesAno(DateTime data, int idUsuario)
+        public List<LancamentoVO> FindByMesAno(DateTime data, int idUsuario)
         {
-           return  _repositorio.FindByMesAno(data, idUsuario);
+           return  _converter.ParseList(_repositorio.FindByMesAno(data, idUsuario));
         }
 
         public decimal GetSaldo(int idUsuario)

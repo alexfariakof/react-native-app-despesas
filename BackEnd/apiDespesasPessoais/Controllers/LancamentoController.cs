@@ -1,4 +1,5 @@
 ﻿using apiDespesasPessoais.Business;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -15,18 +16,24 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpGet("{mesAno}/{idUsuario}")]
+        [Authorize("Bearer")]
         public IActionResult Get(DateTime mesAno, int idUsuario)
         {
             var list = _lancamentoBusiness.FindByMesAno(mesAno, idUsuario);
-            return new ObjectResult(list);
+
+            if (list == null || list.Count == 0)
+                return NotFound();
+
+            return Ok(list);
         }
 
         [HttpGet("Saldo/{idUsuario}")]
+        [Authorize("Bearer")]
         public IActionResult Get(int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
-            return new ObjectResult(saldo);
-        }
 
+            return Ok(saldo);
+        }
     }
 }

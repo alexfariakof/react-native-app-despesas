@@ -17,7 +17,9 @@ namespace apiDespesasPessoais.Data.Implementations
                 IdReceita = origin.IdReceita,
                 IdUsuario = origin.IdUsuario,
                 Data = origin.Data.ToDateTime(),
-                Valor = origin.Valor.ToDecimal()                
+                Valor = origin.Valor.ToDecimal(),
+                Descricao = origin.Descricao,
+                Categoria = origin.Categoria
             };
         }
 
@@ -31,7 +33,9 @@ namespace apiDespesasPessoais.Data.Implementations
                 IdReceita = origin.IdReceita,
                 IdUsuario = origin.IdUsuario,
                 Data = origin.Data.ToDateBr(),
-                Valor = origin.Valor.ToString("N2")
+                Valor = origin.Valor.ToString("N2"),
+                Descricao = origin.Descricao,
+                Categoria = origin.Categoria
             };
         }
 
