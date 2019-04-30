@@ -6,27 +6,36 @@ import assets from './assets'
 
 import apiServices from '../../services/ApiServices.js'
 import LacamentoComponent from '../../components/LacamentoComponent.js'
+import DateSpinnerComponent from '../../components/DateSpinnerComponent.js'
 
 class LancamentoScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            errorMessage: null,
-            dataSource: null,
-            user: null
+    static navigationOptions = { header: null }
+
+    state = {
+        isLoading: true,
+        errorMessage: null,
+        dataSource: null,
+        user: null,
+        saldo: null
+    }
+
+    getSaldoById = async () => {
+        try {
+            api = new apiServices();
+            let data = await api.get('/api/Lancamento/saldo/' + this.state.user.id);
+            this.setState({saldo: data});
         }
-    }
-    static navigationOptions = {
-        header: null
-    }
+        catch (err) {
+            console.error(err);
+        }
+    };
 
     getLancamentoById = async () => {
         try {
             api = new apiServices();
             const data = await api.get('/api/Lancamento/2019-01-01/' + this.state.user.id);
             this.setState({ dataSource: data });
-            this.setState({  isLoading: false });
+
         }
         catch (err) {
             console.error(err);
@@ -38,7 +47,9 @@ class LancamentoScreen extends Component {
 
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
-            this.getLancamentoById();
+            this.getSaldoById();
+            this.getLancamentoById();            
+            this.setState({  isLoading: false });
         }
     }
 
@@ -62,24 +73,10 @@ class LancamentoScreen extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 5 }}>
-                            <Text style={{ textAlign: 'right', fontSize: 32, fontWeight: 'bold', color: 'white' }} >R$ 2000,00</Text>
+                            <Text style={{ textAlign: 'right', fontSize: 32, fontWeight: 'bold', color: 'white' }} >{"R$ " + this.state.saldo}</Text>
                         </View>
                     </View>
-                    <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
-                        <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
-                            <TouchableOpacity  >
-                                <Image source={assets.arrowLeft} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flex: 4, alignItems: 'center' }} >
-                            <Text style={{ fontSize: 32, padding: 4 }} >Abril 2019</Text>
-                        </View>
-                        <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
-                            <TouchableOpacity  >
-                                <Image source={assets.arrowRight} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <DateSpinnerComponent />
                     <View style={{ flex: 3 }}>
                         {this.state.isLoading ?
                             <View style={{ flex: 1, alignItems: 'center' }}>
@@ -109,3 +106,4 @@ class LancamentoScreen extends Component {
     }
 }
 export default LancamentoScreen;
+

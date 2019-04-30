@@ -15,7 +15,7 @@ class ApiServices {
         try {
             if (access) {
                 const token =  JSON.parse(access).accessToken;
-                //alert(this.state.accessToken); return;
+                //alert(JSON.stringify(this.state.baseUrl + url + '      -   ' + token)); //return;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'GET',
                     headers: {
@@ -30,13 +30,13 @@ class ApiServices {
                     return data;
                 }
                 if (response.status === 401)
-                    return JSON.stringify({ 'message': 'Unauthorized' });
+                    alert({ 'message': 'Unauthorized' });
 
                 if (response.status === 400)
-                    return JSON.stringify({ 'message': 'Bad Request' });
+                    alert({ 'message': 'Bad Request' });
 
                 if (response.status === 404)
-                    return JSON.stringify({ 'message': 'Not Found' });
+                    alert({ 'message': 'Not Found' });
             }
         }
         catch (error) {
