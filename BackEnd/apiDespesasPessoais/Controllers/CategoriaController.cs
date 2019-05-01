@@ -33,10 +33,14 @@ namespace apiDespesasPessoais.Controllers
             return Ok(_categoria);
         }
 
-        [HttpGet("byTipoCategoria/{idTipoCategoria}")]
-        public IActionResult Get(byte idTipoCategoria)
+        [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
+        public IActionResult Get([FromRoute] int idUsuario, [FromRoute] byte idTipoCategoria)
         {
-            var _categoria = _categoriaBusiness.FindAll().FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria));
+            var _categoria = _categoriaBusiness.FindAll()
+                .FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria) &&
+                                (prop.IdUsuario.Equals(idUsuario) ||
+                                 prop.IdUsuario == null ||
+                                 prop.IdUsuario.Equals(0)));
 
             if (_categoria == null)
                 return NotFound();

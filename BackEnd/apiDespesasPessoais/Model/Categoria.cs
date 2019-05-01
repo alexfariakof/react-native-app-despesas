@@ -6,5 +6,6 @@ namespace apiDespesasPessoais.Model
     {
         public int IdTipoCategoria { get; set; }
         public string Descricao { get; set; }
+        public int? IdUsuario { get; set; }
     }
 }
