@@ -30,13 +30,13 @@ class ApiServices {
                     return data;
                 }
                 if (response.status === 401)
-                    alert({ 'message': 'Unauthorized' });
+                    alert("{ 'message': 'Unauthorized' }");
 
                 if (response.status === 400)
-                    alert({ 'message': 'Bad Request' });
+                    alert("{ 'message': 'Bad Request' }");
 
                 if (response.status === 404)
-                    alert({ 'message': 'Not Found' });
+                    alert("{ 'message': 'Not Found' }");
             }
         }
         catch (error) {
