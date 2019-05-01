@@ -9,12 +9,17 @@ import ReceitaScreen from './src/screens/ReceitaScreen'
 import RecuperarSenhaScreen from './src/screens/RecuperarSenhaScreen'
 import LancamentoScreen from './src/screens/LancamentoScreen'
 import RelatorioScreen from './src/screens/RelatorioScreen'
+import CategoriaScreen from './src/screens/CategoriaScreen'
 
 const AppDrawer = createDrawerNavigator({
   Despesa: { screen: DespesaScreen },
   Receita: { screen: ReceitaScreen },
   Lancamento: { screen: LancamentoScreen },
   Relatorio: { screen: RelatorioScreen },
+  Categoria: {
+    screen: CategoriaScreen,
+    navigationOptions: { drawerLabel: () => null }
+  },
   Sair: {
     screen: () => (      
        async () => {
@@ -27,7 +32,7 @@ const AppDrawer = createDrawerNavigator({
 }
 , { initialRouteName: 'Lancamento' });
 
-const AppStack = createStackNavigator({
+const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: { drawerLabel: () => null }
@@ -39,19 +44,11 @@ const AppStack = createStackNavigator({
   RecuperarSenha: {
     screen: RecuperarSenhaScreen,
     navigationOptions: { drawerLabel: () => null }
-  }
-}, { initialRouteName: 'Home' });
-
-
-const AppNavigator = createStackNavigator({
-  appStack: {
-    screen: AppStack,
-    navigationOptions: { header: null }
   },
   appDrawer: {
     screen: AppDrawer,
     navigationOptions: { header: null }
   }
-}, { initialRouteName: 'appStack' });
+}, { initialRouteName: 'Home' });
 
 export default createAppContainer(AppNavigator)
