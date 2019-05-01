@@ -16,7 +16,7 @@ class ReceitaScreen extends Component {
     state = {
         isLoading: true,
         errorMessage: null,
-        dataSource: [],
+        dsReceita: [],
         user: null,
         categoria: null,
         data: null,
@@ -46,8 +46,8 @@ class ReceitaScreen extends Component {
     getListCategoria = async () => {
         try {
             api = new apiServices();
-            const data = await api.get('/api/Categoria/byTipoCategoria/2');
-            this.setState({ dataSource: data, isLoading: false });
+            const json = await api.get('/api/Categoria/byTipoCategoria/' + this.state.user.id + '/2');
+            this.setState({ dsReceita: json, isLoading: false });
         }
         catch (err) {
             console.error(err);
@@ -108,10 +108,12 @@ class ReceitaScreen extends Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ categoria: itemValue })
                                 }>
-                                {this.state.dataSource.map((item, key) => (
+                                {this.state.dsReceita.map((item, key) => (
                                     <Picker.Item label={item.descricao} value={item.id} key={key} />)
                                 )}
                             </Picker>
+                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova"
+                                onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Receita', refresh: () => { this.getListCategoria(); }})} />
                         </View>
                         <View style={styles.text}>
                             <DatePicker

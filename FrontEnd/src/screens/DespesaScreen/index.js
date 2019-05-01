@@ -37,8 +37,8 @@ class DespesaScreen extends Component {
     getListCategoria = async () => {
         try {
             api = new apiServices();
-            const data = await api.get('/api/Categoria/byTipoCategoria/1');
-            this.setState({ dataSourceCategoria: data, isLoading: false });
+            const json = await api.get('/api/Categoria/byTipoCategoria/' + this.state.user.id + '/1');
+            this.setState({ dataSourceCategoria: json, isLoading: false });
         }
         catch (err) {
             console.error(err);
@@ -131,7 +131,8 @@ class DespesaScreen extends Component {
                                     <Picker.Item label={item.descricao} value={item.id} key={key} />)
                                 )}
                             </Picker>
-                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova" />
+                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova" 
+                            onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Despesa',  refresh: () => { this.getListCategoria(); }})} />
                         </View>
                         <View style={styles.text}>
                             <DatePicker

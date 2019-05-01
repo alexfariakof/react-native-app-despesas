@@ -18,7 +18,7 @@ class RecuperarSenhaScreen extends Component {
     }
 
     componentDidMount() {
-        //this.clearRecuperarSenha();
+        this.clearRecuperarSenha();
     }
 
     clearRecuperarSenha = () => {
@@ -38,7 +38,7 @@ class RecuperarSenhaScreen extends Component {
             api = new apiServices();
             const data = await api.post('/api/controleacesso/recoverypassword', body);
             this.setState({ isLoading: false });
-            //this.props.navigation.goBack();           
+            this.props.navigation.goBack();           
         }
         catch (err) {
             console.error(err);

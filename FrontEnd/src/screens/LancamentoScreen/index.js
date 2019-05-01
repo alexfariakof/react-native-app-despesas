@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, Image, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { View, Text, ImageBackground, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
 
 import apiServices from '../../services/ApiServices.js'
-import LacamentoComponent from '../../components/LacamentoComponent.js'
-import DateSpinnerComponent from '../../components/DateSpinnerComponent.js'
+import LacamentoComponent from './Component/LacamentoComponent.js'
+import DateSpinnerComponent from './Component/DateSpinnerComponent.js'
 
 class LancamentoScreen extends Component {
     static navigationOptions = { header: null }
@@ -33,8 +33,8 @@ class LancamentoScreen extends Component {
     getSaldoById = async () => {
         try {
             api = new apiServices();
-            let data = await api.get('/api/Lancamento/saldo/' + this.state.user.id);
-            this.setState({ saldo: data });
+            let json = await api.get('/api/Lancamento/saldo/' + this.state.user.id);
+            this.setState({ saldo: json });
         }
         catch (err) {
             console.error(err);
@@ -43,18 +43,17 @@ class LancamentoScreen extends Component {
 
     getLancamentoById = async () => {
         if (this.state.isLoaded !== true){
-            alert(this.state.isLoaded);
             hoje = new Date();
             ano = hoje.getFullYear();
             mes = hoje.getMonth() + 1;
-
-            this.setState({selectedDate: ano + '-' + mes + '-01', isLoaded: true });            
+            //this.setState({selectedDate: ano + '-' + mes + '-01', isLoaded: true });            
+            this.setState({selectedDate: '2019-04-01', isLoaded: true });            
         }
 
         try {
             api = new apiServices();
-            const data = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
-            this.setState({ dataSource: data });
+            const json = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
+            this.setState({ dataSource: json });
 
         }
         catch (err) {
@@ -80,9 +79,6 @@ class LancamentoScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-                <TouchableOpacity onPress={() => { alert(this.state.selectedDate)}} >
-                    <View><Text>Here Touch here !!!!!!! </Text></View>
-                </TouchableOpacity>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
@@ -104,11 +100,11 @@ class LancamentoScreen extends Component {
                         {this.state.isLoading ?
                             <View style={{ flex: 1, alignItems: 'center' }}>
                                 <ActivityIndicator
-                                    color="green"
+                                    color="red"
                                     size="large"
                                 />
                             </View>
-                            : <LacamentoComponent DataSource={this.state.dataSource} />
+                            : <LacamentoComponent DataSource={this.state.dataSource}  />
                         }
                     </View>
                     <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>
