@@ -38,15 +38,7 @@ class LancamentoScreen extends Component {
         }
     };
 
-    getLancamentoById = async () => {
-        if (this.state.isLoaded !== true){
-            hoje = new Date();
-            ano = hoje.getFullYear();
-            mes = hoje.getMonth() + 1;
-            //this.setState({selectedDate: ano + '-' + mes + '-01', isLoaded: true });            
-            this.setState({selectedDate: '2019-04-01', isLoaded: true });            
-        }
-
+    getLancamentoById = async ()  => {
         try {
             api = new apiServices();
             const json = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
@@ -62,8 +54,11 @@ class LancamentoScreen extends Component {
 
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
+            hoje = new Date();
+            ano = hoje.getFullYear();
+            mes = hoje.getMonth()+1;
             this.getSaldoById();
-            await this.getLancamentoById();
+            this.handlerGetSpinnerSelectedDate(ano + '-' + mes + '-01');
             this.setState({ isLoading: false });
         }           
     }

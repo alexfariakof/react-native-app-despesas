@@ -84,7 +84,7 @@ class ReceitaScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-                <View><TouchableOpacity onPress={() => this.props.navigation.goBack()}  ><Text>Voltar</Text></TouchableOpacity></View>
+                <View><TouchableOpacity onPress={() => {this.clearReceita();this.props.navigation.goBack();}}  ><Text>Voltar</Text></TouchableOpacity></View>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
@@ -100,7 +100,7 @@ class ReceitaScreen extends Component {
 
                         }} >{"R$ " + this.state.textValor}</Text>
                     </View>
-                    <View  >
+                    <View>
                         <View style={styles.text}>
                             <Picker style={{ paddingTop: 0 }}
                                 selectedValue={this.state.categoria}
