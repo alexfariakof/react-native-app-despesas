@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ImageBackground, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
@@ -10,10 +11,6 @@ import DateSpinnerComponent from './Component/DateSpinnerComponent.js'
 
 class LancamentoScreen extends Component {
     static navigationOptions = { header: null }
-
-    constructor(props) {
-        super(props)
-    }
 
     state = {
         isLoading: true,
@@ -54,7 +51,6 @@ class LancamentoScreen extends Component {
             api = new apiServices();
             const json = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
             this.setState({ dataSource: json });
-
         }
         catch (err) {
             console.error(err);
@@ -67,12 +63,26 @@ class LancamentoScreen extends Component {
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
             this.getSaldoById();
-            this.getLancamentoById();
+            await this.getLancamentoById();
             this.setState({ isLoading: false });
         }           
     }
 
     render() {
+        renderItem = lancamento => {
+            return <LacamentoComponent onPress={() => {
+                if (lancamento.item.idReceita === 0)
+                    this.props.navigation.navigate('Despesa')
+                else
+                    this.props.navigation.navigate('Receita')
+            }
+            }
+                data={lancamento.item.data}
+                categoria={lancamento.item.categoria}
+                descricao={lancamento.item.descricao}
+                valor={lancamento.item.valor} />
+        }
+
         return (
             <ImageBackground
                 source={assets.background}
@@ -104,7 +114,12 @@ class LancamentoScreen extends Component {
                                     size="large"
                                 />
                             </View>
-                            : <LacamentoComponent DataSource={this.state.dataSource}  />
+                            : <FlatList
+                                data={this.state.dataSource}
+                                renderItem={renderItem}
+                                pagingEnabled
+                                keyExtractor={item => item.id.toString()}
+                            />
                         }
                     </View>
                     <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>

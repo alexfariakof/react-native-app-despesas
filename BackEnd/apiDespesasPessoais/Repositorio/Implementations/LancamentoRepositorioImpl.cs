@@ -23,19 +23,21 @@ namespace apiDespesasPessoais.Repositorio.Implementations
             int mes = data.Month;
             int ano = data.Year;
 
-            string sql = "SELECT Checksum(NewId()) % 100 as id,  d.idUsuario, data, idCategoria, valor*-1 as valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria" +
+            string sql = "Select ABS(Checksum(NewId()) %10000) as id, lancamentos.* From ( " + 
+                         "Select d.idUsuario, data, idCategoria, valor*-1 as valor, d.id as idDespesa, 0 as idReceita, d.descricao, c.descricao as categoria " +
                          "  FROM Despesa d " +
-                         " Inner Join Categoria c on d.idCategoria = c.id" +
+                         " Inner Join Categoria c on d.idCategoria = c.id " +
                          " where d.idUsuario = @idUsuario " +
                          "   and Month(data) = @mes " +
-                         "   and  Year(data) = @ano" +
+                         "   and  Year(data) = @ano " +
                          " union " +
-                         "SELECT Checksum(NewId()) % 100  as id, r.idUsuario, data, idCategoria, valor,0 as idDespesa, r.id as idReceita, r.descricao, c.descricao as categoria " +
+                         "Select r.idUsuario, data, idCategoria, valor,0 as idDespesa, r.id as idReceita, r.descricao, c.descricao as categoria " +
                          "  FROM Receita r " +
                          " Inner Join Categoria c on r.idCategoria = c.id " +
                          " where r.idUsuario = @idUsuario " +
                          "   and Month(data) = @mes " +
-                         "   and  Year(data) = @ano";
+                         "   and  Year(data) = @ano " +
+                         ") lancamentos ";
 
             using (_context)
             {

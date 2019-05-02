@@ -61,7 +61,7 @@ class DateSpinnerComponent extends Component {
       <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white' }}>
         <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
           <TouchableOpacity onPress={() => { setPrevious(); handleGetCurrentDate(this.state.currentDate); }} >
-            <Image source={assets.arrowLeft} />
+            <Image source={require('../../../../assets/ArrowLeft.png')} />
           </TouchableOpacity>
         </View>
         <View style={{ flex: 4, alignItems: 'center' }} >
@@ -69,7 +69,7 @@ class DateSpinnerComponent extends Component {
         </View>
         <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
           <TouchableOpacity onPress={() => { setNext(); handleGetCurrentDate(this.state.currentDate); }} >
-            <Image source={assets.arrowRight} />
+            <Image source={require('../../../../assets/ArrowRight.png')} />
           </TouchableOpacity>
         </View>
       </View>
