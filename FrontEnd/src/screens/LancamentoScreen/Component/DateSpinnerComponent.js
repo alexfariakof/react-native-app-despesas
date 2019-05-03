@@ -24,8 +24,8 @@ class DateSpinnerComponent extends Component {
     mes = this.state.mes + 1;
     ano = this.state.ano;
     //alert(ano + '-' + mes + '-01' + 'state'  + this.state.mes);
-    if (mes > 11) {
-      mes = 0
+    if (mes > 12) {
+      mes = 1
       ano = ano + 1
     }
 
@@ -42,8 +42,8 @@ class DateSpinnerComponent extends Component {
     mes = this.state.mes - 1;
     ano = this.state.ano;
     //alert(ano + '-' + mes + '-01' + 'state'  + this.state.mes);
-    if (mes < 0) {
-      mes = 11
+    if (mes < 1) {
+      mes = 12
       ano = ano - 1
     }
 

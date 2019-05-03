@@ -31,10 +31,10 @@ class HomeScreen extends Component {
             return;
 
         const body = {
-            //login: 'admin@admin',
-            //senha: 'admin'
-            login: this.state.login,
-            senha: this.state.senha
+            login: 'admin@admin',
+            senha: 'admin'
+            //login: this.state.login,
+            //senha: this.state.senha
         };
 
         api = new apiServices();
