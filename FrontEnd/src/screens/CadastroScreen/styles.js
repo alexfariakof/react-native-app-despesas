@@ -41,5 +41,9 @@ export default styles = StyleSheet.create({
         height: 100,
         marginTop: 16,
         marginBottom: 32
-    }
+    },
+    ViewCentralizar: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 })

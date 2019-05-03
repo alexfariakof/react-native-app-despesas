@@ -59,7 +59,7 @@ class ReceitaScreen extends Component {
         }
     };
 
-    saveReceita = () => {
+    saveReceita = async () => {
         if (!this.isValid(this.state))
             return;
 
@@ -76,16 +76,17 @@ class ReceitaScreen extends Component {
         try {
             this.setState({ isLoading: true });
             api = new apiServices();
-            let response = api.post('/api/Receita', body);
-            if (response !== null) {
-                refresh();
-                alert('Receita incluída com sucesso.');
-                this.props.navigation.goBack();
-            }
-            else
-                alert('Erro ao realiza operação. Tente mais tarde.');
-
-            this.setState({ isLoading: false });
+            let response = await api.post('/api/Receita', body, function() {
+                if (response !== null) {
+                    alert('Receita incluída com sucesso.');
+                    this.props.navigation.goBack();
+                    refresh();
+                }
+                else
+                    alert('Erro ao realiza operação. Tente mais tarde.');
+    
+                this.setState({ isLoading: false });    
+            });
         }
         catch (err) {
             console.error(err);
