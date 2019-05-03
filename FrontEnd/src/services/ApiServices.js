@@ -43,49 +43,35 @@ class ApiServices {
             console.error(error);
         }
     }
-
-    post = async (url, body) => {
-        let response = null;
+   
+    post = async (url, body, callback) => {
         const access = await AsyncStorage.getItem('@dpApiAccess');       
 
         try {
             if (access) {
                 const token = JSON.parse(access).accessToken;
                 //alert(JSON.stringify(this.state.baseUrl + url + '-' + JSON.stringify(body))); //return;
-                response = fetch(this.state.baseUrl + url, {
+                await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
-                });
+                }).then(response => response.json())
+                .then(json => callback(json), callback);
             }
             else {
                 //alert(JSON.stringify(this.state.baseUrl + url + '-' + body)); return;
-                response = await fetch(this.state.baseUrl + url, {
+                await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }, body: JSON.stringify(body),
-                });
-
+                }).then(response => response.json())
+                .then(json => callback(json), callback);
             }
-
-            if (response.status === 200) {
-                let data = await response.json();
-                return data;
-            }
-            if (response.status === 401)
-                return JSON.stringify({ 'message': 'Unauthorized' });
-
-            if (response.status === 400)
-                return JSON.stringify({ 'message': 'Bad Request' });
-
-            if (response.status === 404)
-                return JSON.stringify({ 'message': 'Not Found' });
-
         }
         catch (error) {
             console.error(error);
@@ -168,6 +154,21 @@ class ApiServices {
         catch (error) {
             console.error(error);
         }
+    }
+
+    getExeption = (responseStatus) => {
+        if (responseStatus === 200) {
+            return JSON.parse({message:'Ok'});
+        }
+        if (responseStatus === 401)
+            return JSON.parse({ 'message': 'Unauthorized' });
+
+        if (responseStatus === 400)
+            return JSON.pase({ 'message': 'Bad Request' });
+
+        if (responseStatus === 404)
+            return JSON.pase({ 'message': 'Not Found' });
+
     }
 };
 
