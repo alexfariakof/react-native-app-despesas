@@ -20,17 +20,10 @@ const AppDrawer = createDrawerNavigator({
     screen: CategoriaScreen,
     navigationOptions: { drawerLabel: () => null }
   },
-  Sair: {
-    screen: () => (      
-       async () => {
-        await AsyncStorage.removeItem('@dpApiAccess');
-
-        return this.props.navigation.navigate('Home')
-      }
-    )
-  }
-}
-, { initialRouteName: 'Lancamento' });
+  Sair: { screen: HomeScreen }
+}, {
+    initialRouteName: 'Lancamento'
+  });
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -49,6 +42,8 @@ const AppNavigator = createStackNavigator({
     screen: AppDrawer,
     navigationOptions: { header: null }
   }
-}, { initialRouteName: 'Home' });
+}, {
+    initialRouteName: 'Home'
+  });
 
 export default createAppContainer(AppNavigator)

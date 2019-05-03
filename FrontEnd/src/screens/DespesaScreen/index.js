@@ -69,7 +69,7 @@ class DespesaScreen extends Component {
         try {
             this.setState({ isLoading: true });
             api = new apiServices();
-            const response = await api.post('/api/Despesa', body);
+            let response = await api.post('/api/Despesa', body);
             if (response !== null){
                 refresh();
                 alert('Despesa incluída com sucesso.');
@@ -214,14 +214,12 @@ class DespesaScreen extends Component {
                         <View style={styles.ViewCentralizar} >
                             <Text style={{ color: 'red' }}> {this.state.errors.descricao} </Text>
                         </View>
-
                         <TextInputMask style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
                             mask={"[999999].[00]"} keyboardType='decimal-pad' onChangeText={(valor) => this.setState({ valor })} value={this.state.valor}  >
                         </TextInputMask>
                         <View style={styles.ViewCentralizar} >
                             <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
                         </View>
-
                     </View>
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (

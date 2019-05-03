@@ -34,13 +34,13 @@ class HomeScreen extends Component {
             const json = await api.post('/api/controleacesso/signin', body);
             this.setState({ isLoading: true })
             if (json.autenticated === true) {
-                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(json));
-                this.setState({ isLoading: false });
+                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(json));                
                 this.props.navigation.navigate('Lancamento');
             }
             else {
                 this.setState({ erroMessage: json.message });
             }
+            this.setState({ isLoading: false });
         }
         catch (error) {
             this.setState({ isLoading: false });

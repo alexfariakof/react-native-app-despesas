@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage'
-
 import assets from './assets'
 
 import apiServices from '../../services/ApiServices.js'
@@ -10,7 +8,7 @@ import LacamentoComponent from './Component/LacamentoComponent.js'
 import DateSpinnerComponent from './Component/DateSpinnerComponent.js'
 
 class LancamentoScreen extends Component {
-    static navigationOptions = { header: null }
+    static navigationOptions = { header: null   }
 
     state = {
         isLoading: true,
@@ -77,7 +75,7 @@ class LancamentoScreen extends Component {
     }
 
     render() {
-        return (
+        return (            
             <ImageBackground
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}

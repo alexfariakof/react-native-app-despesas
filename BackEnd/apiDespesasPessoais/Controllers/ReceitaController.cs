@@ -39,7 +39,17 @@ namespace apiReceitasPessoais.Controllers
         {
             if (receita == null)
                 return BadRequest();
-            return new ObjectResult(_receitaBusiness.Create(receita));
+
+            try
+            {
+                return new ObjectResult(_receitaBusiness.Create(receita));
+            }
+            catch
+            {
+                return BadRequest("{ 'message' : 'Não foi possível realizar o cadastro'}");
+            }
+         
+            
         }
 
         [HttpPut]
