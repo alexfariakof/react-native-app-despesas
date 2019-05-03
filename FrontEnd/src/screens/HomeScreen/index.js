@@ -14,7 +14,11 @@ class HomeScreen extends Component {
         erroMessage: null,
         login: null,
         senha: null,
-        isLoading: true
+        isLoading: true,
+        errors: {
+            login: null,
+            senha: null
+        }
     }
     
     async componentDidMount() {
@@ -22,25 +26,29 @@ class HomeScreen extends Component {
         this.setState({ isLoading: false })
     }
 
-    signIn = async () => {
-        api = new apiServices();
+    signIn = async () => {        
+        if (!this.isValid(this.state))
+            return;
+
         const body = {
-            login: 'admin@admin',
-            senha: 'admin'
-            //login: this.state.login,
-            //senha: this.state.senha
+            //login: 'admin@admin',
+            //senha: 'admin'
+            login: this.state.login,
+            senha: this.state.senha
         };
+
+        api = new apiServices();
         try {
-            const json = await api.post('/api/controleacesso/signin', body);
-            this.setState({ isLoading: true })
-            if (json.autenticated === true) {
-                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(json));                
-                this.props.navigation.navigate('Lancamento');
-            }
-            else {
-                this.setState({ erroMessage: json.message });
-            }
-            this.setState({ isLoading: false });
+            this.setState({ isLoading: true });
+            await api.post('/api/controleacesso/signin', body, async (json) => {
+                if (json.autenticated === true) {
+                    await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(json));
+                    this.props.navigation.navigate('Lancamento');
+                }
+                else
+                    this.setState({ erroMessage: json.message });
+                this.setState({ isLoading: false });
+            });           
         }
         catch (error) {
             this.setState({ isLoading: false });
@@ -48,6 +56,27 @@ class HomeScreen extends Component {
             //console.error(error);
         }
     };
+
+    isValid = (body) => {
+        var result = true;
+
+        if ((body.login === null) || (body.login === undefined) || (body.login === 0)) {
+            body.errors.login = 'O email de acesso não pode ser nulo!';
+            result = false;
+        }
+        else
+            body.errors.login = null;
+    
+        if ((body.senha === null) || (body.senha === undefined) || (body.senha.trim() === '')) {
+            body.errors.senha = 'Senha não pode ser nula!';
+            result = false;
+        }
+        else
+            body.errors.senha = null;
+
+        this.setState({ errors: body.errors });
+        return result;
+    }    
 
     render() {
         const { isLoading } = this.state;
@@ -68,7 +97,14 @@ class HomeScreen extends Component {
                     </View>
                     <View>
                         <TextInput style={styles.text} placeholder='Digite seu email' maxLength={20} keyboardType='email-address' onChangeText={txt => this.setState({ login: txt })} />
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.login} </Text>
+                        </View>
+
                         <TextInput style={styles.text} placeholder='Digite sua senha' maxLength={8} secureTextEntry onChangeText={txt => this.setState({ senha: txt })} />
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.senha} </Text>
+                        </View>
                     </View>
                     <View style={styles.ViewCentralizar} >
                         <Text style={{ color: 'red' }}> {this.state.erroMessage} </Text>
