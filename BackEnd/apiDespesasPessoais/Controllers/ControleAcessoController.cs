@@ -24,12 +24,12 @@ namespace apiDespesasPessoais.Controllers
             if (controleAcessoVO == null)
                 return BadRequest();
 
+            var result = _controleAcessoBusiness.Create(controleAcessoVO);
 
-            if (_controleAcessoBusiness.Create(controleAcessoVO))
-                return new ObjectResult(_controleAcessoBusiness.Create(controleAcessoVO));
+            if (result)
+                return  Ok(new { message = result });
             else
-                return Ok("{ 'message' : 'Não foi possível realizar o cadastro'}");
-
+                return BadRequest(new { message = "Não foi possível realizar o cadastro" });
         }
         
         [AllowAnonymous]
