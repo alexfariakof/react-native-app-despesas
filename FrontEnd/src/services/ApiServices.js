@@ -1,6 +1,4 @@
-import { Component } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 class ApiServices {
 
@@ -44,7 +42,7 @@ class ApiServices {
         }
     }
    
-    post = async (url, body, callback) => {
+    post = async (url, body, callBack) => {
         const access = await AsyncStorage.getItem('@dpApiAccess');       
 
         try {
@@ -59,7 +57,7 @@ class ApiServices {
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callback(json), callback);
+                .then(json => callBack(json));
             }
             else {
                 //alert(JSON.stringify(this.state.baseUrl + url + '-' + body)); return;
@@ -70,7 +68,7 @@ class ApiServices {
                         'Content-Type': 'application/json'
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callback(json), callback);
+                .then(json => callBack(json));
             }
         }
         catch (error) {
@@ -92,25 +90,9 @@ class ApiServices {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
-                });
+                }).then(response => response.json())
+                .then(json => callBack(json), callBack);
             }
-            else {
-                return null;
-                // Erro Usuario não logado
-            }
-
-            if (response.status === 200) {
-                let data = await response.json();
-                return data;
-            }
-            if (response.status === 401)
-                return JSON.stringify({ 'message': 'Unauthorized' });
-
-            if (response.status === 400)
-                return JSON.stringify({ 'message': 'Bad Request' });
-
-            if (response.status === 404)
-                return JSON.stringify({ 'message': 'Not Found' });
         }
         catch (error) {
             console.error(error);
@@ -131,32 +113,16 @@ class ApiServices {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
-                });
+                }).then(response => response.json())
+                .then(json => callBack(json), callBack);
             }
-            else {
-                return null;
-                //Erro Usuario Não logado
-            }
-
-            if (response.status === 200) {
-                let data = await response.json();
-                return data;
-            }
-            if (response.status === 401)
-                return JSON.stringify({ 'message': 'Unauthorized' });
-
-            if (response.status === 400)
-                return JSON.stringify({ 'message': 'Bad Request' });
-
-            if (response.status === 404)
-                return JSON.stringify({ 'message': 'Not Found' });
         }
         catch (error) {
             console.error(error);
         }
     }
 
-    getExeption = (responseStatus) => {
+    getException = (responseStatus) => {
         if (responseStatus === 200) {
             return JSON.parse({message:'Ok'});
         }
@@ -164,10 +130,10 @@ class ApiServices {
             return JSON.parse({ 'message': 'Unauthorized' });
 
         if (responseStatus === 400)
-            return JSON.pase({ 'message': 'Bad Request' });
+            return JSON.parse({ 'message': 'Bad Request' });
 
         if (responseStatus === 404)
-            return JSON.pase({ 'message': 'Not Found' });
+            return JSON.parse({ 'message': 'Not Found' });
 
     }
 };

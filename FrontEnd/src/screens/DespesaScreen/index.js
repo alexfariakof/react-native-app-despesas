@@ -54,34 +54,36 @@ class DespesaScreen extends Component {
 
     saveDespesa = async () => {
         if (!this.isValid(this.state))
-            return;
+           return;
         
         const refresh =  this.props.navigation.state.params.refresh;   
         const body = {
             'idUsuario': this.state.user.id,
             'idCategoria': this.state.categoria,
-            'data': this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
+            'data': this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             'descricao': this.state.descricao,
             'valor': parseFloat(this.state.valor, (2)),
             'dataVencimento': '2019-04-27'
         }
 
         try {
-            this.setState({ isLoading: true });
             api = new apiServices();
-            let response = await api.post('/api/Despesa', body);
-            if (response !== null){
-                refresh();
-                alert('Despesa incluída com sucesso.');
-                this.props.navigation.goBack();
-            }
-            else
-                alert('Erro ao realiza operação. Tente mais tarde.');
-
-            this.setState({ isLoading: false });
+            this.setState({ isLoading: true });
+            await api.post('/api/Despesa', body, (json) => {
+                alert(JSON.stringify(json));
+                if (json.message === true) {
+                    refresh();
+                    alert('Despesa incluída com sucesso.');
+                    this.props.navigation.goBack();
+                }
+                else
+                    alert(json.message);
+                this.setState({ isLoading: false });
+            });
         }
         catch (err) {
-            console.error(err);
+            alert('Erro ao realiza operação. Tente mais tarde.');
+            //console.error(err);
         }
     }
 

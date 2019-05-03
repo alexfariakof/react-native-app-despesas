@@ -41,11 +41,11 @@ namespace apiDespesasPessoais.Controllers
                 return BadRequest();
             try
             {
-                return new ObjectResult(_despesaBusiness.Create(despesa));
+                return new ObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
             }
             catch
             {
-                return BadRequest("{ 'message' : 'Não foi possível realizar o cadastro'}");
+                return BadRequest(new { message = "Não foi possível realizar o cadastro da despesa."});
             }
         }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation'
-import AsyncStorage from '@react-native-community/async-storage'
 
 import HomeScreen from './src/screens/HomeScreen'
 import CadastroScreen from './src/screens/CadastroScreen'
@@ -41,7 +40,7 @@ const AppNavigator = createStackNavigator({
   appDrawer: {
     screen: AppDrawer,
     navigationOptions: { header: null }
-  }
+  },
 }, {
     initialRouteName: 'Home'
   });

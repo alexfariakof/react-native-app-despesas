@@ -31,7 +31,7 @@ class DateSpinnerComponent extends Component {
 
     this.setState({
       mes: mes,
-      ano: ano,
+      ano: ano, 
       mesAnoExtenso: this.meses[mes-1] + " de " + ano,
       currentDate: ano + '-' + mes + '-01'
     });
