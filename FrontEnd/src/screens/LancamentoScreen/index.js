@@ -38,7 +38,7 @@ class LancamentoScreen extends Component {
         }
     };
 
-    getLancamentoById = async ()  => {
+    getLancamentoById = async () => {
         try {
             api = new apiServices();
             const json = await api.get('/api/Lancamento/' + this.state.selectedDate + '/' + this.state.user.id);
@@ -56,28 +56,27 @@ class LancamentoScreen extends Component {
             this.setState({ user: JSON.parse(access).usuario });
             hoje = new Date();
             ano = hoje.getFullYear();
-            mes = hoje.getMonth()+1;
+            mes = hoje.getMonth() + 1;
             this.getSaldoById();
             this.handlerGetSpinnerSelectedDate(ano + '-' + mes + '-01');
             this.setState({ isLoading: false });
-        }           
+        }
+    }
+
+    renderItem = lancamento => {
+        return <LacamentoComponent onPress={() => {
+            if (lancamento.item.idReceita === 0)
+                this.props.navigation.navigate('Despesa');
+            else
+                this.props.navigation.navigate('Receita');
+        }}
+            data={lancamento.item.data}
+            categoria={lancamento.item.categoria}
+            descricao={lancamento.item.descricao}
+            valor={lancamento.item.valor} />
     }
 
     render() {
-        renderItem = lancamento => {
-            return <LacamentoComponent onPress={() => {
-                if (lancamento.item.idReceita === 0)
-                    this.props.navigation.navigate('Despesa')
-                else
-                    this.props.navigation.navigate('Receita')
-            }
-            }
-                data={lancamento.item.data}
-                categoria={lancamento.item.categoria}
-                descricao={lancamento.item.descricao}
-                valor={lancamento.item.valor} />
-        }
-
         return (
             <ImageBackground
                 source={assets.background}
@@ -100,7 +99,7 @@ class LancamentoScreen extends Component {
                             <Text style={{ textAlign: 'right', fontSize: 32, fontWeight: 'bold', color: 'white' }} >{"R$ " + this.state.saldo}</Text>
                         </View>
                     </View>
-                    <DateSpinnerComponent handleGetCurrentDate = { this.handlerGetSpinnerSelectedDate } />
+                    <DateSpinnerComponent handleGetCurrentDate={this.handlerGetSpinnerSelectedDate} />
                     <View style={{ flex: 3 }}>
                         {this.state.isLoading ?
                             <View style={{ flex: 1, alignItems: 'center' }}>
@@ -111,7 +110,7 @@ class LancamentoScreen extends Component {
                             </View>
                             : <FlatList
                                 data={this.state.dataSource}
-                                renderItem={renderItem}
+                                renderItem={this.renderItem}
                                 pagingEnabled
                                 keyExtractor={item => item.id.toString()}
                             />
@@ -119,12 +118,12 @@ class LancamentoScreen extends Component {
                     </View>
                     <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Despesa')} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Despesa', { dados: 'Porraaaa', refresh: () => { this.getLancamentoById(); } })} >
                                 <Image source={assets.btnDespesa} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 3, alignItems: 'center', }} >
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Receita')} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Receita', { refresh: () => { this.getLancamentoById(); } })} >
                                 <Image source={assets.btnReceita} />
                             </TouchableOpacity>
                         </View>

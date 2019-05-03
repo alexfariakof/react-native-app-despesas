@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity
 import AsyncStorage from '@react-native-community/async-storage'
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
+import TextInputMask from 'react-native-text-input-mask';
 
 import assets from './assets'
 import styles from './styles'
@@ -21,7 +22,7 @@ class ReceitaScreen extends Component {
         categoria: null,
         data: null,
         textDescricao: null,
-        textValor: 'R$ 0,00',
+        textValor: '0.00',
     }
 
     async componentDidMount() {
@@ -38,7 +39,7 @@ class ReceitaScreen extends Component {
         this.setState({
             data: null,
             textDescricao: null,
-            textValor: '0,00',
+            textValor: 0.00,
             isLoading: false,
         });
     }
@@ -60,7 +61,7 @@ class ReceitaScreen extends Component {
             idCategoria: this.state.categoria,
             data: this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
             descricao: this.state.textDescricao,
-            valor: this.state.textValor
+            valor: parseFloat(this.state.textValor,(2))
         }
 
         try {
@@ -149,9 +150,9 @@ class ReceitaScreen extends Component {
                         <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
                             onChangeText={(textDescricao) => this.setState({ textDescricao })} value={this.state.textDescricao} >
                         </TextInput>
-                        <TextInput style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
-                            keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })} value={this.state.textValor}  >
-                        </TextInput>
+                        <TextInputMask style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
+                        mask={"[999999].[00]"} keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })} value={this.state.textValor}  >
+                        </TextInputMask>
                     </View>
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (

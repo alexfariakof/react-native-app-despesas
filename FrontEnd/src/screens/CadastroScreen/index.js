@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, TextInput, Image, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import TextInputMask from 'react-native-text-input-mask';
+
 
 import assets from './assets'
 import styles from './styles'
@@ -75,9 +77,9 @@ class CadastroScreen extends Component {
                     onChangeText={(sobreNome) => this.setState({ sobreNome })} value={this.state.sobreNome}>
                 </TextInput>
     
-                    <TextInput style={styles.text} placeholder='Digite um telefone' maxLength={30} keyboardType='number-pad'
-                    onChangeText={(telefone) => this.setState({ telefone })} value={this.state.telefone}>
-                </TextInput>
+                    <TextInputMask style={styles.text} placeholder='Digite um telefone' maxLength={30} keyboardType='number-pad'
+                     mask={"([00]) [0][000]-[0000]"} onChangeText={(telefone) => this.setState({ telefone })} value={this.state.telefone}>
+                </TextInputMask>
 
                     <TextInput style={styles.text} placeholder='Digite um email' maxLength={30} keyboardType='email-address'
                         onChangeText={(email) => this.setState({ email })} value={this.state.email}>

@@ -39,7 +39,14 @@ namespace apiDespesasPessoais.Controllers
         {
             if (despesa == null)
                 return BadRequest();
-            return new ObjectResult(_despesaBusiness.Create(despesa));
+            try
+            {
+                return new ObjectResult(_despesaBusiness.Create(despesa));
+            }
+            catch
+            {
+                return BadRequest("{ 'message' : 'Não foi possível realizar o cadastro'}");
+            }
         }
 
         [HttpPut]

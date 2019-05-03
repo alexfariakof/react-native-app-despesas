@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity
 import AsyncStorage from '@react-native-community/async-storage'
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
+import TextInputMask from 'react-native-text-input-mask';
 
 import assets from './assets'
 import styles from './styles'
@@ -12,7 +13,6 @@ class DespesaScreen extends Component {
     static navigationOptions = {
         header: null
     }
-
     state = {
         isLoading: true,
         errorMessage: null,
@@ -20,8 +20,14 @@ class DespesaScreen extends Component {
         dataSourceCategoria: [],
         categoria: null,
         data: null,
-        textDescricao: null,
-        textValor: '0,00',
+        descricao: null,
+        valor: '0.00',
+        errors: {
+            data: null,
+            desricao: null,
+            valor: null,
+            categoria: null
+        }
     }
 
     async componentDidMount() {
@@ -32,6 +38,7 @@ class DespesaScreen extends Component {
             this.getListCategoria();
         }
         this.clearDespesa();
+        
     }
 
     getListCategoria = async () => {
@@ -45,16 +52,32 @@ class DespesaScreen extends Component {
         }
     };
 
-    saveCategoria = async () => {
+    saveDespesa = async () => {
+        if (!this.isValid(this.state))
+            return;
+        
+        const refresh =  this.props.navigation.state.params.refresh;   
         const body = {
-            'id': this.state.user.id,
-            'idTipoCategoria': '1',
-            'descricao': this.state.categoria,
+            'idUsuario': this.state.user.id,
+            'idCategoria': this.state.categoria,
+            'data': this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
+            'descricao': this.state.descricao,
+            'valor': parseFloat(this.state.valor, (2)),
+            'dataVencimento': '2019-04-27'
         }
+
         try {
             this.setState({ isLoading: true });
             api = new apiServices();
-            const data = await api.post('/api/Categoria', body);
+            const response = await api.post('/api/Despesa', body);
+            if (response !== null){
+                refresh();
+                alert('Despesa incluída com sucesso.');
+                this.props.navigation.goBack();
+            }
+            else
+                alert('Erro ao realiza operação. Tente mais tarde.');
+
             this.setState({ isLoading: false });
         }
         catch (err) {
@@ -62,36 +85,49 @@ class DespesaScreen extends Component {
         }
     }
 
-    saveDespesa = async () => {
-        const body = {
-            'idUsuario': this.state.user.id,
-            'idCategoria': this.state.categoria,
-            'data': this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
-            'descricao': this.state.textDescricao,
-            'valor': this.state.textValor,
-            'dataVencimento': '2019-04-27'
-        }
+    isValid = (body) => {
+        var retorno = true;
 
-        try {
-            this.setState({ isLoading: true });
-            api = new apiServices();
-            const data = await api.post('/api/Despesa', body);
-          
-            this.props.navigation.goBack();
+        if ((body.categoria === null) || (body.categoria === undefined) || (body.categoria === 0)) {
+            body.errors.categoria = 'Uma categoria deve ser selecionada!';
+            retorno = false;
         }
-        catch (err) {
-            console.error(err);
+        else
+            body.errors.data = null;
+
+        if ((body.data === null) || (body.data === undefined) || (body.data.trim() === '')) {
+            body.errors.data = 'Uma data deve ser selecionada!';
+            retorno = false;
         }
+        else
+            body.errors.data = null;
+
+        if ((body.descricao === null) || (body.descricao === undefined) || (body.descricao.trim() === '')) {
+            body.errors.descricao = 'A descrição deve ser preenchida!';
+            retorno = false;
+        }
+        else
+            body.errors.descricao = null;
+
+        if (parseFloat(body.valor, 2) <= 0) {
+            body.errors.valor = 'O valor deve ser > 0!';
+            retorno = false;
+        }
+        else
+            body.errors.valor = null
+
+        this.setState({ errors: body.errors });
+        return retorno;
     }
 
     clearDespesa = () => {
         this.setState({
             categoria: null,
             data: null,
-            textDescricao: null,
-            textValor: '0,00',
+            descricao: null,
+            valor: '0.00',
             isLoading: false,
-        });    
+        });
     }
 
     render() {
@@ -103,7 +139,7 @@ class DespesaScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-                <View><TouchableOpacity onPress={() => {this.clearDespesa();this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
+                <View><TouchableOpacity onPress={() => { this.clearDespesa(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
@@ -117,10 +153,13 @@ class DespesaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} >{"R$ " + this.state.textValor}</Text>
+                        }} >{"R$ " + this.state.valor}</Text>
                     </View>
-                    <View  >
-                        <View style={styles.text}>
+                    <View  style={{paddingLeft:4, paddingRight:4}} >
+                        <View style={{ borderBottomWidth: 2, borderColor: '#C4C4C4' }} >
+                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova"
+                                onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Despesa', refresh: () => { this.getListCategoria(); } })} />
+
                             <Picker style={{ paddingTop: 0 }}
                                 selectedValue={this.state.categoria}
                                 style={styles.text}
@@ -131,14 +170,15 @@ class DespesaScreen extends Component {
                                     <Picker.Item label={item.descricao} value={item.id} key={key} />)
                                 )}
                             </Picker>
-                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova" 
-                            onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Despesa',  refresh: () => { this.getListCategoria(); }})} />
+                        </View>
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.categoria} </Text>
                         </View>
                         <View style={styles.text}>
                             <DatePicker
                                 date={this.state.data}
                                 mode="date"
-                                placeholder="Selecione uma data"
+                                placeholder="  Selecione uma data"
                                 format="DD-MM-YYYY"
                                 minDate="2016-05-01"
                                 maxDate="2080-12-30"
@@ -149,27 +189,39 @@ class DespesaScreen extends Component {
                                         position: 'absolute',
                                         left: dim.width - 60,
                                         top: 4,
-                                        marginLeft: 0
+                                        margin: 0
                                     },
                                     dateInput: {
-                                        height: 48,
+                                        height: 28,
                                         fontSize: 24,
                                         color: 'white',
-                                        marginTop: 16,
-                                        marginBottom: 16,
+                                        marginTop: 4,
+                                        marginBottom: 4,
                                         borderWidth: 0,
                                         border: 0
-                                    }}
+                                    }
+                                }
                                 }
                                 onDateChange={(date) => { this.setState({ data: date }) }}
                             />
                         </View>
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.data} </Text>
+                        </View>
                         <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
-                            onChangeText={(textDescricao) => this.setState({ textDescricao })} value={this.state.textDescricao} >
+                            onChangeText={(descricao) => this.setState({ descricao })} value={this.state.descricao} >
                         </TextInput>
-                        <TextInput style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
-                            keyboardType='decimal-pad' onChangeText={(textValor) => this.setState({ textValor })} value={this.state.textValor}  >
-                        </TextInput>
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.descricao} </Text>
+                        </View>
+
+                        <TextInputMask style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
+                            mask={"[999999].[00]"} keyboardType='decimal-pad' onChangeText={(valor) => this.setState({ valor })} value={this.state.valor}  >
+                        </TextInputMask>
+                        <View style={styles.ViewCentralizar} >
+                            <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
+                        </View>
+
                     </View>
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (
@@ -191,5 +243,4 @@ class DespesaScreen extends Component {
         );
     }
 }
-
 export default DespesaScreen;

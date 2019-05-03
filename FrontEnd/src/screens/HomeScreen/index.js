@@ -31,14 +31,15 @@ class HomeScreen extends Component {
             //senha: this.state.senha
         };
         try {
-            const data = await api.post('/api/controleacesso/signin', body);
+            const json = await api.post('/api/controleacesso/signin', body);
             this.setState({ isLoading: true })
-            if (data.autenticated === true) {
-                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(data));
-                this.props.navigation.navigate('Lancamento')
+            if (json.autenticated === true) {
+                await AsyncStorage.setItem('@dpApiAccess', JSON.stringify(json));
+                this.setState({ isLoading: false });
+                this.props.navigation.navigate('Lancamento');
             }
             else {
-                this.setState({ erroMessage: data.message });
+                this.setState({ erroMessage: json.message });
             }
         }
         catch (error) {
