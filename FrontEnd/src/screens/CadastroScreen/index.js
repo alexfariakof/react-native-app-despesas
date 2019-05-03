@@ -99,7 +99,7 @@ class CadastroScreen extends Component {
             result = false;
         }
         else
-            body.errors.senha = null;
+            body.errors.email = null;
 
         if ((body.senha === null) || (body.senha === undefined) || (body.senha.trim() === '')) {
             body.errors.senha = 'Senha não pode ser nula!';
