@@ -54,7 +54,15 @@ namespace apiDespesasPessoais.Controllers
         {
             if (categoria == null)
                 return BadRequest();
-            return new ObjectResult(_categoriaBusiness.Create(categoria));
+
+            try
+            {
+                return new ObjectResult(new { message = true, receita = _categoriaBusiness.Create(categoria) });
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte." });
+            }
         }
 
         [HttpPut]

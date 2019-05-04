@@ -69,10 +69,11 @@ class DespesaScreen extends Component {
             api = new apiServices();
             this.setState({ isLoading: true });
             await api.post('/api/Despesa', body, (json) => {
-                alert(JSON.stringify(json));
+                //alert(JSON.stringify(json));
                 if (json.message === true) {
                     refresh();
                     alert('Despesa incluída com sucesso.');
+                    this.clearDespesa();
                     this.props.navigation.goBack();
                 }
                 else
@@ -94,7 +95,7 @@ class DespesaScreen extends Component {
             retorno = false;
         }
         else
-            body.errors.data = null;
+            body.errors.categoria = null;
 
         if ((body.data === null) || (body.data === undefined) || (body.data.trim() === '')) {
             body.errors.data = 'Uma data deve ser selecionada!';

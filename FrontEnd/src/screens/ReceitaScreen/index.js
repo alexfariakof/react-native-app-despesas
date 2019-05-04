@@ -86,6 +86,7 @@ class ReceitaScreen extends Component {
                 if (json.message === true) {
                     refresh();
                     alert('Receita incluída com sucesso.');
+                    this.clearReceita();
                     this.props.navigation.goBack();
                 }
                 else

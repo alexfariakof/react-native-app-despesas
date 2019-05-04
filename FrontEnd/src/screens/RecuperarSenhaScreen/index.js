@@ -7,14 +7,14 @@ import styles from './styles'
 import apiServices from '../../services/ApiServices.js'
 
 class RecuperarSenhaScreen extends Component {
-    static navigationOptions = {
-        header: null
-    }
+    static navigationOptions = { header: null }
 
     state = {
         isLoading: false,
-        errorMessage: null,
-        email: 'alexfariakof@gmail.com',
+        email: null,
+        errors: {
+            email: null,
+        }
     }
 
     componentDidMount() {
@@ -24,25 +24,53 @@ class RecuperarSenhaScreen extends Component {
     clearRecuperarSenha = () => {
         this.setState({
             email: null,
-            errorMessage: null,
             isLoading: false,
+            errors: {
+                email: null,
+            }
+
         });
     }
 
     recuperarSenha = async () => {
+        if (!this.isValid(this.state))
+            return;
+
         const body = {
-            'email': this.state.email
+            email: this.state.email
         }
         try {
-            this.setState({ isLoading: true });
             api = new apiServices();
-            const data = await api.post('/api/controleacesso/recoverypassword', body);
-            this.setState({ isLoading: false });
-            this.props.navigation.goBack();           
+            this.setState({ isLoading: true });
+            await api.post('/api/controleacesso/recoverypassword', body, (json) => {
+                if (json.message === true) {
+                    alert('Caso o email esteja cadastrado, instruções para recuperação da senha seram enviadas.');
+                    this.clearRecuperarSenha();
+                    this.props.navigation.goBack();
+                }
+                else
+                    alert(json.message);
+                this.setState({ isLoading: false });
+            });
         }
         catch (err) {
             console.error(err);
         }
+    }
+
+    isValid = (body) => {
+        var result = true;
+
+        if ((body.email === null) || (body.email === undefined) || (body.email === 0)) {
+            body.errors.email = 'Email não pode ser nulo!';
+            result = false;
+        }
+        else
+            body.errors.email = null;
+
+
+        this.setState({ errors: body.errors });
+        return result;
     }
 
     render() {
@@ -56,8 +84,11 @@ class RecuperarSenhaScreen extends Component {
                 <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                 <View style={styles.body}>
                     <TextInput style={styles.text} maxLength={30} placeholder='Digite o email cadastrado.' keyboardType='email-address'
-                        onChangeText={(email) => this.setState({ email })} value={this.state.email}
-                    ></TextInput>
+                        onChangeText={(email) => this.setState({ email })} value={this.state.email}>
+                    </TextInput>
+                    <View style={styles.ViewCentralizar} >
+                        <Text style={{ color: 'red' }}> {this.state.errors.email} </Text>
+                    </View>
                 </View>
                 <View style={styles.ViewCentralizar} >
                     {isLoading ? (
@@ -78,5 +109,4 @@ class RecuperarSenhaScreen extends Component {
         );
     }
 }
-
 export default RecuperarSenhaScreen;

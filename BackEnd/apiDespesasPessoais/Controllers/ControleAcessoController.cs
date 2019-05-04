@@ -45,10 +45,14 @@ namespace apiDespesasPessoais.Controllers
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
         public IActionResult RecoveryPassword([FromBody] TempObject tempObject)
-        {            
+        {
             if (!string.IsNullOrWhiteSpace(tempObject.email) && !string.IsNullOrEmpty(tempObject.email))
-                return Ok(_controleAcessoBusiness.RecoveryPassword(tempObject.email));
-            return BadRequest();
+                if (_controleAcessoBusiness.RecoveryPassword(tempObject.email))
+                    return Ok(new { message = true });
+                else
+                    return Ok(new { message = "Email não pode ser enviado, tente novamente mais tarde."});
+
+            return BadRequest(new { message = "Não foi possível enviar o email, tente novamente mis tarde ou entre em contato com nosso suporte." });
         }
         public class TempObject
         {

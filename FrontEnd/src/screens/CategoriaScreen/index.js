@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, TextInput, Image, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
@@ -8,15 +7,16 @@ import styles from './styles'
 
 import apiServices from '../../services/ApiServices.js'
 
-
 class CategoriaScreen extends Component {
     static navigationOptions = { header: null }
 
     state = {
         isLoading: false,
-        errorMessage: null,
         categoria: null,
         user: null,
+        errors: {
+            categoria: null,
+        }
     }
 
     async componentDidMount() {
@@ -25,21 +25,26 @@ class CategoriaScreen extends Component {
         if (access) {
             this.setState({ user: JSON.parse(access).usuario });
         }
-        
+
         this.clearCategoria();
     }
 
     clearCategoria = () => {
         this.setState({
             categoria: null,
-            errorMessage: null,
             isLoading: false,
+            errors: {
+                categoria: null,
+            }
         });
     }
 
     saveCategoria = async () => {
+        if (!this.isValid(this.state))
+            return;
+
         const goBackScreen = this.props.navigation.state.params.goBackScreen;
-        const refresh =  this.props.navigation.state.params.refresh;   
+        const refresh = this.props.navigation.state.params.refresh;
 
         const body = {
             descricao: this.state.categoria,
@@ -47,17 +52,38 @@ class CategoriaScreen extends Component {
             idTipoCategoria: goBackScreen === 'Despesa' ? 1 : 2,
         }
         try {
-            this.setState({ isLoading: true });
             api = new apiServices();
-            const data = await api.post('/api/categoria', body);
-            this.setState({ isLoading: false });   
-
-            refresh();
-            this.props.navigation.navigate(goBackScreen);
+            this.setState({ isLoading: true });
+            await api.post('/api/categoria', body, (json) => {
+                if (json.message === true) {
+                    refresh();
+                    alert('Categoria incluída com sucesso.');
+                    this.clearCategoria();
+                    this.props.navigation.navigate(goBackScreen);
+                }
+                else
+                    alert(json.message);
+                this.setState({ isLoading: false });
+            });
         }
         catch (err) {
             console.error(err);
         }
+    }
+
+    isValid = (body) => {
+        var result = true;
+
+        if ((body.categoria === null) || (body.categoria === undefined) || (body.categoria === '')) {
+            body.errors.categoria = 'A categoria não pode ser nula!';
+            result = false;
+        }
+        else
+            body.errors.categoria = null;
+
+
+        this.setState({ errors: body.errors });
+        return result;
     }
 
     render() {
@@ -69,14 +95,18 @@ class CategoriaScreen extends Component {
                 style={styles.background}
             >
                 <View>
-                    <TouchableWithoutFeedback onPress={ () => this.props.navigation.navigate(this.props.navigation.getParam('goBackScreen'))} >
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate(this.props.navigation.getParam('goBackScreen'))} >
                         <Text>Voltar</Text>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.body}>
                     <TextInput style={styles.text} maxLength={30} placeholder='Digite uma nova categoria.'
-                        onChangeText={(categoria) => this.setState({ categoria })} value={this.state.categoria}
-                    ></TextInput>
+                        onChangeText={(categoria) => this.setState({ categoria })} value={this.state.categoria} >
+                    </TextInput>
+                    <View style={styles.ViewCentralizar} >
+                        <Text style={{ color: 'red' }}> {this.state.errors.categoria} </Text>
+                    </View>
+
                 </View>
                 <View style={styles.ViewCentralizar} >
                     {isLoading ? (
@@ -87,8 +117,8 @@ class CategoriaScreen extends Component {
                         />
                     ) :
                         (
-                            <TouchableOpacity style={styles.btnCadastro} onPress={() => { 
-                                this.saveCategoria(); 
+                            <TouchableOpacity style={styles.btnCadastro} onPress={() => {
+                                this.saveCategoria();
                             }} >
                                 <Image source={assets.btnCadastro} />
                             </TouchableOpacity>
@@ -99,5 +129,4 @@ class CategoriaScreen extends Component {
         );
     }
 }
-
 export default CategoriaScreen;

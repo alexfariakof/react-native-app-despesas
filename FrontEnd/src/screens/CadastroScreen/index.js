@@ -49,6 +49,7 @@ class CadastroScreen extends Component {
                 if(json.message === true){                   
                     alert('Cadastro realizado com sucesso. \nUm email de confirmação foi enviado para a conta cadastrada.');
                     this.setState({ isLoading: false });
+                    this.clearCadastro();
                     this.props.navigation.goBack();    
                 }
                 else
