@@ -7,19 +7,25 @@ export default styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-between'
     },
-    body: {
-        justifyContent: 'space-between'
+    containerGraphics:{
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        flex: 1,
+        marginBottom: 4,
+        padding: 4,
     },
-    Header: {
-        height: 60,
-        backgroundColor: '#C4C4C4',
-        marginBottom: 16,
-        justifyContent: 'center',
-        alignItems: 'center'
+    containerGraphicsBar:{
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        flex: 2,
+        alignItems: 'flex-end',
     },
-    textHeader: {
-        fontSize: 48,        
-        color: 'white',
-        backgroundColor: '#C4C4C4'
+    containerGraphicsBarText:{
+        flex: 1,
+        flexDirection:'column',
     },
+    textMes:{
+        fontWeight: 'bold'
+    }    
 })

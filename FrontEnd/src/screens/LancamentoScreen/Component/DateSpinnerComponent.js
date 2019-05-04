@@ -67,7 +67,7 @@ class DateSpinnerComponent extends Component {
           </TouchableOpacity>
         </View>
         <View style={{ flex: 4, alignItems: 'center' }} >
-          <Text style={{ fontSize: 24, padding: 4 }} >{this.state.mesAnoExtenso}</Text>
+          <Text style={{ fontSize: 24, fontWeight:'bold', padding: 4 }} >{this.state.mesAnoExtenso}</Text>
         </View>
         <View style={{ flex: 1, alignItems: 'center', width: 30 }} >
           <TouchableOpacity onPress={() => { handleGetCurrentDate(this.setNext());  }} >

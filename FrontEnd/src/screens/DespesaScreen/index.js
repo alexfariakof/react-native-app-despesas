@@ -23,7 +23,7 @@ class DespesaScreen extends Component {
         valor: '0.00',
         errors: {
             data: null,
-            desricao: null,
+            descricao: null,
             valor: null,
             categoria: null
         }
@@ -88,38 +88,38 @@ class DespesaScreen extends Component {
     }
 
     isValid = (body) => {
-        var retorno = true;
+        var isTrue = true;
 
         if ((body.categoria === null) || (body.categoria === undefined) || (body.categoria === 0)) {
             body.errors.categoria = 'Uma categoria deve ser selecionada!';
-            retorno = false;
+            isTrue = false;
         }
         else
             body.errors.categoria = null;
 
         if ((body.data === null) || (body.data === undefined) || (body.data.trim() === '')) {
             body.errors.data = 'Uma data deve ser selecionada!';
-            retorno = false;
+            isTrue = false;
         }
         else
             body.errors.data = null;
 
         if ((body.descricao === null) || (body.descricao === undefined) || (body.descricao.trim() === '')) {
             body.errors.descricao = 'A descrição deve ser preenchida!';
-            retorno = false;
+            isTrue = false;
         }
         else
             body.errors.descricao = null;
 
         if (parseFloat(body.valor, 2) <= 0) {
             body.errors.valor = 'O valor deve ser > 0!';
-            retorno = false;
+            isTrue = false;
         }
         else
             body.errors.valor = null
 
         this.setState({ errors: body.errors });
-        return retorno;
+        return isTrue;
     }
 
     clearDespesa = () => {
@@ -131,7 +131,7 @@ class DespesaScreen extends Component {
             isLoading: false,
             errors: {
                 data: null,
-                desricao: null,
+                descricao: null,
                 valor: null,
                 categoria: null
             }    
