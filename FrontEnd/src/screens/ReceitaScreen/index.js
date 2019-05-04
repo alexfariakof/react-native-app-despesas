@@ -45,6 +45,12 @@ class ReceitaScreen extends Component {
             descricao: null,
             valor: '0.00',
             isLoading: false,
+            errors: {
+                data: null,
+                desricao: null,
+                valor: null,
+                categoria: null
+            }    
         });
     }
 
@@ -64,32 +70,32 @@ class ReceitaScreen extends Component {
             return;
 
         const refresh = this.props.navigation.state.params.refresh;
-
         const body = {
             idUsuario: this.state.user.id,
             idCategoria: this.state.categoria,
-            data: this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0],
+            data: this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             descricao: this.state.descricao,
             valor: parseFloat(this.state.valor, (2))
         }
 
         try {
-            this.setState({ isLoading: true });
             api = new apiServices();
-            let response = await api.post('/api/Receita', body, function() {
-                if (response !== null) {
+            this.setState({ isLoading: true });
+            await api.post('/api/Receita', body, (json) => {
+                //alert(JSON.stringify(json));
+                if (json.message === true) {
+                    refresh();
                     alert('Receita incluída com sucesso.');
                     this.props.navigation.goBack();
-                    refresh();
                 }
                 else
-                    alert('Erro ao realiza operação. Tente mais tarde.');
-    
-                this.setState({ isLoading: false });    
+                    alert(json.message);
+                this.setState({ isLoading: false });
             });
         }
         catch (err) {
-            console.error(err);
+            alert('Erro ao realiza operação. Tente mais tarde.');
+            //console.error(err);
         }
     }
 

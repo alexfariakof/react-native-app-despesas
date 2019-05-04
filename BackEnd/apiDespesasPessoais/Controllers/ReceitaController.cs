@@ -42,14 +42,12 @@ namespace apiReceitasPessoais.Controllers
 
             try
             {
-                return new ObjectResult(_receitaBusiness.Create(receita));
+                return new ObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
             }
             catch
             {
-                return BadRequest("{ 'message' : 'Não foi possível realizar o cadastro'}");
-            }
-         
-            
+                return BadRequest(new { message = "Não foi possível realizar o cadastro" });
+            }            
         }
 
         [HttpPut]

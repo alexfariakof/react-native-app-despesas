@@ -10,9 +10,8 @@ import styles from './styles'
 import apiServices from '../../services/ApiServices.js'
 
 class DespesaScreen extends Component {
-    static navigationOptions = {
-        header: null
-    }
+    static navigationOptions = { header: null }
+
     state = {
         isLoading: true,
         errorMessage: null,
@@ -50,7 +49,7 @@ class DespesaScreen extends Component {
         catch (err) {
             console.error(err);
         }
-    };
+    };s
 
     saveDespesa = async () => {
         if (!this.isValid(this.state))
@@ -129,6 +128,12 @@ class DespesaScreen extends Component {
             descricao: null,
             valor: '0.00',
             isLoading: false,
+            errors: {
+                data: null,
+                desricao: null,
+                valor: null,
+                categoria: null
+            }    
         });
     }
 
