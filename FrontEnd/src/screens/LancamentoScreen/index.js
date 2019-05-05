@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
-import assets from './assets'
-
 import apiServices from '../../services/ApiServices.js'
 import LacamentoComponent from './Component/LacamentoComponent.js'
 import DateSpinnerComponent from './Component/DateSpinnerComponent.js'
+import assets from './assets'
 
 class LancamentoScreen extends Component {
     static navigationOptions = { header: null   }

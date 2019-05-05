@@ -45,7 +45,6 @@ namespace apiDespesasPessoais.Repositorio.Implementations
                 {
                     var list = _context.Lancamento.FromSql(sql, new SqlParameter("@idUsuario", idUsuario), new SqlParameter("@mes", data.Month), new SqlParameter("@ano", data.Year)).ToList();
                     return list.OrderBy(item => item.Data).ThenBy(item => item.Categoria).ToList();
-
                 }
                 catch (Exception ex)
                 {
@@ -61,11 +60,9 @@ namespace apiDespesasPessoais.Repositorio.Implementations
                 decimal value = 0;
                 try
                 {
-
                     command.CommandText = @"Select (SELECT sum(valor) FROM Receita Where idUsuario = @idUsuario) - (SELECT sum(valor) FROM Despesa Where idUsuario = @idUsuario)"; ;
                     command.CommandType = CommandType.Text;
-                    var parameter = new SqlParameter("@idUsuario", idUsuario);
-                    command.Parameters.Add(parameter);
+                    command.Parameters.Add(new SqlParameter("@idUsuario", idUsuario));
                     _context.Database.OpenConnection();
                     using (var result = command.ExecuteReader())
                     {
@@ -84,3 +81,4 @@ namespace apiDespesasPessoais.Repositorio.Implementations
         }
     }
 }
+

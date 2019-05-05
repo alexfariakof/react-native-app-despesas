@@ -845,9 +845,9 @@
     xmldoc "^0.4.0"
 
 "@react-native-community/netinfo@^2.0.5":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-2.0.8.tgz#258d1cb4968a11ab0fae200ab778f410d427e34d"
-  integrity sha512-dyhSEu5sjsKNMwUlj2PhBpRkzJtjGTgPwJe27HdXa3nBRuZEcNMlAnUwvLJYx0oNHKJXFoi0IJkO97LHGNGpVg==
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-2.0.9.tgz#5730a5e3c8959448bda10b9b395f6f7042157c93"
+  integrity sha512-q6bSAgLBs5Z4WfopJQsDH1Q0ns6YVILOuZoS1wxN5GNKvJSqg01s+23gN+4hAbc5fmzAyzCIRwKZteGRDl448g==
 
 "@react-navigation/core@~3.4.1":
   version "3.4.1"

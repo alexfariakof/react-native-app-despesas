@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
+import formatMoney from '../../services/ConvertMoney'
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import TextInputMask from 'react-native-text-input-mask';
@@ -158,7 +159,7 @@ class ReceitaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} >{"R$ " + this.state.valor}</Text>
+                        }} >{"R$ " + formatMoney(this.state.valor)}</Text>
                     </View>
                     <View style={{ paddingLeft: 4, paddingRight: 4 }} >
                         <View style={{ borderBottomWidth: 2, borderColor: '#C4C4C4' }} >

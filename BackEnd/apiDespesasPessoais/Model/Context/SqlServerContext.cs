@@ -20,5 +20,6 @@ namespace apiDespesasPessoais.Model.Context
         public DbSet<Despesa> Despesa { get; set; }
         public DbSet<Receita> Receita { get; set; }
         public DbSet<Lancamento> Lancamento { get; set; }
+        public DbSet<Relatotio> Relatotio { get; set; }
     }
 }

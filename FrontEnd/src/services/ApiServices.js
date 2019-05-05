@@ -6,44 +6,59 @@ class ApiServices {
         baseUrl: 'http://10.0.2.2:21379'
     }
 
-    get = async (url) => {
+    get = async (url, callBack) => {
         let response = null;
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         try {
             if (access) {
-                const token =  JSON.parse(access).accessToken;
+                const token = JSON.parse(access).accessToken;
                 //alert(JSON.stringify(this.state.baseUrl + url + '      -   ' + token)); //return;
-                response = await fetch(this.state.baseUrl + url, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
+                
+                if (typeof callBack !== 'function') {
+                    response = await fetch(this.state.baseUrl + url, {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
 
-                if (response.status === 200) {
-                    let data = await response.json();
-                    return data;
+                    if (response.status === 200) {
+                        let data = await response.json();
+                        return data;
+                    }
+                    if (response.status === 401)
+                        alert("{ 'message': 'Unauthorized' }");
+
+                    if (response.status === 400)
+                        alert("{ 'message': 'Bad Request' }");
+
+                    if (response.status === 404)
+                        alert("{ 'message': 'Not Found' }");
                 }
-                if (response.status === 401)
-                    alert("{ 'message': 'Unauthorized' }");
-
-                if (response.status === 400)
-                    alert("{ 'message': 'Bad Request' }");
-
-                if (response.status === 404)
-                    alert("{ 'message': 'Not Found' }");
+                else {
+                    
+                    await fetch(this.state.baseUrl + url, {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    }).then(response => response.json())
+                        .then(json => callBack(json));
+                }
             }
         }
         catch (error) {
             console.error(error);
         }
     }
-   
+
     post = async (url, body, callBack) => {
-        const access = await AsyncStorage.getItem('@dpApiAccess');       
+        const access = await AsyncStorage.getItem('@dpApiAccess');
 
         try {
             if (access) {
@@ -57,7 +72,7 @@ class ApiServices {
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callBack(json));
+                    .then(json => callBack(json));
             }
             else {
                 //alert(JSON.stringify(this.state.baseUrl + url + '-' + body)); return;
@@ -68,7 +83,7 @@ class ApiServices {
                         'Content-Type': 'application/json'
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callBack(json));
+                    .then(json => callBack(json));
             }
         }
         catch (error) {
@@ -82,7 +97,7 @@ class ApiServices {
 
         try {
             if (access) {
-                const token =  JSON.parse(access).accessToken;
+                const token = JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'PUT',
                     headers: {
@@ -91,7 +106,7 @@ class ApiServices {
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callBack(json), callBack);
+                    .then(json => callBack(json), callBack);
             }
         }
         catch (error) {
@@ -105,7 +120,7 @@ class ApiServices {
 
         try {
             if (access) {
-                const token =  JSON.parse(access).accessToken;
+                const token = JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'DELETE',
                     headers: {
@@ -114,7 +129,7 @@ class ApiServices {
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                .then(json => callBack(json), callBack);
+                    .then(json => callBack(json), callBack);
             }
         }
         catch (error) {
@@ -124,7 +139,7 @@ class ApiServices {
 
     getException = (responseStatus) => {
         if (responseStatus === 200) {
-            return JSON.parse({message:'Ok'});
+            return JSON.parse({ message: 'Ok' });
         }
         if (responseStatus === 401)
             return JSON.parse({ 'message': 'Unauthorized' });

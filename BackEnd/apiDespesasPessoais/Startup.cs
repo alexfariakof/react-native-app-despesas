@@ -48,7 +48,7 @@ namespace apiDespesasPessoais
                 c.SwaggerDoc("v1",
                     new Info
                     {
-                        Title = "API RESTfull Despesas Pessoais",
+                        Title = "API REST Despesas Pessoais",
                         Version = "v1"
                     });
 
@@ -60,11 +60,13 @@ namespace apiDespesasPessoais
             services.AddScoped(typeof(IBusiness<>), typeof(GenericBusiness<>));
             services.AddScoped<IControleAcessoBusiness, ControleAcessoBusinessImpl>();
             services.AddScoped<ILancamentoBusiness, LancamentoBusinessImpl>();
+            services.AddScoped<IRelatorioBusiness, RelatorioBusinessImpl>();
             services.AddScoped<IFileBusiness, FileBusinessImpl>();
 
             //services.AddScoped<IUsuarioRepositorio, UsuarioRepositorioImpl>();
             services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
             services.AddScoped<ILancamentoRepositorio, LancamentoRepositorioImpl>();
+            services.AddScoped<IRelatorioRepositorio, RelatorioRepositorioImpl>();
 
             services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
         }
@@ -142,10 +144,6 @@ namespace apiDespesasPessoais
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser().Build());
             });
-
         }
-
     }
 }
-
-

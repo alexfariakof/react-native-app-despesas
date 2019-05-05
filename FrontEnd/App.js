@@ -18,6 +18,7 @@ const AppDrawer = createDrawerNavigator({
   Categoria: {
     screen: CategoriaScreen,
     navigationOptions: { drawerLabel: () => null }
+
   },
   Sair: { screen: HomeScreen }
 }, {
@@ -40,7 +41,7 @@ const AppNavigator = createStackNavigator({
   appDrawer: {
     screen: AppDrawer,
     navigationOptions: { header: null }
-  },
+  }
 }, {
     initialRouteName: 'Home'
   });
