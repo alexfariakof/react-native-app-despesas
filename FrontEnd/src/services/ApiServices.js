@@ -11,7 +11,7 @@ class ApiServices {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         try {
-            if (access) {
+            if (access !== null) {
                 const token = JSON.parse(access).accessToken;
                 //alert(JSON.stringify(this.state.baseUrl + url + '      -   ' + token)); //return;
                 
@@ -53,15 +53,16 @@ class ApiServices {
             }
         }
         catch (error) {
-            console.error(error);
+            alert('API Services : GET ' + error);
+            //console.error(error);
         }
     }
 
     post = async (url, body, callBack) => {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
-        try {
-            if (access) {
+        try {            
+            if (access !== null) {
                 const token = JSON.parse(access).accessToken;
                 //alert(JSON.stringify(this.state.baseUrl + url + '-' + JSON.stringify(body))); //return;
                 await fetch(this.state.baseUrl + url, {
@@ -74,8 +75,7 @@ class ApiServices {
                 }).then(response => response.json())
                     .then(json => callBack(json));
             }
-            else {
-                //alert(JSON.stringify(this.state.baseUrl + url + '-' + body)); return;
+            else {                
                 await fetch(this.state.baseUrl + url, {
                     method: 'POST',
                     headers: {
@@ -87,7 +87,8 @@ class ApiServices {
             }
         }
         catch (error) {
-            console.error(error);
+            alert('API Services : POST ' + this.state.baseUrl + url + '-' + JSON.stringify(body) + error);
+            //console.error(error);
         }
     }
 
@@ -96,7 +97,7 @@ class ApiServices {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         try {
-            if (access) {
+            if (access !== null) {
                 const token = JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'PUT',
@@ -110,7 +111,8 @@ class ApiServices {
             }
         }
         catch (error) {
-            console.error(error);
+            alert('API Services : PUT ' + error);
+            //console.error(error);
         }
     }
 
@@ -119,7 +121,7 @@ class ApiServices {
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
         try {
-            if (access) {
+            if (access !== null) {
                 const token = JSON.parse(access).accessToken;
                 response = await fetch(this.state.baseUrl + url, {
                     method: 'DELETE',
@@ -133,11 +135,12 @@ class ApiServices {
             }
         }
         catch (error) {
-            console.error(error);
+            alert('API Services : DELETE ' + error);
+            //console.error(error);
         }
     }
 
-    getException = (responseStatus) => {
+    getResponseException = (responseStatus) => {
         if (responseStatus === 200) {
             return JSON.parse({ message: 'Ok' });
         }

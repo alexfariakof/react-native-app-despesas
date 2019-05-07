@@ -27,12 +27,12 @@ class HomeScreen extends Component {
     }
 
     signIn = async () => {
-        if (!this.isValid(this.state))
-            return;
+        //if (!this.isValid(this.state))
+          //  return;
 
         const body = {
-            login: 'admin@admin',
-            senha: 'admin'
+            //login: 'admin@admin',
+            //senha: 'admin'
             //login: this.state.login,
             //senha: this.state.senha
         };

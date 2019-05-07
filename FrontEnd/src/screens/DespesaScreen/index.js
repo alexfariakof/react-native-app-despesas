@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
+import { View, ScrollView, Text, ImageBackground, TextInput, Image, Picker, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import formatMoney from '../../services/ConvertMoney';
 import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import TextInputMask from 'react-native-text-input-mask';
+import { TextInputMask } from 'react-native-masked-text';
 
 import assets from './assets'
 import styles from './styles'
@@ -21,7 +20,7 @@ class DespesaScreen extends Component {
         categoria: null,
         data: null,
         descricao: null,
-        valor: '0.00',
+        valor: 'R$ 0,00',
         errors: {
             data: null,
             descricao: null,
@@ -38,7 +37,7 @@ class DespesaScreen extends Component {
             this.getListCategoria();
         }
         this.clearDespesa();
-        
+
     }
 
     getListCategoria = async () => {
@@ -50,19 +49,19 @@ class DespesaScreen extends Component {
         catch (err) {
             console.error(err);
         }
-    };s
+    }; s
 
     saveDespesa = async () => {
         if (!this.isValid(this.state))
-           return;
-        
-        const refresh =  this.props.navigation.state.params.refresh;   
+            return;
+
+        const refresh = this.props.navigation.state.params.refresh;
         const body = {
             'idUsuario': this.state.user.id,
             'idCategoria': this.state.categoria,
             'data': this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             'descricao': this.state.descricao,
-            'valor': parseFloat(this.state.valor, (2)),
+            'valor': parseFloat(this.state.valor.replace('R$','').replace('.','').replace(',','.'), (2)),
             'dataVencimento': '2019-04-27'
         }
 
@@ -112,7 +111,7 @@ class DespesaScreen extends Component {
         else
             body.errors.descricao = null;
 
-        if (parseFloat(body.valor, 2) <= 0) {
+        if (parseFloat(body.valor.replace('R$','').replace('.','').replace(',','.'), 2) <= 0) {
             body.errors.valor = 'O valor deve ser > 0!';
             isTrue = false;
         }
@@ -135,7 +134,7 @@ class DespesaScreen extends Component {
                 descricao: null,
                 valor: null,
                 categoria: null
-            }    
+            }
         });
     }
 
@@ -162,74 +161,84 @@ class DespesaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} >{"R$ " + formatMoney(this.state.valor)}</Text>
+                        }} >{ this.state.valor}</Text>
                     </View>
-                    <View  style={{paddingLeft:4, paddingRight:4}} >
-                        <View style={{ borderBottomWidth: 2, borderColor: '#C4C4C4' }} >
-                            <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova"
-                                onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Despesa', refresh: () => { this.getListCategoria(); } })} />
+                    <ScrollView>
+                        <View style={{ paddingLeft: 4, paddingRight: 4 }} >
+                            <View style={{ borderBottomWidth: 2, borderColor: '#C4C4C4' }} >
+                                <Button title="Add Categoria" color="#841584" accessibilityLabel="Adicione uma categoria nova"
+                                    onPress={() => this.props.navigation.navigate('Categoria', { goBackScreen: 'Despesa', refresh: () => { this.getListCategoria(); } })} />
 
-                            <Picker style={{ paddingTop: 0 }}
-                                selectedValue={this.state.categoria}
-                                style={styles.text}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    this.setState({ categoria: itemValue })
-                                }>
-                                {this.state.dataSourceCategoria.map((item, key) => (
-                                    <Picker.Item label={item.descricao} value={item.id} key={key} />)
-                                )}
-                            </Picker>
-                        </View>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.categoria} </Text>
-                        </View>
-                        <View style={styles.text}>
-                            <DatePicker
-                                date={this.state.data}
-                                mode="date"
-                                placeholder="  Selecione uma data"
-                                format="DD-MM-YYYY"
-                                minDate="2016-05-01"
-                                maxDate="2080-12-30"
-                                confirmBtnText="Confirma"
-                                cancelBtnText="Cancelar"
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: dim.width - 60,
-                                        top: 4,
-                                        margin: 0
-                                    },
-                                    dateInput: {
-                                        height: 28,
-                                        fontSize: 24,
-                                        color: 'white',
-                                        marginTop: 4,
-                                        marginBottom: 4,
-                                        borderWidth: 0,
-                                        border: 0
+                                <Picker style={{ paddingTop: 0 }}
+                                    selectedValue={this.state.categoria}
+                                    style={styles.text}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.setState({ categoria: itemValue })
+                                    }>
+                                    {this.state.dataSourceCategoria.map((item, key) => (
+                                        <Picker.Item label={item.descricao} value={item.id} key={key} />)
+                                    )}
+                                </Picker>
+                            </View>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.categoria} </Text>
+                            </View>
+                            <View style={styles.text}>
+                                <DatePicker
+                                    date={this.state.data}
+                                    mode="date"
+                                    placeholder="  Selecione uma data"
+                                    format="DD-MM-YYYY"
+                                    minDate="2016-05-01"
+                                    maxDate="2080-12-30"
+                                    confirmBtnText="Confirma"
+                                    cancelBtnText="Cancelar"
+                                    customStyles={{
+                                        dateIcon: {
+                                            position: 'absolute',
+                                            left: dim.width - 60,
+                                            top: 4,
+                                            margin: 0
+                                        },
+                                        dateInput: {
+                                            height: 28,
+                                            fontSize: 24,
+                                            color: 'white',
+                                            marginTop: 4,
+                                            marginBottom: 4,
+                                            borderWidth: 0,
+                                            border: 0
+                                        }
                                     }
-                                }
-                                }
-                                onDateChange={(date) => { this.setState({ data: date }) }}
-                            />
+                                    }
+                                    onDateChange={(date) => { this.setState({ data: date }) }}
+                                />
+                            </View>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.data} </Text>
+                            </View>
+                            <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
+                                onChangeText={(descricao) => this.setState({ descricao })} value={this.state.descricao} >
+                            </TextInput>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.descricao} </Text>
+                            </View>
+                            <TextInputMask style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
+                                keyboardType='decimal-pad' onChangeText={(valor) => this.setState({ valor })} value={this.state.valor}
+                                type={'money'}
+                                options={{
+                                    precision: 2,
+                                    separator: ',',
+                                    delimiter: '.',
+                                    unit: 'R$',
+                                    suffixUnit: ''
+                                }}>
+                            </TextInputMask>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
+                            </View>
                         </View>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.data} </Text>
-                        </View>
-                        <TextInput style={styles.text} maxLength={100} clearButtonMode="always" placeholder='Digite a descrição'
-                            onChangeText={(descricao) => this.setState({ descricao })} value={this.state.descricao} >
-                        </TextInput>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.descricao} </Text>
-                        </View>
-                        <TextInputMask style={styles.text} maxLength={10} clearButtonMode="always" placeholder='Entre com o valor da Despesa'
-                            mask={"[999999].[00]"} keyboardType='decimal-pad' onChangeText={(valor) => this.setState({ valor })} value={this.state.valor}  >
-                        </TextInputMask>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
-                        </View>
-                    </View>
+                    </ScrollView>
                     <View style={styles.ViewCentralizar} >
                         {isLoading ? (
                             <ActivityIndicator
