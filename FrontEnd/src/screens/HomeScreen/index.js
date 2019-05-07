@@ -14,7 +14,7 @@ class HomeScreen extends Component {
         erroMessage: null,
         login: null,
         senha: null,
-        isLoading: true,
+        isLoading: false,
         errors: {
             login: null,
             senha: null
