@@ -120,9 +120,8 @@ class CadastroScreen extends Component {
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
-            >
-                <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
-                <ScrollView>
+            ><ScrollView>
+                    <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
                     <View style={styles.body}>
                         <TextInput style={styles.text} placeholder='Digite um nome' maxLength={20}
                             onChangeText={(nome) => this.setState({ nome })} value={this.state.nome} >
@@ -162,22 +161,22 @@ class CadastroScreen extends Component {
                             <Text style={{ color: 'red' }}> {this.state.errors.senha} </Text>
                         </View>
                     </View>
+                    <View style={styles.Footer} >
+                        {isLoading ? (
+                            <ActivityIndicator
+                                style={styles.btnIniciar}
+                                color="green"
+                                size="large"
+                            />
+                        ) :
+                            (
+                                <TouchableOpacity style={styles.btnCadastro} onPress={() => { this.saveCadastro() }} >
+                                    <Image source={assets.btnCadastro} />
+                                </TouchableOpacity>
+                            )
+                        }
+                    </View>
                 </ScrollView>
-                <View style={styles.Footer} >
-                    {isLoading ? (
-                        <ActivityIndicator
-                            style={styles.btnIniciar}
-                            color="green"
-                            size="large"
-                        />
-                    ) :
-                        (
-                            <TouchableOpacity style={styles.btnCadastro} onPress={() => { this.saveCadastro() }} >
-                                <Image source={assets.btnCadastro} />
-                            </TouchableOpacity>
-                        )
-                    }
-                </View>
             </ImageBackground>
         );
     }

@@ -75,7 +75,7 @@ class ReceitaScreen extends Component {
             idCategoria: this.state.categoria,
             data: this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             descricao: this.state.descricao,
-            valor: parseFloat(this.state.valor.replace('R$','').replace('.','').replace(',','.'), (2))
+            valor: parseFloat(this.state.valor.replace('R$', '').replace('.', '').replace(',', '.'), (2))
         }
 
         try {
@@ -123,7 +123,7 @@ class ReceitaScreen extends Component {
         }
         else
             body.errors.descricao = null;
-        if (parseFloat(body.valor.replace('R$','').replace('.','').replace(',','.'), 2) <= 0) {
+        if (parseFloat(body.valor.replace('R$', '').replace('.', '').replace(',', '.'), 2) <= 0) {
             body.errors.valor = 'O valor deve ser > 0!';
             isTrue = false;
         }
@@ -141,15 +141,13 @@ class ReceitaScreen extends Component {
             <ImageBackground
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}
-                style={styles.background}
-            >
+                style={styles.background} >
                 <View><TouchableOpacity onPress={() => { this.clearReceita(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'space-between'
-                }}
-                >
+                }} >
                     <View style={{ backgroundColor: '#B3F39D' }} >
                         <Text style={{
                             fontSize: 48,
@@ -157,7 +155,7 @@ class ReceitaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} >{ this.state.valor}</Text>
+                        }} >{this.state.valor}</Text>
                     </View>
                     <ScrollView>
                         <View style={{ paddingLeft: 4, paddingRight: 4 }} >
@@ -233,22 +231,22 @@ class ReceitaScreen extends Component {
                                 <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
                             </View>
                         </View>
+                        <View style={styles.ViewCentralizar} >
+                            {isLoading ? (
+                                <ActivityIndicator
+                                    style={styles.btnIniciar}
+                                    color="green"
+                                    size="large"
+                                />
+                            ) :
+                                (
+                                    <TouchableOpacity style={styles.btnOkReceita} onPress={() => { this.saveReceita() }}>
+                                        <Image source={assets.btnOkReceita} />
+                                    </TouchableOpacity>
+                                )
+                            }
+                        </View>
                     </ScrollView>
-                    <View style={styles.ViewCentralizar} >
-                        {isLoading ? (
-                            <ActivityIndicator
-                                style={styles.btnIniciar}
-                                color="green"
-                                size="large"
-                            />
-                        ) :
-                            (
-                                <TouchableOpacity style={styles.btnOkReceita} onPress={() => { this.saveReceita() }}>
-                                    <Image source={assets.btnOkReceita} />
-                                </TouchableOpacity>
-                            )
-                        }
-                    </View>
                 </View>
             </ImageBackground>
         );

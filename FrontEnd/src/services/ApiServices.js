@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 class ApiServices {
 
     state = {
-        baseUrl: 'http://10.0.2.2:21379'
+        baseUrl: 'http://10.0.2.2/despesaspessoais'
     }
 
     get = async (url, callBack) => {

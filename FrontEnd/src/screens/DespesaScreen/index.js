@@ -61,7 +61,7 @@ class DespesaScreen extends Component {
             'idCategoria': this.state.categoria,
             'data': this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             'descricao': this.state.descricao,
-            'valor': parseFloat(this.state.valor.replace('R$','').replace('.','').replace(',','.'), (2)),
+            'valor': parseFloat(this.state.valor.replace('R$', '').replace('.', '').replace(',', '.'), (2)),
             'dataVencimento': '2019-04-27'
         }
 
@@ -111,7 +111,7 @@ class DespesaScreen extends Component {
         else
             body.errors.descricao = null;
 
-        if (parseFloat(body.valor.replace('R$','').replace('.','').replace(',','.'), 2) <= 0) {
+        if (parseFloat(body.valor.replace('R$', '').replace('.', '').replace(',', '.'), 2) <= 0) {
             body.errors.valor = 'O valor deve ser > 0!';
             isTrue = false;
         }
@@ -161,7 +161,7 @@ class DespesaScreen extends Component {
                             textAlign: 'right',
                             padding: 8
 
-                        }} >{ this.state.valor}</Text>
+                        }} >{this.state.valor}</Text>
                     </View>
                     <ScrollView>
                         <View style={{ paddingLeft: 4, paddingRight: 4 }} >
@@ -238,22 +238,22 @@ class DespesaScreen extends Component {
                                 <Text style={{ color: 'red' }}> {this.state.errors.valor} </Text>
                             </View>
                         </View>
+                        <View style={styles.ViewCentralizar} >
+                            {isLoading ? (
+                                <ActivityIndicator
+                                    style={styles.btnIniciar}
+                                    color="green"
+                                    size="large"
+                                />
+                            ) :
+                                (
+                                    <TouchableOpacity style={styles.btnOkDespesa} onPress={() => { this.saveDespesa() }}>
+                                        <Image source={assets.btnOkDespesa} />
+                                    </TouchableOpacity>
+                                )
+                            }
+                        </View>
                     </ScrollView>
-                    <View style={styles.ViewCentralizar} >
-                        {isLoading ? (
-                            <ActivityIndicator
-                                style={styles.btnIniciar}
-                                color="green"
-                                size="large"
-                            />
-                        ) :
-                            (
-                                <TouchableOpacity style={styles.btnOkDespesa} onPress={() => { this.saveDespesa() }}>
-                                    <Image source={assets.btnOkDespesa} />
-                                </TouchableOpacity>
-                            )
-                        }
-                    </View>
                 </View>
             </ImageBackground>
         );
