@@ -25,12 +25,19 @@ namespace apiDespesasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Despesa _despesa = _despesaBusiness.FindById(id);
+            try
+            {
+                Despesa _despesa = _despesaBusiness.FindById(id);
 
-            if (_despesa == null)
-                return NotFound();
+                if (_despesa == null)
+                    return Ok( new { message = "Nenhuma despesa foi encontrada."});
 
-            return Ok(_despesa);
+                return new ObjectResult(new { message = true, despesa = _despesa });
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível realizar a consulta da despesa." });
+            }
         }
 
         [HttpPost]
@@ -58,9 +65,9 @@ namespace apiDespesasPessoais.Controllers
 
             Despesa updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
-                return NoContent();
+                return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
 
-            return new ObjectResult(updateDespesa);
+            return new ObjectResult(new { message = true, despesa = updateDespesa });
         }
 
         [HttpDelete("{id}")]

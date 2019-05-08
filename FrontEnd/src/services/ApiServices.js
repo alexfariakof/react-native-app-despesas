@@ -92,7 +92,7 @@ class ApiServices {
         }
     }
 
-    put = async (url, body) => {
+    put = async (url, body, callBack) => {
         let response = null;
         const access = await AsyncStorage.getItem('@dpApiAccess');
 
@@ -107,7 +107,7 @@ class ApiServices {
                         'Authorization': `Bearer ${token}`,
                     }, body: JSON.stringify(body),
                 }).then(response => response.json())
-                    .then(json => callBack(json), callBack);
+                    .then(json => callBack(json));
             }
         }
         catch (error) {

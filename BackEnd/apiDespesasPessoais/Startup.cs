@@ -83,6 +83,7 @@ namespace apiDespesasPessoais
 
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Despesas Pessoais V1");
+
             });
 
             //Starting our API in Swagger page
@@ -90,9 +91,6 @@ namespace apiDespesasPessoais
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
-            RewriteOptions options = new RewriteOptions();
-            options.AddRedirect("^$", "swagger");
-            app.UseRewriter(options);
 
             app.UseMvc();
         }

@@ -7,7 +7,7 @@ import DateSpinnerComponent from './Component/DateSpinnerComponent.js'
 import assets from './assets'
 
 class LancamentoScreen extends Component {
-    static navigationOptions = { header: null   }
+    //static navigationOptions = { header: null   }
 
     state = {
         isLoading: true,
@@ -21,6 +21,7 @@ class LancamentoScreen extends Component {
 
     handlerGetSpinnerSelectedDate = async (value) => {
         await this.setState({ selectedDate: value });
+        this.getSaldoById();
         this.getLancamentoById();
     }
 
@@ -63,9 +64,9 @@ class LancamentoScreen extends Component {
     renderItem = lancamento => {
         return <LacamentoComponent onPress={() => {
             if (lancamento.item.idReceita === 0)
-                this.props.navigation.navigate('Despesa');
+                this.props.navigation.navigate('Despesa', { idDespesa: lancamento.item.idDespesa, operation: 'PUT', refresh: () => { this.getLancamentoById(); } });
             else
-                this.props.navigation.navigate('Receita');
+                this.props.navigation.navigate('Receita', { idReceita: lancamento.item.idReceita, operation: 'PUT', refresh: () => { this.getLancamentoById(); } });
         }}
             data={lancamento.item.data}
             categoria={lancamento.item.categoria}
@@ -115,12 +116,12 @@ class LancamentoScreen extends Component {
                     </View>
                     <View style={{ height: 60, position: 'relative', flexDirection: 'row' }}>
                         <View style={{ flex: 3, alignItems: 'center' }} >
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Despesa', { dados: 'Porraaaa', refresh: () => { this.getLancamentoById(); } })} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Despesa', {  operation: 'POST', refresh: () => { this.getLancamentoById(); } })} >
                                 <Image source={assets.btnDespesa} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 3, alignItems: 'center', }} >
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Receita', { refresh: () => { this.getLancamentoById(); } })} >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Receita', { operation: 'POST', refresh: () => { this.getLancamentoById(); } })} >
                                 <Image source={assets.btnReceita} />
                             </TouchableOpacity>
                         </View>

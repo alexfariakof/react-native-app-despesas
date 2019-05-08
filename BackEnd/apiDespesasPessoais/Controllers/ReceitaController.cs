@@ -25,12 +25,19 @@ namespace apiReceitasPessoais.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Receita _receita = _receitaBusiness.FindById(id);
+            try
+            {
+                Receita _receita = _receitaBusiness.FindById(id);
 
-            if (_receita == null)
-                return NotFound();
+                if (_receita == null)
+                    return Ok(new { message = "Nenhuma receita foi encontrada." });
 
-            return Ok(_receita);
+                return new ObjectResult(new { message = true, receita = _receita });
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível realizar a consulta da receita." });
+            }
         }
 
         [HttpPost]
@@ -58,10 +65,11 @@ namespace apiReceitasPessoais.Controllers
                 return BadRequest();
 
             Receita updateReceita = _receitaBusiness.Update(receita);
-            if (updateReceita == null)
-                return NoContent();
 
-            return new ObjectResult(updateReceita);
+            if (updateReceita == null)
+                return BadRequest(new { message = "Não foi possível atualizar o cadastro da receita." });
+
+            return new ObjectResult(new { message = true, receita = updateReceita });
         }
 
         [HttpDelete("{id}")]
