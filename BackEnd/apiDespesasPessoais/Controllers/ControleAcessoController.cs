@@ -16,7 +16,7 @@ namespace apiDespesasPessoais.Controllers
         {
             _controleAcessoBusiness = controleAcessoBusiness;
         }
-
+        
         [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] ControleAcessoVO controleAcessoVO)
@@ -44,20 +44,17 @@ namespace apiDespesasPessoais.Controllers
 
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
-        public IActionResult RecoveryPassword([FromBody] TempObject tempObject)
+        public IActionResult RecoveryPassword([FromBody]  string email)
         {
-            if (!string.IsNullOrWhiteSpace(tempObject.email) && !string.IsNullOrEmpty(tempObject.email))
-                if (_controleAcessoBusiness.RecoveryPassword(tempObject.email))
+            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrEmpty(email))
+                if (_controleAcessoBusiness.RecoveryPassword(email))
                     return Ok(new { message = true });
                 else
                     return Ok(new { message = "Email não pode ser enviado, tente novamente mais tarde."});
 
             return BadRequest(new { message = "Não foi possível enviar o email, tente novamente mis tarde ou entre em contato com nosso suporte." });
         }
-        public class TempObject
-        {
-            public string email { get; set; }
-        }
+
     }
 }
 

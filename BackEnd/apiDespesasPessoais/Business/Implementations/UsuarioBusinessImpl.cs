@@ -7,36 +7,38 @@ namespace apiDespesasPessoais.Business.Implementations
 {
     public class UsuarioBusinessImpl : IBusiness<Usuario>
     {
-        private IBusiness<Usuario> _business;
+        private IRepositorio<Usuario> _repositorio
+            ;
 
-        public UsuarioBusinessImpl(IBusiness<Usuario> business)
+        public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
         {
-            _business = business;
+            _repositorio = repositorio;
+            
         }
         public Usuario Create(Usuario usuario)
         {
-            return _business.Create(usuario);
+            return _repositorio.Create(usuario);
         }
 
         public List<Usuario> FindAll()
         {
-            return _business.FindAll();
+            return _repositorio.FindAll();
         }      
 
         public Usuario FindById(int idUsuario)
         {
-            return _business.FindById(idUsuario);
+            return _repositorio.FindById(idUsuario);
         }
 
         public Usuario Update(Usuario usuario)
         {           
 
-            return _business.Update(usuario);
+            return _repositorio.Update(usuario);
         }
 
         public void Delete(int idUsuario)
         {
-            _business.Delete(idUsuario);
+            _repositorio.Delete(idUsuario);
         }
 
     }

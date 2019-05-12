@@ -23,7 +23,7 @@ namespace apiReceitasPessoais.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
