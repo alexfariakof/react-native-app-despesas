@@ -80,9 +80,15 @@ namespace apiDespesasPessoais
             }
 
             app.UseSwagger();
-
+            /*
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Despesas Pessoais V1");
+
+            });*/
+            app.UseSwaggerUI(c =>
+            {
+                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "API Despesas Pessoais V1");
             });
 
             //Starting our API in Swagger page
@@ -90,10 +96,7 @@ namespace apiDespesasPessoais
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
-            RewriteOptions options = new RewriteOptions();
-            options.AddRedirect("^$", "swagger");
-            app.UseRewriter(options);
-
+            app.UseStaticFiles();
             app.UseMvc();
         }
 

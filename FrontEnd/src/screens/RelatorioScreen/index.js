@@ -59,7 +59,7 @@ class RelatorioScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}>
                 <View>
-                    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate.goBack()} >
+                    <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} >
                         <Text>Voltar</Text>
                     </TouchableWithoutFeedback>
                 </View>

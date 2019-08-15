@@ -34,7 +34,7 @@ namespace apiDespesasPessoais.Controllers
         }
 
         [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
-        public IActionResult Get([FromRoute] int idUsuario, [FromRoute] byte idTipoCategoria)
+        public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] int idTipoCategoria)
         {
             var _categoria = _categoriaBusiness.FindAll()
                 .FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria) &&

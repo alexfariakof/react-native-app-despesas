@@ -12,14 +12,14 @@ import isIphoneX from '../../services/IsIphoneX.js'
 
 class ReceitaScreen extends Component {
     static navigationOptions = { header: null }
-
-    state = {
+    
+    state =  {
         isLoading: true,
-        errorMessage: null,
-        dsReceita: [],
+        dsCategoriaReceita: [],
         user: null,
         categoria: null,
         data: null,
+        idReceita: null,
         descricao: null,
         valor: 'R$ 0,00',
         errors: {
@@ -28,7 +28,7 @@ class ReceitaScreen extends Component {
             valor: null,
             categoria: null
         }
-    }
+    } 
 
     async componentDidMount() {
         const access = await AsyncStorage.getItem('@dpApiAccess');
@@ -37,15 +37,30 @@ class ReceitaScreen extends Component {
             this.setState({ user: JSON.parse(access).usuario });
             this.getListCategoria();
         }
-        this.clearReceita();
+
+        if (this.props.navigation.state.params.operation === 'PUT')
+            this.getReceitaById();
+
+        this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+
+                if (this.props.navigation.state.params.operation === 'PUT') {
+                    this.getReceitaById();
+                }
+                else
+                   this.clearReceita();
+            }
+        );
     }
 
     clearReceita = () => {
         this.setState({
+            isLoading: true,
             data: null,
+            idReceita: null,
             descricao: null,
-            valor: '0.00',
-            isLoading: false,
+            valor: 'R$ 0,00',
             errors: {
                 data: null,
                 descricao: null,
@@ -55,11 +70,31 @@ class ReceitaScreen extends Component {
         });
     }
 
+    getReceitaById = () => {
+        const idReceita = this.props.navigation.state.params.idReceita;
+        api.get('/api/Receita/' + idReceita, (json) => {
+            
+            var formattedDate = new Date(json.receita.data);
+            var newDate = ('0' + formattedDate.getDate()).slice(-2) + '-' + ('0' + (formattedDate.getMonth() + 1)).slice(-2) + '-' + formattedDate.getFullYear().toString();
+            
+            if (json.message) {
+                this.setState({
+                    categoria: json.receita.idCategoria,
+                    data: newDate,
+                    idReceita: json.receita.id,
+                    descricao: json.receita.descricao,
+                    valor: 'R$' + json.receita.valor.toFixed(2),
+                });
+            }
+            this.setState({ isLoading: false });
+        });
+    }
+
     getListCategoria = async () => {
         try {
             api = new apiServices();
             const json = await api.get('/api/Categoria/byTipoCategoria/' + this.state.user.id + '/2');
-            this.setState({ dsReceita: json, isLoading: false });
+            this.setState({ dsCategoriaReceita: json, isLoading: false });
         }
         catch (err) {
             console.error(err);
@@ -73,6 +108,7 @@ class ReceitaScreen extends Component {
         const refresh = this.props.navigation.state.params.refresh;
         const body = {
             idUsuario: this.state.user.id,
+            id: this.state.idReceita,
             idCategoria: this.state.categoria,
             data: this.state.data !== null ? this.state.data.split('-')[2] + '-' + this.state.data.split('-')[1] + '-' + this.state.data.split('-')[0] : null,
             descricao: this.state.descricao,
@@ -82,18 +118,36 @@ class ReceitaScreen extends Component {
         try {
             api = new apiServices();
             this.setState({ isLoading: true });
-            await api.post('/api/Receita', body, (json) => {
-                //alert(JSON.stringify(json));
-                if (json.message === true) {
-                    refresh();
-                    alert('Receita incluída com sucesso.');
-                    this.clearReceita();
-                    this.props.navigation.goBack();
-                }
-                else
-                    alert(json.message);
-                this.setState({ isLoading: false });
-            });
+            if (this.state.idReceita === null) {
+                await api.post('/api/Receita', body, (json) => {
+                    //alert(JSON.stringify(json));
+                    if (json.message === true) {
+                        refresh();
+                        alert('Receita incluída com sucesso.');
+                        this.clearReceita();
+                        this.props.navigation.goBack();
+
+                    }
+                    else
+                        alert(json.message);
+                    this.setState({ isLoading: false });
+                });
+            }
+            else {
+                await api.put('/api/Receita', body, (json) => {
+                    //alert(JSON.stringify(json));
+                    if (json.message === true) {
+                        refresh();
+                        alert('Receita atualizada com sucesso.');
+                        this.clearReceita();
+                        this.props.navigation.goBack();
+                    }
+                    else
+                        alert(json.message);
+                    this.setState({ isLoading: false });
+                });
+
+            }
         }
         catch (err) {
             alert('Erro ao realiza operação. Tente mais tarde.');
@@ -137,7 +191,7 @@ class ReceitaScreen extends Component {
 
     render() {
         const dim = Dimensions.get('window');
-        const { isLoading } = this.state;
+        const { isLoading } = this.state.isLoading;
         return (
             <ImageBackground
                 source={assets.background}
@@ -178,7 +232,7 @@ class ReceitaScreen extends Component {
                                     onValueChange={(itemValue, itemIndex) =>
                                         this.setState({ categoria: itemValue })
                                     }>
-                                    {this.state.dsReceita.map((item, key) => (
+                                    {this.state.dsCategoriaReceita.map((item, key) => (
                                         <Picker.Item label={item.descricao} value={item.id} key={key} />)
                                     )}
                                 </Picker>
