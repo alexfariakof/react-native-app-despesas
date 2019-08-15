@@ -8,6 +8,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import assets from './assets'
 import styles from './styles'
 import apiServices from '../../services/ApiServices.js'
+import isIphoneX from '../../services/IsIphoneX.js'
 
 class ReceitaScreen extends Component {
     static navigationOptions = { header: null }
@@ -142,12 +143,21 @@ class ReceitaScreen extends Component {
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background} >
-                <View><TouchableOpacity onPress={() => { this.clearReceita(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'space-between'
-                }} >
+                <View style={[isIphoneX() ?
+                    {
+                        marginTop: 32,
+                        marginBottom: 8,
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    } : null,
+                    {
+                       flex: 1,
+                       flexDirection: 'column',
+                       justifyContent: 'space-between'
+                    }]}
+                >
+                    <View><TouchableOpacity onPress={() => { this.clearReceita(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
                     <View style={{ backgroundColor: '#B3F39D' }} >
                         <Text style={{
                             fontSize: 48,

@@ -6,6 +6,7 @@ import assets from './assets'
 import styles from './styles'
 
 import apiServices from '../../services/ApiServices.js'
+import isIphoneX from '../../services/IsIphoneX.js'
 
 class CadastroScreen extends Component {
     static navigationOptions = { header: null }
@@ -120,63 +121,79 @@ class CadastroScreen extends Component {
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
-            ><ScrollView>
-                    <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
-                    <View style={styles.body}>
-                        <TextInput style={styles.text} placeholder='Digite um nome' maxLength={20}
-                            onChangeText={(nome) => this.setState({ nome })} value={this.state.nome} >
-                        </TextInput>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.nome} </Text>
-                        </View>
+            >
+                <View style={[isIphoneX() ?
+                    {
+                        marginTop: 32,
+                        marginBottom: 8,
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    } : null,
+                    {
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    }]}
+                >
+                    <ScrollView>
+                        <View><TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()} ><Text>Voltar</Text></TouchableWithoutFeedback></View>
+                        <View style={styles.body}>
+                            <TextInput style={styles.text} placeholder='Digite um nome' maxLength={20}
+                                onChangeText={(nome) => this.setState({ nome })} value={this.state.nome} >
+                            </TextInput>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.nome} </Text>
+                            </View>
 
-                        <TextInput style={styles.text} placeholder='Digite um sobre nome' maxLength={20}
-                            onChangeText={(sobreNome) => this.setState({ sobreNome })} value={this.state.sobreNome}>
-                        </TextInput>
+                            <TextInput style={styles.text} placeholder='Digite um sobre nome' maxLength={20}
+                                onChangeText={(sobreNome) => this.setState({ sobreNome })} value={this.state.sobreNome}>
+                            </TextInput>
 
-                        <TextInputMask style={styles.text} placeholder='Digite um telefone' maxLength={30} keyboardType='number-pad'
-                            onChangeText={(telefone) => this.setState({ telefone })} value={this.state.telefone}
-                            type={'cel-phone'}
-                            options={{
-                                maskType: 'BRL',
-                                withDDD: true,
-                                dddMask: '(99) '
-                            }}>
-                        </TextInputMask>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.telefone} </Text>
-                        </View>
+                            <TextInputMask style={styles.text} placeholder='Digite um telefone' maxLength={30} keyboardType='number-pad'
+                                onChangeText={(telefone) => this.setState({ telefone })} value={this.state.telefone}
+                                type={'cel-phone'}
+                                options={{
+                                    maskType: 'BRL',
+                                    withDDD: true,
+                                    dddMask: '(99) '
+                                }}>
+                            </TextInputMask>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.telefone} </Text>
+                            </View>
 
-                        <TextInput style={styles.text} placeholder='Digite um email' maxLength={30} keyboardType='email-address'
-                            onChangeText={(email) => this.setState({ email })} value={this.state.email}>
-                        </TextInput>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.email} </Text>
-                        </View>
+                            <TextInput style={styles.text} placeholder='Digite um email' maxLength={30} keyboardType='email-address'
+                                onChangeText={(email) => this.setState({ email })} value={this.state.email}>
+                            </TextInput>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.email} </Text>
+                            </View>
 
-                        <TextInput style={styles.text} placeholder='Digite uma senha' maxLength={8} secureTextEntry
-                            onChangeText={(senha) => this.setState({ senha })} value={this.state.senha}
-                        ></TextInput>
-                        <View style={styles.ViewCentralizar} >
-                            <Text style={{ color: 'red' }}> {this.state.errors.senha} </Text>
+                            <TextInput style={styles.text} placeholder='Digite uma senha' maxLength={8} secureTextEntry
+                                onChangeText={(senha) => this.setState({ senha })} value={this.state.senha}
+                            ></TextInput>
+                            <View style={styles.ViewCentralizar} >
+                                <Text style={{ color: 'red' }}> {this.state.errors.senha} </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.Footer} >
-                        {isLoading ? (
-                            <ActivityIndicator
-                                style={styles.btnIniciar}
-                                color="green"
-                                size="large"
-                            />
-                        ) :
-                            (
-                                <TouchableOpacity style={styles.btnCadastro} onPress={() => { this.saveCadastro() }} >
-                                    <Image source={assets.btnCadastro} />
-                                </TouchableOpacity>
-                            )
-                        }
-                    </View>
-                </ScrollView>
+                        <View style={styles.Footer} >
+                            {isLoading ? (
+                                <ActivityIndicator
+                                    style={styles.btnIniciar}
+                                    color="green"
+                                    size="large"
+                                />
+                            ) :
+                                (
+                                    <TouchableOpacity style={styles.btnCadastro} onPress={() => { this.saveCadastro() }} >
+                                        <Image source={assets.btnCadastro} />
+                                    </TouchableOpacity>
+                                )
+                            }
+                        </View>
+                    </ScrollView>
+                </View>
             </ImageBackground>
         );
     }

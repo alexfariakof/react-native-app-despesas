@@ -8,6 +8,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import assets from './assets'
 import styles from './styles'
 import apiServices from '../../services/ApiServices.js'
+import isIphoneX from '../../services/IsIphoneX.js'
 
 class DespesaScreen extends Component {
     static navigationOptions = { header: null }
@@ -147,13 +148,21 @@ class DespesaScreen extends Component {
                 imageStyle={{ resizeMode: 'stretch' }}
                 style={styles.background}
             >
-                <View><TouchableOpacity onPress={() => { this.clearDespesa(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'space-between'
-                }}
+                <View style={[isIphoneX() ?
+                    {
+                        marginTop: 32,
+                        marginBottom: 8,
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    } : null,
+                    {
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                    }]}
                 >
+                    <View><TouchableOpacity onPress={() => { this.clearDespesa(); this.props.navigation.goBack(); }}  ><Text>Voltar</Text></TouchableOpacity></View>
                     <View style={{ backgroundColor: '#D45959' }} >
                         <Text style={{
                             fontSize: 48,

@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import assets from './assets'
 import styles from './styles'
-
+import isIphoneX from '../../services/IsIphoneX.js'
 import apiServices from '../../services/ApiServices.js'
 
 class HomeScreen extends Component {
@@ -85,9 +85,8 @@ class HomeScreen extends Component {
             <ImageBackground
                 source={assets.background}
                 imageStyle={{ resizeMode: 'stretch' }}
-                style={styles.background}
-            >
-                <ScrollView>
+                style={styles.background }  >
+                <ScrollView style={[ isIphoneX() ? { marginTop:64, marginBottom:64} : null ]} >
                     <View style={styles.body}>
                         <View style={styles.ViewCentralizar} >
                             <Text style={styles.textBenVindo} >Seja Bem Vindo</Text>
