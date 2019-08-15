@@ -10,7 +10,11 @@ import apiServices from '../../services/ApiServices.js'
 
 class LancamentoScreen extends Component {
 <<<<<<< HEAD
+<<<<<<< HEAD
     static navigationOptions = { header: null }
+=======
+    //static navigationOptions = { header: null   }
+>>>>>>> f96139fe6f1212b6db24831903597979e119047f
 =======
     //static navigationOptions = { header: null   }
 >>>>>>> f96139fe6f1212b6db24831903597979e119047f

@@ -12,6 +12,7 @@ import apiServices from '../../services/ApiServices.js'
 import isIphoneX from '../../services/IsIphoneX.js'
 
 
+
 class DespesaScreen extends Component {
     static navigationOptions = { header: null }
 
@@ -209,6 +210,7 @@ render() {
             }}
             >
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <View style={[isIphoneX() ?
                     {
                         marginTop: 32,
@@ -231,12 +233,17 @@ render() {
                             textAlign: 'right',
                             padding: 8
 =======
+=======
+>>>>>>> f96139fe6f1212b6db24831903597979e119047f
                 <View style={{ backgroundColor: '#D45959' }} >
                     <Text style={{
                         fontSize: 48,
                         color: 'white',
                         textAlign: 'right',
                         padding: 8
+<<<<<<< HEAD
+>>>>>>> f96139fe6f1212b6db24831903597979e119047f
+=======
 >>>>>>> f96139fe6f1212b6db24831903597979e119047f
 
                     }} >{this.state.valor}</Text>
